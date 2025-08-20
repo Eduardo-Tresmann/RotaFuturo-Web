@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { LoginForm } from '@/components/auth/LoginForm';
 import { RegisterForm } from '@/components/auth/RegisterForm';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/app/hooks/useAuth';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Header } from '@/components/Header';
 

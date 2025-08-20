@@ -1,9 +1,9 @@
+// app/layout.tsx
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../styles/globals.css';
-import { Header } from '@/components/Header';
-import { AuthProvider } from '@/hooks/useAuth';
 import { Toaster } from 'sonner';
+import ClientProviders from "@/components/auth/ClientProviders";
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -15,10 +15,10 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = { // <--- O METADATA PERMANECE AQUI!
   title: 'RotaFuturo - Planeje seu futuro',
   description:
-    'Plataforma para planejamento de cira e desenvolvimento profissional',
+    'Plataforma para planejamento de carreira e desenvolvimento profissional',
 };
 
 export default function RootLayout({
@@ -31,7 +31,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
-        <AuthProvider>
+        <ClientProviders>
           <div className="min-h-screen bg-zinc-200 ">
             <main>{children}</main>
             <Toaster
@@ -43,7 +43,7 @@ export default function RootLayout({
               className="z-50"
             />
           </div>
-        </AuthProvider>
+        </ClientProviders>
       </body>
     </html>
   );
