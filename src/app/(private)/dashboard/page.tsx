@@ -1,14 +1,16 @@
 'use client';
 
-import { useAuth } from '@/hooks/useAuth';
+import { Header } from '@/components/Header';
+import { Button } from '@/components/ui/button';
+import { LogOut, Settings, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { LogOut, User, Settings, CreditCard, Keyboard } from 'lucide-react';
-import { Header } from '@/components/Header';
+
+import { useAuthContext } from '@/app/context/AuthContext';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
 
 export default function DashboardPage() {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout, isAuthenticated } = useAuthContext();
   const router = useRouter();
 
   const dashboardNavItems = [
@@ -54,78 +56,80 @@ export default function DashboardPage() {
 
   return (
     <>
-      <Header
-        showNavbar={true}
-        navItems={dashboardNavItems}
-        showSearchBar={true}
-        showProfileSection={true}
-        userProfile={userProfileData}
-        profileMenuItems={dashboardProfileMenuItems}
-      />
+      <ProtectedRoute>
+        <Header
+          showNavbar={true}
+          navItems={dashboardNavItems}
+          showSearchBar={true}
+          showProfileSection={true}
+          userProfile={userProfileData}
+          profileMenuItems={dashboardProfileMenuItems}
+        />
 
-      <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 p-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-soft p-8">
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-zinc-900 to-zinc-700 rounded-full flex items-center justify-center">
-                  <User className="w-6 h-6 text-white" />
+        <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 p-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white rounded-2xl shadow-soft p-8">
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-zinc-900 to-zinc-700 rounded-full flex items-center justify-center">
+                    <User className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-3xl font-bold text-zinc-900">
+                      Dashboard
+                    </h1>
+                    <p className="text-zinc-600">
+                      Bem-vindo de volta, {user?.usuEmail}!
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h1 className="text-3xl font-bold text-zinc-900">
-                    Dashboard
-                  </h1>
-                  <p className="text-zinc-600">
-                    Bem-vindo de volta, {user?.usuEmail}!
-                  </p>
-                </div>
-              </div>
-              <Button
-                onClick={logout}
-                variant="outline"
-                className="flex items-center gap-2 hover:bg-red-50 hover:text-red-600 hover:border-red-200"
-              >
-                <LogOut className="w-4 h-4" /> Sair
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100">
-                <h3 className="text-lg font-semibold text-blue-900 mb-2">
-                  Informações do Usuário
-                </h3>
-                <div className="space-y-2 text-sm text-blue-800">
-                  <p>
-                    <strong>Email:</strong> {user?.usuEmail}
-                  </p>
-                  <p>
-                    <strong>ID:</strong> {user?.usuId}
-                  </p>
-                  <p>
-                    <strong>Data de Cadastro:</strong> {user?.usuDataCadastro}
-                  </p>
-                  <p>
-                    <strong>Status:</strong>{' '}
-                    {user?.usuAtivo ? 'Ativo' : 'Inativo'}
-                  </p>
-                </div>
+                <Button
+                  onClick={logout}
+                  variant="outline"
+                  className="flex items-center gap-2 hover:bg-red-50 hover:text-red-600 hover:border-red-200"
+                >
+                  <LogOut className="w-4 h-4" /> Sair
+                </Button>
               </div>
 
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-100">
-                <h3 className="text-lg font-semibold text-green-900 mb-2">
-                  Status da Conta
-                </h3>
-                <div className="space-y-2 text-sm text-green-800">
-                  <p>
-                    <strong>Email Validado:</strong>{' '}
-                    {user?.usuEmailValidado ? 'Sim' : 'Não'}
-                  </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100">
+                  <h3 className="text-lg font-semibold text-blue-900 mb-2">
+                    Informações do Usuário
+                  </h3>
+                  <div className="space-y-2 text-sm text-blue-800">
+                    <p>
+                      <strong>Email:</strong> {user?.usuEmail}
+                    </p>
+                    <p>
+                      <strong>ID:</strong> {user?.usuId}
+                    </p>
+                    <p>
+                      <strong>Data de Cadastro:</strong> {user?.usuDataCadastro}
+                    </p>
+                    <p>
+                      <strong>Status:</strong>{' '}
+                      {user?.usuAtivo ? 'Ativo' : 'Inativo'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-100">
+                  <h3 className="text-lg font-semibold text-green-900 mb-2">
+                    Status da Conta
+                  </h3>
+                  <div className="space-y-2 text-sm text-green-800">
+                    <p>
+                      <strong>Email Validado:</strong>{' '}
+                      {user?.usuEmailValidado ? 'Sim' : 'Não'}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </ProtectedRoute>
     </>
   );
 }

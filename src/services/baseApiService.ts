@@ -1,9 +1,13 @@
-import { LoginResponse, Usuario } from '@/types';
+import { LoginResponse } from '@/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8888';
 
-class ApiService {
+class BaseApiService {
   private token: string | null = null;
+
+  constructor() {
+    this.token = this.getTokenFromLocalStorage();
+  }
 
   setToken(token: string) {
     this.token = token;
@@ -13,9 +17,6 @@ class ApiService {
   }
 
   getToken(): string | null {
-    if (!this.token && typeof window !== 'undefined') {
-      this.token = localStorage.getItem('token');
-    }
     return this.token;
   }
 
@@ -24,6 +25,13 @@ class ApiService {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('token');
     }
+  }
+
+  private getTokenFromLocalStorage(): string | null {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('token');
+    }
+    return null;
   }
 
   public async request<T>(
@@ -50,31 +58,12 @@ class ApiService {
       );
     }
 
+    if (response.status === 204) {
+      return {} as T;
+    }
+
     return response.json();
-  }
-
-  async login(email: string, password: string): Promise<string> {
-    const response = await this.request<LoginResponse>('/usuario/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({ usuEmail: email, usuSenha: password }),
-    });
-    return response.token;
-  }
-
-  async register(email: string, password: string): Promise<any> {
-    return this.request('/usuario/registrar', {
-      method: 'POST',
-      body: JSON.stringify({ usuEmail: email, usuSenha: password }),
-    });
-  }
-
-  async getCurrentUser(): Promise<Usuario> {
-    return this.request('/usuario/me');
-  }
-
-  async getUserById(id: number): Promise<Usuario> {
-    return this.request(`/usuario/${id}`);
   }
 }
 
-export const apiService = new ApiService();
+export const baseApiService = new BaseApiService();

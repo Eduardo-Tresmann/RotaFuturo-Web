@@ -9,13 +9,13 @@ import {
   AlertCircle,
   CheckCircle,
 } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/app/hooks/useAuth';
 import { FormLabel } from '@/components/ui/form-components/form-label';
 import { EmailField } from '@/components/ui/form-components/email-field';
 import { PasswordField } from '@/components/ui/form-components/password-field';
 import { FormButton } from '@/components/ui/form-components/form-button';
 import { FormNotification } from '@/components/ui/form-components/form-notification';
-import { apiService } from '@/services/api';
+import { baseApiService } from '@/services/baseApiService';
 
 interface RegisterFormProps {
   onBack: () => void;
@@ -53,7 +53,7 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
 
       setCheckingEmail(true);
       try {
-        const response = await apiService.request<{ exists: boolean }>(
+        const response = await baseApiService.request<{ exists: boolean }>(
           `/usuario/exists?email=${encodeURIComponent(email)}`
         );
         if (response.exists) {
@@ -93,19 +93,17 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
         icon: AlertCircle,
         duration: 5000,
         position: 'top-right',
-        
       });
       return;
     }
 
     try {
-      await register(formData.email, formData.password);
+      await register({ usuEmail: formData.email, usuSenha: formData.password });
       FormNotification.success({
         message: 'Conta criada com sucesso! Bem-vindo ao RotaFuturo!',
         icon: CheckCircle,
         duration: 4000,
         position: 'top-right',
-        
       });
     } catch (error: any) {
       FormNotification.error({

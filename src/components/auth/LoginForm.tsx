@@ -1,3 +1,4 @@
+// components/LoginForm.tsx (ou o caminho do seu arquivo de formulário)
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,7 +10,7 @@ import {
   CheckCircle,
   AtSign,
 } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuthContext } from '@/app/context/AuthContext'; // <--- Usar useAuthContext
 import { FormLabel } from '@/components/ui/form-components/form-label';
 import { EmailField } from '@/components/ui/form-components/email-field';
 import { PasswordField } from '@/components/ui/form-components/password-field';
@@ -21,7 +22,8 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ onBack }: LoginFormProps) {
-  const { login, loading } = useAuth();
+  // ATENÇÃO: Use useAuthContext para consumir o contexto
+  const { login, loading } = useAuthContext();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -31,9 +33,11 @@ export function LoginForm({ onBack }: LoginFormProps) {
     e.preventDefault();
 
     try {
-      await login(formData.email, formData.password);
+      await login({
+        usuEmail: formData.email,
+        usuSenha: formData.password,
+      });
 
-      // Notificação de sucesso
       FormNotification.success({
         message: 'Login realizado com sucesso! Bem-vindo de volta!',
         icon: CheckCircle,
@@ -41,7 +45,6 @@ export function LoginForm({ onBack }: LoginFormProps) {
         position: 'top-right',
       });
     } catch (error: any) {
-      // Notificação de erro
       FormNotification.error({
         message:
           error.message || 'Erro ao fazer login. Verifique suas credenciais.',
@@ -82,7 +85,7 @@ export function LoginForm({ onBack }: LoginFormProps) {
             disabled={loading}
             icon={AtSign}
             iconColor="text-blue-400"
-            className="bg-white/80 backdrop-blur-sm border-zinc-200 focus:border-zinc-400 
+            className="bg-white/80 backdrop-blur-sm border-zinc-200 focus:border-zinc-400
               focus:ring-2 focus:ring-zinc-100 placeholder:text-zinc-400 transition-all duration-200"
           />
         </div>
@@ -100,8 +103,8 @@ export function LoginForm({ onBack }: LoginFormProps) {
             disabled={loading}
             icon={Shield}
             iconColor="text-green-500"
-            className="bg-white/80 backdrop-blur-sm border-zinc-200 
-              focus:border-zinc-400 focus:ring-2 focus:ring-zinc-100 
+            className="bg-white/80 backdrop-blur-sm border-zinc-200
+              focus:border-zinc-400 focus:ring-2 focus:ring-zinc-100
               placeholder:text-zinc-400 transition-all duration-200"
           />
         </div>
@@ -111,8 +114,8 @@ export function LoginForm({ onBack }: LoginFormProps) {
           size="lg"
           loading={loading}
           variant="outline"
-          className="bg-zinc-900 text-white border-transparent hover:bg-zinc-800 
-            shadow-soft hover:shadow-glow transition-all duration-300 font-semibold text-base py-3 
+          className="bg-zinc-900 text-white border-transparent hover:bg-zinc-800
+            shadow-soft hover:shadow-glow transition-all duration-300 font-semibold text-base py-3
             disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <User className="h-4 w-4 mr-2" />
