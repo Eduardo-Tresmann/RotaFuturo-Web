@@ -10,7 +10,7 @@ import {
   CheckCircle,
   AtSign,
 } from 'lucide-react';
-import { useAuthContext } from '@/app/context/AuthContext'; // <--- Usar useAuthContext
+import { useAuthContext } from '@/components/context/AuthContext'; // <--- Usar useAuthContext
 import { FormLabel } from '@/components/ui/form-components/form-label';
 import { EmailField } from '@/components/ui/form-components/email-field';
 import { PasswordField } from '@/components/ui/form-components/password-field';
@@ -22,7 +22,6 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ onBack }: LoginFormProps) {
-  // ATENÇÃO: Use useAuthContext para consumir o contexto
   const { login, loading } = useAuthContext();
   const [formData, setFormData] = useState({
     email: '',
@@ -41,8 +40,8 @@ export function LoginForm({ onBack }: LoginFormProps) {
       FormNotification.success({
         message: 'Login realizado com sucesso! Bem-vindo de volta!',
         icon: CheckCircle,
-        duration: 3000,
-        position: 'top-right',
+        duration: 1000,
+        position: 'bottom-left',
       });
     } catch (error: any) {
       FormNotification.error({
@@ -50,7 +49,7 @@ export function LoginForm({ onBack }: LoginFormProps) {
           error.message || 'Erro ao fazer login. Verifique suas credenciais.',
         icon: AlertCircle,
         duration: 5000,
-        position: 'top-right',
+        position: 'bottom-left',
       });
     }
   };

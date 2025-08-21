@@ -11,13 +11,12 @@ class AuthService {
       }
     );
 
-    // 🚨 Faltava salvar o token
     baseApiService.setToken(response.token);
 
     return response.token;
   }
 
-  async register(email: string, password: string): Promise<any> {
+  async registrar(email: string, password: string): Promise<any> {
     return baseApiService.request('/usuario/registrar', {
       method: 'POST',
       body: JSON.stringify({ usuEmail: email, usuSenha: password }),
@@ -37,9 +36,8 @@ class AuthService {
   }
 }
 
-
-  // setToken(token: string) {
-  //   baseApiService.setToken(token);
-  // }
+// setToken(token: string) {
+//   baseApiService.setToken(token);
+// }
 
 export const authService = new AuthService();

@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { useAuthContext } from '@/components/context/AuthContext';
 import ProtectedRoute from '@/components/context/ProtectedRoute';
 
-export default function PaginaDashboard() {
+export default function PaginaPerfil() {
   const { usuario, logout, isAuthenticated } = useAuthContext();
   const router = useRouter();
 
@@ -75,9 +75,7 @@ export default function PaginaDashboard() {
                     <User className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h1 className="text-3xl font-bold text-zinc-900">
-                      Dashboard
-                    </h1>
+                    <h1 className="text-3xl font-bold text-zinc-900"></h1>
                     <p className="text-zinc-600">
                       Bem-vindo de volta, {usuario?.usuEmail}!
                     </p>
@@ -105,7 +103,8 @@ export default function PaginaDashboard() {
                       <strong>ID:</strong> {usuario?.usuId}
                     </p>
                     <p>
-                      <strong>Data de Cadastro:</strong> {usuario?.usuDataCadastro}
+                      <strong>Data de Cadastro:</strong>{' '}
+                      {usuario?.usuDataCadastro}
                     </p>
                     <p>
                       <strong>Status:</strong>{' '}

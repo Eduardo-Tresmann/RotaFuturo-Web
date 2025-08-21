@@ -7,23 +7,23 @@ import { usuarioService } from '@/services/usuario/UsuarioService';
 import { Usuario, LoginRequest, UsuarioCriacaoDTO } from '@/types';
 
 interface AuthContextType {
-  user: Usuario | null;
+  usuario: Usuario | null;
   isAuthenticated: boolean;
   loading: boolean;
   authResolved: boolean;
   login: (credentials: LoginRequest) => Promise<void>;
-  register: (userData: UsuarioCriacaoDTO) => Promise<void>;
+  registrar: (dadosUsuario: UsuarioCriacaoDTO) => Promise<void>;
   logout: () => void;
-  refreshUser: () => Promise<void>;
+  recarregarUsuario: () => Promise<void>;
 }
 
 export const useAuth = (): AuthContextType => {
-  const [user, setUser] = useState<Usuario | null>(null);
+  const [usuario, setUser] = useState<Usuario | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
   const [authResolved, setAuthResolved] = useState(false);
 
-  const loadUser = useCallback(async () => {
+  const carregarUsuario = useCallback(async () => {
     setLoading(true);
     try {
       const token = authService.getToken();
@@ -45,15 +45,15 @@ export const useAuth = (): AuthContextType => {
   }, []);
 
   useEffect(() => {
-    loadUser();
-  }, [loadUser]);
+    carregarUsuario();
+  }, [carregarUsuario]);
 
   const login = useCallback(
     async (credentials: LoginRequest) => {
       setLoading(true);
       try {
         await authService.login(credentials.usuEmail, credentials.usuSenha);
-        await loadUser();
+        await carregarUsuario();
         router.push('/dashboard');
       } catch (error: any) {
         console.error('Erro no login:', error.message);
@@ -62,15 +62,18 @@ export const useAuth = (): AuthContextType => {
         setLoading(false);
       }
     },
-    [loadUser]
+    [carregarUsuario]
   );
 
-  const register = useCallback(
-    async (userData: UsuarioCriacaoDTO) => {
+  const registrar = useCallback(
+    async (dadosUsuario: UsuarioCriacaoDTO) => {
       setLoading(true);
       try {
-        await authService.register(userData.usuEmail, userData.usuSenha);
-        await login(userData);
+        await authService.registrar(
+          dadosUsuario.usuEmail,
+          dadosUsuario.usuSenha
+        );
+        await login(dadosUsuario);
         router.push('/dashboard');
       } catch (error: any) {
         console.error('Erro no registro:', error.message);
@@ -89,18 +92,18 @@ export const useAuth = (): AuthContextType => {
     router.replace('/');
   }, [router]);
 
-  const refreshUser = useCallback(async () => {
-    await loadUser();
-  }, [loadUser]);
+  const recarregarUsuario = useCallback(async () => {
+    await carregarUsuario();
+  }, [carregarUsuario]);
 
   return {
-    user,
-    isAuthenticated: !!user,
+    usuario,
+    isAuthenticated: !!usuario,
     loading,
     authResolved,
     login,
-    register,
+    registrar,
     logout,
-    refreshUser,
+    recarregarUsuario,
   };
 };

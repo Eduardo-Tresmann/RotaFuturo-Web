@@ -9,7 +9,7 @@ import {
   AlertCircle,
   CheckCircle,
 } from 'lucide-react';
-import { useAuth } from '@/app/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { FormLabel } from '@/components/ui/form-components/form-label';
 import { EmailField } from '@/components/ui/form-components/email-field';
 import { PasswordField } from '@/components/ui/form-components/password-field';
@@ -22,7 +22,7 @@ interface RegisterFormProps {
 }
 
 export function RegisterForm({ onBack }: RegisterFormProps) {
-  const { register, loading } = useAuth();
+  const { registrar, loading } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -92,25 +92,28 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
         message: 'As senhas não coincidem. Verifique e tente novamente.',
         icon: AlertCircle,
         duration: 5000,
-        position: 'top-right',
+        position: 'bottom-left',
       });
       return;
     }
 
     try {
-      await register({ usuEmail: formData.email, usuSenha: formData.password });
+      await registrar({
+        usuEmail: formData.email,
+        usuSenha: formData.password,
+      });
       FormNotification.success({
         message: 'Conta criada com sucesso! Bem-vindo ao RotaFuturo!',
         icon: CheckCircle,
         duration: 4000,
-        position: 'top-right',
+        position: 'bottom-left',
       });
     } catch (error: any) {
       FormNotification.error({
         message: error.message || 'Erro ao criar conta. Tente novamente.',
         icon: AlertCircle,
         duration: 5000,
-        position: 'top-right',
+        position: 'bottom-left',
       });
     }
   };

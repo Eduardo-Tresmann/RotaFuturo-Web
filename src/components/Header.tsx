@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import * as React from 'react';
-import '@/styles/globals.css'; 
+import '@/styles/globals.css';
+import Imagem from '@/components/Imagem';
 
 import {
   DropdownMenu,
@@ -23,7 +24,7 @@ interface NavbarProps {
 }
 
 interface DropdownMenuItemType {
-  label?: string; 
+  label?: string;
   onClick?: () => void;
   href?: string;
   isSeparator?: boolean;
@@ -31,7 +32,7 @@ interface DropdownMenuItemType {
   icon?: React.ReactNode;
 }
 
-interface UserProfileData {
+interface DadosPerfilUsuario {
   name: string;
   avatarUrl?: string;
   email?: string;
@@ -39,11 +40,11 @@ interface UserProfileData {
 
 interface HeaderProps {
   className?: string;
-  showNavbar?: boolean;
+  exibirNavbar?: boolean;
   navItems?: NavItem[];
-  showSearchBar?: boolean;
-  showProfileSection?: boolean;
-  userProfile?: UserProfileData;
+  exibirBarraPesquisa?: boolean;
+  exibirPerfil?: boolean;
+  perfilUsuario?: DadosPerfilUsuario;
   profileMenuItems?: DropdownMenuItemType[];
 }
 
@@ -66,7 +67,7 @@ export function Navbar({ items }: NavbarProps) {
   );
 }
 
-function SearchBar() {
+function BarraPesquisa() {
   return (
     <div className="relative">
       <input
@@ -92,16 +93,16 @@ function SearchBar() {
   );
 }
 
-interface ProfileDropdownProps extends UserProfileData {
+interface PerfilDropdownProps extends DadosPerfilUsuario {
   menuItems: DropdownMenuItemType[];
 }
 
-function ProfileDropdown({
+function PerfilDropdown({
   name,
   email,
   avatarUrl,
   menuItems,
-}: ProfileDropdownProps) {
+}: PerfilDropdownProps) {
   const defaultAvatar = 'https://via.placeholder.com/32';
 
   return (
@@ -116,7 +117,13 @@ function ProfileDropdown({
           <span className="hidden md:inline text-sm">{name || 'Usuário'}</span>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 bg-zinc-50" align="end" side="bottom" sideOffset={20} forceMount>
+      <DropdownMenuContent
+        className="w-56 bg-zinc-50"
+        align="end"
+        side="bottom"
+        sideOffset={20}
+        forceMount
+      >
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
@@ -168,32 +175,36 @@ function ProfileDropdown({
 }
 
 export function Header({
-  showNavbar = false,
+  exibirNavbar = false,
   navItems = [],
-  showSearchBar = false,
-  showProfileSection = false,
-  userProfile,
+  exibirBarraPesquisa = false,
+  exibirPerfil = false,
+  perfilUsuario,
   profileMenuItems = [],
 }: HeaderProps) {
   return (
     <header className="bg-zinc-900 text-white w-full shadow-header">
       <div className="w-full px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
-          <span className="text-2xl font-bold tracking-wider bg-gradient-to-r from-white to-zinc-200 bg-clip-text text-transparent">
-            ROTAFUTURO
-          </span>
-        </Link> 
+          <Imagem
+            src="/imagens/rotafuturo.svg"
+            alt="rf logo"
+            width={200}
+            height={100}
+            className=" h-auto"
+          />
+        </Link>
 
-        {showNavbar && <Navbar items={navItems} />}
+        {exibirNavbar && <Navbar items={navItems} />}
 
         <div className="flex items-center space-x-4">
-          {showSearchBar && <SearchBar />}
+          {exibirBarraPesquisa && <BarraPesquisa />}
 
-          {showProfileSection && userProfile && (
-            <ProfileDropdown
-              name={userProfile.name}
-              email={userProfile.email}
-              avatarUrl={userProfile.avatarUrl}
+          {exibirPerfil && perfilUsuario && (
+            <PerfilDropdown
+              name={perfilUsuario.name}
+              email={perfilUsuario.email}
+              avatarUrl={perfilUsuario.avatarUrl}
               menuItems={profileMenuItems}
             />
           )}

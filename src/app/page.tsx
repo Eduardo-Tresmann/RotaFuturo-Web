@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { LoginForm } from '@/components/auth/LoginForm';
 import { RegisterForm } from '@/components/auth/RegisterForm';
-import { useAuth } from '@/app/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Header } from '@/components/Header';
 
@@ -121,9 +121,9 @@ export default function Home() {
   return (
     <>
       <Header
-        showNavbar={false}
-        showSearchBar={false}
-        showProfileSection={true}
+        exibirNavbar={false}
+        exibirBarraPesquisa={false}
+        exibirPerfil={true}
       />
       <div className="container mx-auto px-4 py-12">
         <div className="flex h-[500px] shadow-soft hover:shadow-glow bg-zinc-300 rounded-3xl border-2 border-white overflow-hidden">
@@ -151,7 +151,6 @@ export default function Home() {
               <ChevronRight className="w-6 h-6 text-zinc-600" />
             </button>
 
-            {/* Slide Indicators */}
             <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
               {slides.map((_, index) => (
                 <button
@@ -166,7 +165,6 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Slide Counter */}
             <div className="absolute top-6 right-6 bg-white/80 px-3 py-1 rounded-full text-sm font-medium text-zinc-600">
               {currentSlide + 1} / {slides.length}
             </div>

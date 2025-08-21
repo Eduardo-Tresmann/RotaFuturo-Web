@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../styles/globals.css';
 import { Toaster } from 'sonner';
-import ClientProviders from "@/components/auth/ClientProviders";
+import ClientProviders from '@/components/context/ClientProviders';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = { // <--- O METADATA PERMANECE AQUI!
+export const metadata: Metadata = {
   title: 'RotaFuturo - Planeje seu futuro',
   description:
     'Plataforma para planejamento de carreira e desenvolvimento profissional',

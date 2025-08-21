@@ -1,4 +1,3 @@
-// Tipos de usuário baseados no UsuarioBean do backend
 export interface Usuario {
   usuId: number;
   usuEmail: string;
@@ -12,7 +11,6 @@ export interface Usuario {
   usuSenhaAntiga2?: string;
 }
 
-// DTOs baseados no backend
 export interface UsuarioCriacaoDTO {
   usuEmail: string;
   usuSenha: string;
@@ -28,7 +26,6 @@ export interface LoginResponse {
   message?: string;
 }
 
-// Tipos de API
 export interface ApiResponse<T> {
   success: boolean;
   data?: T;
@@ -36,7 +33,6 @@ export interface ApiResponse<T> {
   error?: string;
 }
 
-// Tipos de formulários
 export interface FormField {
   name: string;
   label: string;
@@ -50,7 +46,6 @@ export interface FormField {
   };
 }
 
-// Tipos de navegação
 export interface NavItem {
   title: string;
   href: string;
