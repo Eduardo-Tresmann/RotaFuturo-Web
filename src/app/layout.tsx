@@ -1,9 +1,12 @@
 // app/layout.tsx
-import type { Metadata } from 'next';
+'use client';
+
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../styles/globals.css';
 import { Toaster } from 'sonner';
 import ClientProviders from '@/components/context/ClientProviders';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -15,17 +18,19 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
-  title: 'RotaFuturo - Planeje seu futuro',
-  description:
-    'Plataforma para planejamento de carreira e desenvolvimento profissional',
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.pathname !== '/auth') {
+      router.replace('/auth');
+    }
+  }, [router]);
+
   return (
     <html lang="pt-BR">
       <body

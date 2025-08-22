@@ -89,7 +89,7 @@ export const useAuth = (): AuthContextType => {
     authService.logout();
     setUser(null);
 
-    router.replace('/');
+    router.replace('/auth');
   }, [router]);
 
   const recarregarUsuario = useCallback(async () => {
