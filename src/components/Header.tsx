@@ -184,7 +184,7 @@ export function Header({
 }: HeaderProps) {
   return (
     <header className="bg-zinc-900 text-white w-full shadow-header">
-      <div className="w-full px-4 h-16 flex items-center justify-between">
+      <div className="w-full py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
           <Imagem
             src="/imagens/rotafuturo.svg"
