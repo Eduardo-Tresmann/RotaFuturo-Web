@@ -5,9 +5,9 @@ import Imagem from '@/components/Imagem';
 export const SplashScreen: FC = () => {
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-start bg-#d3d3d3"
+      className="min-h-screen flex flex-col items-center justify-start bg-zinc-200"
     >
-      <header className="bg-zinc-900 text-white w-full shadow-header">
+      {/* <header className="bg-zinc-900 text-white w-full shadow-header">
         <div className="w-full py-4 flex items-center justify-center">
           <Imagem
             src="/imagens/rotafuturo.svg"
@@ -16,7 +16,7 @@ export const SplashScreen: FC = () => {
             height={100}
           />
         </div>
-      </header>
+      </header> */}
       <div className="flex flex-1 flex-col items-center justify-center w-full">
         <Imagem
           src="/imagens/rf.svg"

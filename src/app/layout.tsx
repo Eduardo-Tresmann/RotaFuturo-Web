@@ -32,7 +32,7 @@ export default function RootLayout({
       const timer = setTimeout(() => {
         setShowSplash(false);
         router.replace('/auth');
-      }, 5400);
+      }, 500);
       return () => clearTimeout(timer);
     }
   }, [showSplash, router]);
