@@ -1,10 +1,12 @@
+
 'use client';
+
 
 import Link from 'next/link';
 import * as React from 'react';
 import '@/styles/globals.css';
 import Imagem from '@/components/Imagem';
-
+import ThemeSwitch from '@/components/ui/ThemeSwitch';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+
 
 interface NavItem {
   href: string;
@@ -42,11 +45,15 @@ interface HeaderProps {
   className?: string;
   exibirNavbar?: boolean;
   navItems?: NavItem[];
+  menuItemClassName?: string;
   exibirBarraPesquisa?: boolean;
   exibirPerfil?: boolean;
   perfilUsuario?: DadosPerfilUsuario;
   profileMenuItems?: DropdownMenuItemType[];
+  extra?: React.ReactNode;
 }
+
+
 
 export function Navbar({ items }: NavbarProps) {
   return (
@@ -66,6 +73,7 @@ export function Navbar({ items }: NavbarProps) {
     </nav>
   );
 }
+
 
 function BarraPesquisa() {
   return (
@@ -93,6 +101,7 @@ function BarraPesquisa() {
   );
 }
 
+
 interface PerfilDropdownProps extends DadosPerfilUsuario {
   menuItems: DropdownMenuItemType[];
 }
@@ -108,11 +117,11 @@ function PerfilDropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex items-center space-x-2 focus:outline-none cursor-pointer">
+        <button className="flex items-center space-x-2 focus:outline-none cursor-pointer text-zinc-100">
           <img
             src={avatarUrl || defaultAvatar}
             alt="Avatar do Usuário"
-            className="w-8 h-8 rounded-full border-2 border-zinc-400"
+            className="w-8 h-8 rounded-full border-2 border-zinc-400 "
           />
           <span className="hidden md:inline text-sm">{name || 'Usuário'}</span>
         </button>
@@ -174,32 +183,60 @@ function PerfilDropdown({
   );
 }
 
+
+
 export function Header({
   exibirNavbar = false,
   navItems = [],
+  menuItemClassName = '',
   exibirBarraPesquisa = false,
   exibirPerfil = false,
   perfilUsuario,
   profileMenuItems = [],
+  className,
+  extra,
 }: HeaderProps) {
   return (
-    <header className="bg-zinc-900 text-white w-full shadow-header">
-      <div className="w-full py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center space-x-2">
-          <Imagem
-            src="/imagens/rotafuturo.svg"
-            alt="rf logo"
-            width={200}
-            height={100}
-            className=" h-auto"
-          />
-        </Link>
+    <header className={`w-full shadow-sm font-light ${className ?? 'bg-zinc-900 text-white dark:bg-zinc-900/95'}`}>
+      <div className="w-full px-3 py-3 flex items-center justify-between">
+        <div className="flex items-center space-x-2 relative">
+          <Link href="/" className="flex items-center">
+            <Imagem
+              src="/imagens/rf.svg"
+              alt="rf logo"
+              width={48}
+              height={48}
+              className="h-10 w-auto"
+            />
+          </Link>
+          {extra && (
+            <div className="ml-4">{extra}</div>
+          )}
+        </div>
 
-        {exibirNavbar && <Navbar items={navItems} />}
+        {exibirNavbar && (
+          <nav className="hidden md:flex flex-grow justify-center">
+            <ul className="flex space-x-0">
+              {navItems?.map((item, idx) => (
+                <li key={item.href} className="flex items-center">
+                  <Link
+                    href={item.href}
+                    className={`px-4 py-1 transition-colors text-base font-semibold ${menuItemClassName}`}
+                  >
+                    {item.label}
+                  </Link>
+                  {idx < navItems.length - 1 && (
+                    <span className="h-6 w-px bg-zinc-700 mx-2 opacity-70" />
+                  )}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
 
         <div className="flex items-center space-x-4">
+          <ThemeSwitch />
           {exibirBarraPesquisa && <BarraPesquisa />}
-
           {exibirPerfil && perfilUsuario && (
             <PerfilDropdown
               name={perfilUsuario.name}

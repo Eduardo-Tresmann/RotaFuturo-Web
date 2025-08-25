@@ -31,6 +31,17 @@ export function LoginForm({ onBack }: LoginFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    
+    if (!formData.email || !formData.password) {
+      FormNotification.error({
+        message: 'Preencha todos os campos para continuar.',
+        icon: AlertCircle,
+        duration: 4000,
+        position: 'bottom-left',
+      });
+      return;
+    }
+
     try {
       await login({
         usuEmail: formData.email,
@@ -40,13 +51,22 @@ export function LoginForm({ onBack }: LoginFormProps) {
       FormNotification.success({
         message: 'Login realizado com sucesso! Bem-vindo de volta!',
         icon: CheckCircle,
-        duration: 1000,
+        duration: 2000,
         position: 'bottom-left',
       });
     } catch (error: any) {
+      let msg = 'Erro ao fazer login. Verifique suas credenciais.';
+      if (error?.message) {
+        if (error.message.includes('usuário não encontrado')) {
+          msg = 'Usuário não encontrado. Verifique o email.';
+        } else if (error.message.includes('senha incorreta')) {
+          msg = 'Senha incorreta. Tente novamente.';
+        } else {
+          msg = error.message;
+        }
+      }
       FormNotification.error({
-        message:
-          error.message || 'Erro ao fazer login. Verifique suas credenciais.',
+        message: msg,
         icon: AlertCircle,
         duration: 5000,
         position: 'bottom-left',
@@ -102,9 +122,7 @@ export function LoginForm({ onBack }: LoginFormProps) {
             disabled={loading}
             icon={Shield}
             iconColor="text-green-500"
-            className="bg-white/80 backdrop-blur-sm border-zinc-200
-              focus:border-zinc-400 focus:ring-2 focus:ring-zinc-100
-              placeholder:text-zinc-400 transition-all duration-200"
+            className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border-zinc-200 dark:border-zinc-700 focus:border-zinc-400 dark:focus:border-zinc-500 focus:ring-2 focus:ring-zinc-100 dark:focus:ring-zinc-800 placeholder:text-zinc-400 dark:placeholder:text-zinc-400 text-zinc-900 dark:text-zinc-100 transition-all duration-200"
           />
         </div>
 

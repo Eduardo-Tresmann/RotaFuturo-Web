@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
   ArrowLeft,
@@ -23,6 +24,7 @@ interface RegisterFormProps {
 
 export function RegisterForm({ onBack }: RegisterFormProps) {
   const { registrar, loading } = useAuth();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -35,43 +37,52 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
   });
   const [checkingEmail, setCheckingEmail] = useState(false);
 
-  const isValidEmail = (email: string) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   useEffect(() => {
     const validateEmail = async () => {
       const email = formData.email.trim();
       if (!email) {
-        setErrors(prev => ({ ...prev, email: '' }));
+        setErrors((prev) => ({ ...prev, email: '' }));
         return;
       }
 
       if (!isValidEmail(email)) {
-        setErrors(prev => ({ ...prev, email: 'Formato de email inválido' }));
+        setErrors((prev) => ({ ...prev, email: 'Formato de email inválido' }));
+        FormNotification.error({
+          message: 'Formato de email inválido.',
+          icon: AlertCircle,
+          duration: 4000,
+          position: 'bottom-left',
+        });
         return;
       }
 
       setCheckingEmail(true);
       try {
         const response = await baseApiService.request<{ exists: boolean }>(
-          `/usuario/exists?email=${encodeURIComponent(email)}`
+          `/usuario/exists?email=${encodeURIComponent(email)}`,
         );
         if (response.exists) {
-          setErrors(prev => ({ ...prev, email: 'Email já cadastrado' }));
+          setErrors((prev) => ({ ...prev, email: 'Email já cadastrado' }));
+          FormNotification.error({
+            message: 'Este email já está cadastrado.',
+            icon: AlertCircle,
+            duration: 4000,
+            position: 'bottom-left',
+          });
         } else {
-          setErrors(prev => ({ ...prev, email: '' }));
+          setErrors((prev) => ({ ...prev, email: '' }));
         }
       } catch (error: any) {
-        if (error.message.includes('E-mail já cadastrado')) {
-          setErrors(prev => ({ ...prev, email: 'Email já cadastrado' }));
-        } else {
-          FormNotification.error({
-            message: error.message || 'Erro ao criar conta. Tente novamente.',
-            icon: AlertCircle,
-            duration: 5000,
-          });
-        }
+        FormNotification.error({
+          message: error.message || 'Erro ao verificar email. Tente novamente.',
+          icon: AlertCircle,
+          duration: 5000,
+          position: 'bottom-left',
+        });
       }
+      setCheckingEmail(false);
     };
 
     const timeout = setTimeout(validateEmail, 500);
@@ -82,7 +93,7 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
     e.preventDefault();
 
     if (!formData.email) {
-      setErrors(prev => ({ ...prev, email: 'Email obrigatório' }));
+      setErrors((prev) => ({ ...prev, email: 'Email obrigatório' }));
       return;
     }
 
@@ -108,6 +119,7 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
         duration: 4000,
         position: 'bottom-left',
       });
+      router.push('/dashboard');
     } catch (error: any) {
       FormNotification.error({
         message: error.message || 'Erro ao criar conta. Tente novamente.',
@@ -143,7 +155,7 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
             id="email"
             placeholder="Digite seu email"
             value={formData.email}
-            onChange={e => setFormData({ ...formData, email: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
             disabled={loading}
             icon={AtSign}
@@ -160,16 +172,12 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
             label="Senha"
             placeholder="Digite sua senha"
             value={formData.password}
-            onChange={e =>
-              setFormData({ ...formData, password: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             required
             disabled={loading}
             icon={Shield}
             iconColor="text-teal-500"
-            className="bg-white/80 backdrop-blur-sm border-zinc-200 
-              focus:border-zinc-400 focus:ring-2 focus:ring-zinc-100 
-              placeholder:text-zinc-400 transition-all duration-200"
+            className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border-zinc-200 dark:border-zinc-700 focus:border-zinc-400 dark:focus:border-zinc-500 focus:ring-2 focus:ring-zinc-100 dark:focus:ring-zinc-800 placeholder:text-zinc-400 dark:placeholder:text-zinc-400 text-zinc-900 dark:text-zinc-100 transition-all duration-200"
           />
         </div>
 
@@ -179,9 +187,7 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
             label="Confirme a Senha"
             placeholder="Confirme sua senha"
             value={formData.confirmPassword}
-            onChange={e =>
-              setFormData({ ...formData, confirmPassword: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
             required
             disabled={loading}
             icon={ShieldCheck}

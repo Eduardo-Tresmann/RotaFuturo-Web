@@ -64,8 +64,9 @@ export default function PaginaDashboard() {
           exibirPerfil={true}
           perfilUsuario={usuarioProfileData}
           profileMenuItems={ProfileMenuItems}
+          menuItemClassName="text-zinc-200 hover:text-zinc-300"
+          className='bg-zinc-900/95 backdrop-blur shadow'
         />
-
         <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 p-8">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-2xl shadow-soft p-8">

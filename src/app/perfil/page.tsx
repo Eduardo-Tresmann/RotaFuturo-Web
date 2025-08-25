@@ -65,7 +65,6 @@ export default function PaginaPerfil() {
           perfilUsuario={usuarioProfileData}
           profileMenuItems={ProfileMenuItems}
         />
-
         <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 p-8">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-2xl shadow-soft p-8">
