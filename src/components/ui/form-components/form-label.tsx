@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 interface FormLabelProps {
   children: React.ReactNode;
@@ -12,9 +12,9 @@ export function FormLabel({ children, htmlFor, required, className }: FormLabelP
     <label
       htmlFor={htmlFor}
       className={cn(
-        "block text-sm font-semibold text-zinc-700 mb-2",
+        'block text-sm font-semibold text-zinc-700 dark:text-zinc-100 mb-2',
         required && "after:content-['*'] after:ml-0.5 after:text-red-500",
-        className
+        className,
       )}
     >
       {children}

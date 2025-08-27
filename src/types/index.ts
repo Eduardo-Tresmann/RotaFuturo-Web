@@ -52,3 +52,20 @@ export interface NavItem {
   icon?: React.ComponentType<{ className?: string }>;
   children?: NavItem[];
 }
+
+export interface Pessoa {
+  pesId: number;
+  pesNome: string;
+  pesApelido: string;
+  pesDatacadastro: string;
+  pesHoracadastro: string;
+  pesDatanascimento: string;
+  pesTelefone1: string;
+  pesTelefone2: string;
+  pesImagemperfil: string;
+  pesImagemcurriculo: string;
+  pesNivel: number;
+  pesXp: number;
+  usuId: number;
+}
+

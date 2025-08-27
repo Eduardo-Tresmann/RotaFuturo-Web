@@ -1,8 +1,11 @@
-// next.config.js
+
 import type { NextConfig } from 'next';
 import type { RuleSetRule } from 'webpack';
 
 const nextConfig: NextConfig = {
+  serverActions: {
+    bodySizeLimit: '50mb', 
+  },
   webpack(config, { isServer }) {
     const fileLoaderRule = config.module.rules.find((rule: RuleSetRule) => {
       return rule.test instanceof RegExp && rule.test.test('.svg');

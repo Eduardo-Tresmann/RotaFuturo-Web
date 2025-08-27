@@ -26,6 +26,7 @@ export const useAuth = (): AuthContextType => {
   const carregarUsuario = useCallback(async () => {
     setLoading(true);
     try {
+      
       const token = authService.getToken();
       if (token && authService.isAuthenticated()) {
         const currentUser = await usuarioService.getCurrentUser();
@@ -62,19 +63,15 @@ export const useAuth = (): AuthContextType => {
         setLoading(false);
       }
     },
-    [carregarUsuario]
+    [carregarUsuario],
   );
 
   const registrar = useCallback(
     async (dadosUsuario: UsuarioCriacaoDTO) => {
       setLoading(true);
       try {
-        await authService.registrar(
-          dadosUsuario.usuEmail,
-          dadosUsuario.usuSenha
-        );
+        await authService.registrar(dadosUsuario.usuEmail, dadosUsuario.usuSenha);
         await login(dadosUsuario);
-        router.push('/dashboard');
       } catch (error: any) {
         console.error('Erro no registro:', error.message);
         throw error;
@@ -82,7 +79,7 @@ export const useAuth = (): AuthContextType => {
         setLoading(false);
       }
     },
-    [login]
+    [login],
   );
 
   const logout = useCallback(() => {

@@ -121,9 +121,9 @@ function PerfilDropdown({
           <img
             src={avatarUrl || defaultAvatar}
             alt="Avatar do Usuário"
-            className="w-8 h-8 rounded-full border-2 border-zinc-400 "
+            className="w-12 h-12 rounded-full border-2 border-zinc-400 "
           />
-          <span className="hidden md:inline text-sm">{name || 'Usuário'}</span>
+          <span className="hidden md:inline text-base font-semibold">{name || email || 'Usuário'}</span>
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent

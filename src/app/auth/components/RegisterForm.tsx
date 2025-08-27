@@ -47,16 +47,7 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
         return;
       }
 
-      if (!isValidEmail(email)) {
-        setErrors((prev) => ({ ...prev, email: 'Formato de email inválido' }));
-        FormNotification.error({
-          message: 'Formato de email inválido.',
-          icon: AlertCircle,
-          duration: 4000,
-          position: 'bottom-left',
-        });
-        return;
-      }
+      // Removed email format validation
 
       setCheckingEmail(true);
       try {
@@ -69,7 +60,7 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
             message: 'Este email já está cadastrado.',
             icon: AlertCircle,
             duration: 4000,
-            position: 'bottom-left',
+            position: 'top-center',
           });
         } else {
           setErrors((prev) => ({ ...prev, email: '' }));
@@ -79,7 +70,7 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
           message: error.message || 'Erro ao verificar email. Tente novamente.',
           icon: AlertCircle,
           duration: 5000,
-          position: 'bottom-left',
+          position: 'top-center',
         });
       }
       setCheckingEmail(false);
@@ -92,22 +83,42 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.email) {
-      setErrors((prev) => ({ ...prev, email: 'Email obrigatório' }));
+    if (!formData.email || !formData.password || !formData.confirmPassword) {
+      FormNotification.error({
+        message: 'Preencha todos os campos para continuar.',
+        icon: AlertCircle,
+        duration: 4000,
+        position: 'top-center',
+      });
       return;
     }
-
-    if (errors.email) return;
+    if (formData.password.length < 6) {
+      FormNotification.error({
+        message: 'A senha deve ter pelo menos 6 caracteres.',
+        icon: AlertCircle,
+        duration: 4000,
+        position: 'top-center',
+      });
+      return;
+    }
     if (formData.password !== formData.confirmPassword) {
       FormNotification.error({
         message: 'As senhas não coincidem. Verifique e tente novamente.',
         icon: AlertCircle,
         duration: 5000,
-        position: 'bottom-left',
+        position: 'top-center',
       });
       return;
     }
-
+    if (errors.email) {
+      FormNotification.error({
+        message: errors.email,
+        icon: AlertCircle,
+        duration: 4000,
+        position: 'top-center',
+      });
+      return;
+    }
     try {
       await registrar({
         usuEmail: formData.email,
@@ -117,16 +128,27 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
         message: 'Conta criada com sucesso! Bem-vindo ao RotaFuturo!',
         icon: CheckCircle,
         duration: 4000,
-        position: 'bottom-left',
+        position: 'top-center',
       });
-      router.push('/dashboard');
+      setTimeout(() => {
+        router.push('/dashboard');
+      }, 500);
     } catch (error: any) {
-      FormNotification.error({
-        message: error.message || 'Erro ao criar conta. Tente novamente.',
-        icon: AlertCircle,
-        duration: 5000,
-        position: 'bottom-left',
-      });
+      if (error?.message?.includes('Email já cadastrado')) {
+        FormNotification.error({
+          message: 'Este email já está cadastrado.',
+          icon: AlertCircle,
+          duration: 5000,
+          position: 'top-center',
+        });
+      } else {
+        FormNotification.error({
+          message: error.message || 'Erro ao criar conta. Tente novamente.',
+          icon: AlertCircle,
+          duration: 5000,
+          position: 'top-center',
+        });
+      }
     }
   };
 
@@ -141,7 +163,7 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-zinc-900 to-zinc-600 bg-clip-text text-transparent">
+        <h2 className="text-3xl font-bold bg-zinc-900 dark:bg-zinc-300 to-zinc-600 bg-clip-text text-transparent">
           Criar conta
         </h2>
       </div>
@@ -161,8 +183,7 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
             icon={AtSign}
             iconColor="text-blue-400"
             error={errors.email}
-            className="bg-white/80 backdrop-blur-sm border-zinc-200 focus:border-zinc-400 
-      focus:ring-2 focus:ring-zinc-100 placeholder:text-zinc-400 transition-all duration-200"
+            className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border-zinc-200 dark:border-zinc-700 focus:border-zinc-400 dark:focus:border-zinc-500 focus:ring-2 focus:ring-zinc-100 dark:focus:ring-zinc-800 placeholder:text-zinc-400 dark:placeholder:text-zinc-400 text-zinc-900 dark:text-zinc-100 transition-all duration-200"
           />
         </div>
 
@@ -192,9 +213,7 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
             disabled={loading}
             icon={ShieldCheck}
             iconColor="text-teal-500"
-            className="bg-white/80 backdrop-blur-sm border-zinc-200 
-              focus:border-zinc-400 focus:ring-2 focus:ring-zinc-100 
-              placeholder:text-zinc-400 transition-all duration-200"
+            className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border-zinc-200 dark:border-zinc-700 focus:border-zinc-400 dark:focus:border-zinc-500 focus:ring-2 focus:ring-zinc-100 dark:focus:ring-zinc-800 placeholder:text-zinc-400 dark:placeholder:text-zinc-400 text-zinc-900 dark:text-zinc-100 transition-all duration-200"
           />
         </div>
 
@@ -203,8 +222,8 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
           size="lg"
           loading={loading}
           variant="outline"
-          className="bg-zinc-900 text-white border-transparent hover:bg-zinc-800 
-            shadow-soft hover:shadow-glow transition-all duration-300 font-semibold text-base py-3 
+          className="bg-zinc-900 dark:bg-zinc-700 text-white border-transparent hover:bg-zinc-800 dark:hover:bg-zinc-600
+            shadow-soft hover:shadow-glow transition-all duration-300 font-semibold text-base py-3
             disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <UserPlus className="h-4 w-4 mr-2" />

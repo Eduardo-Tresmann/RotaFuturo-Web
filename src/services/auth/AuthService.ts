@@ -36,8 +36,5 @@ class AuthService {
   }
 }
 
-// setToken(token: string) {
-//   baseApiService.setToken(token);
-// }
 
 export const authService = new AuthService();

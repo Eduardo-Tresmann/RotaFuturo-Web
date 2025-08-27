@@ -13,11 +13,7 @@ export default function PaginaDashboard() {
   const { usuario, logout, isAuthenticated } = useAuthContext();
   const router = useRouter();
 
-  const headerNavItems = [
-    { href: '/menu1', label: 'menu1' },
-    { href: '/menu2', label: 'menu2' },
-    { href: '/menu3', label: 'menu3' },
-  ];
+  
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -28,6 +24,12 @@ export default function PaginaDashboard() {
   if (!isAuthenticated) {
     return null;
   }
+  
+  const headerNavItems = [
+    { href: '/menu1', label: 'menu1' },
+    { href: '/menu2', label: 'menu2' },
+    { href: '/menu3', label: 'menu3' },
+  ];
 
   const usuarioProfileData = {
     name: usuario?.usuEmail?.split('@')[0] || 'Usuário',
