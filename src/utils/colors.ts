@@ -1,4 +1,4 @@
-// Paleta de cores centralizada para o Site
+
 export const colors = {
   white: "#FFFFFF",
   black: "#121212",

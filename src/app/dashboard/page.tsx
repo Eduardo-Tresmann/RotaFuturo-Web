@@ -13,11 +13,7 @@ export default function PaginaDashboard() {
   const { usuario, logout, isAuthenticated } = useAuthContext();
   const router = useRouter();
 
-  const headerNavItems = [
-    { href: '/menu1', label: 'menu1' },
-    { href: '/menu2', label: 'menu2' },
-    { href: '/menu3', label: 'menu3' },
-  ];
+  
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -28,6 +24,12 @@ export default function PaginaDashboard() {
   if (!isAuthenticated) {
     return null;
   }
+  
+  const headerNavItems = [
+    { href: '/menu1', label: 'menu1' },
+    { href: '/menu2', label: 'menu2' },
+    { href: '/menu3', label: 'menu3' },
+  ];
 
   const usuarioProfileData = {
     name: usuario?.usuEmail?.split('@')[0] || 'Usuário',
@@ -64,8 +66,9 @@ export default function PaginaDashboard() {
           exibirPerfil={true}
           perfilUsuario={usuarioProfileData}
           profileMenuItems={ProfileMenuItems}
+          menuItemClassName="text-zinc-200 hover:text-zinc-300"
+          className='bg-zinc-900/95 backdrop-blur shadow'
         />
-
         <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 p-8">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-2xl shadow-soft p-8">
