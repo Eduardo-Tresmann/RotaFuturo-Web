@@ -1,6 +1,12 @@
 'use client';
 
 import { Header } from '@/components/Header';
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbPage,
+} from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import { LogOut, Settings, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -8,12 +14,12 @@ import { useEffect } from 'react';
 
 import { useAuthContext } from '@/components/context/AuthContext';
 import ProtectedRoute from '@/components/context/ProtectedRoute';
+import { usePessoa } from '@/hooks/usePessoa';
 
 export default function PaginaDashboard() {
   const { usuario, logout, isAuthenticated } = useAuthContext();
+  const { pessoa } = usePessoa();
   const router = useRouter();
-
-  
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -24,7 +30,7 @@ export default function PaginaDashboard() {
   if (!isAuthenticated) {
     return null;
   }
-  
+
   const headerNavItems = [
     { href: '/menu1', label: 'menu1' },
     { href: '/menu2', label: 'menu2' },
@@ -32,8 +38,15 @@ export default function PaginaDashboard() {
   ];
 
   const usuarioProfileData = {
-    name: usuario?.usuEmail?.split('@')[0] || 'Usuário',
+    name:
+      pessoa?.pesNome && pessoa?.pesNome.trim() !== ''
+        ? pessoa.pesNome
+        : usuario?.usuEmail || 'Usuário',
     email: usuario?.usuEmail,
+    avatarUrl:
+      pessoa?.pesImagemperfil && pessoa?.pesImagemperfil.trim() !== ''
+        ? `${process.env.NEXT_PUBLIC_API_URL}${pessoa.pesImagemperfil}`
+        : 'https://via.placeholder.com/48',
   };
 
   const ProfileMenuItems = [
@@ -67,7 +80,16 @@ export default function PaginaDashboard() {
           perfilUsuario={usuarioProfileData}
           profileMenuItems={ProfileMenuItems}
           menuItemClassName="text-zinc-200 hover:text-zinc-300"
-          className='bg-zinc-900/95 backdrop-blur shadow'
+          className="bg-zinc-900/95 backdrop-blur shadow"
+          extra={
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          }
         />
         <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 p-8">
           <div className="max-w-4xl mx-auto">
@@ -78,12 +100,8 @@ export default function PaginaDashboard() {
                     <User className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h1 className="text-3xl font-bold text-zinc-900">
-                      Dashboard
-                    </h1>
-                    <p className="text-zinc-600">
-                      Bem-vindo de volta, {usuario?.usuEmail}!
-                    </p>
+                    <h1 className="text-3xl font-bold text-zinc-900">Dashboard</h1>
+                    <p className="text-zinc-600">Bem-vindo de volta, {usuario?.usuEmail}!</p>
                   </div>
                 </div>
                 <Button
@@ -111,20 +129,16 @@ export default function PaginaDashboard() {
                       <strong>Data de Cadastro:</strong> {usuario?.usuDataCadastro}
                     </p>
                     <p>
-                      <strong>Status:</strong>{' '}
-                      {usuario?.usuAtivo ? 'Ativo' : 'Inativo'}
+                      <strong>Status:</strong> {usuario?.usuAtivo ? 'Ativo' : 'Inativo'}
                     </p>
                   </div>
                 </div>
 
                 <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-100">
-                  <h3 className="text-lg font-semibold text-green-900 mb-2">
-                    Status da Conta
-                  </h3>
+                  <h3 className="text-lg font-semibold text-green-900 mb-2">Status da Conta</h3>
                   <div className="space-y-2 text-sm text-green-800">
                     <p>
-                      <strong>Email Validado:</strong>{' '}
-                      {usuario?.usuEmailValidado ? 'Sim' : 'Não'}
+                      <strong>Email Validado:</strong> {usuario?.usuEmailValidado ? 'Sim' : 'Não'}
                     </p>
                   </div>
                 </div>

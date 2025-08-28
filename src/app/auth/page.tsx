@@ -7,7 +7,14 @@ import { RegisterForm } from '@/app/auth/components/RegisterForm';
 import { useAuth } from '@/hooks/useAuth';
 import { ChevronLeft, ChevronRight, Award, BarChart2, Activity, Eye } from 'lucide-react';
 import { Header } from '@/components/Header';
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 
 type ViewType = 'home' | 'login' | 'register';
 
@@ -174,7 +181,7 @@ export default function Home() {
         }
       />
       <div className="container mx-auto px-2 py-6">
-        <div className="flex flex-col md:flex-row min-h-[600px] md:h-[500px] shadow-soft hover:shadow-glow bg-zinc-300 dark:bg-zinc-900 rounded-3xl border-2 border-zinc-400 dark:border-zinc-800 overflow-hidden">
+        <div className="flex flex-col md:flex-row min-h-[550px] md:h-[500px] shadow-soft hover:shadow-glow bg-zinc-300 dark:bg-zinc-900 rounded-3xl border-2 border-zinc-400 dark:border-zinc-800 overflow-hidden">
           <div
             ref={slideRef}
             className="w-full md:flex-1 bg-zinc-50 dark:bg-zinc-950 flex items-center justify-center rounded-2xl relative overflow-hidden min-h-[320px] md:min-h-[260px]"
