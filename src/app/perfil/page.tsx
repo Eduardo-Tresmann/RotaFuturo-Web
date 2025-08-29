@@ -1,7 +1,5 @@
 'use client';
 
-
-
 import { Header } from '@/components/Header';
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
@@ -17,7 +15,7 @@ import { TextField, EmailField, PhoneField, NumberField } from '@/components/ui/
 import { FileInput } from '@/components/ui/form-components/fileinput';
 import { arquivoService } from '@/services/arquivoService';
 import { FormNotification } from '@/components/ui/form-components/form-notification';
-
+import { getFileName } from '@/lib/utils';
 
 
 export default function PaginaPerfil() {
@@ -30,11 +28,6 @@ export default function PaginaPerfil() {
   const [uploading, setUploading] = useState(false);
    const [previewImagem, setPreviewImagem] = useState<string | null>(null);
 
-  function getFileName(path: string) {
-  if (!path) return '';
-  const parts = path.split(/[/\\]/);
-  return parts[parts.length - 1];
-}
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -283,8 +276,7 @@ export default function PaginaPerfil() {
               <p className="text-zinc-600 mb-4">{usuario?.usuEmail}</p>
               <p className="text-zinc-400 mb-4">{pessoa?.pesDatanascimento ? `Nascimento: ${pessoa.pesDatanascimento}` : ''}</p>
               <div className="flex gap-2 mt-2">
-                <Button size="sm" className="bg-blue-600 text-white px-6">Seguir</Button>
-                <Button size="sm" variant="outline" className="px-6">Mensagem</Button>
+                {/* Removidos botões "Seguir" e "Mensagem" pois não implementados */}
               </div>
             </div>
             <div className="bg-white rounded-2xl shadow-soft p-8 col-span-2 flex flex-col justify-center">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/context/ThemeContext";
+import ClientProviders from '@/components/context/ClientProviders';
 
 export const metadata: Metadata = {
   title: "RotaFuturo",
@@ -22,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className="antialiased bg-zinc-50 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-50">
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <ClientProviders>
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
+        </ClientProviders>
       </body>
     </html>
   );
