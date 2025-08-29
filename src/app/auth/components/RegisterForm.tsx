@@ -47,7 +47,10 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
         return;
       }
 
-      // Removed email format validation
+      if (!isValidEmail(email)) {
+        setErrors((prev) => ({ ...prev, email: 'Formato de email inválido' }));
+        return;
+      }
 
       setCheckingEmail(true);
       try {
