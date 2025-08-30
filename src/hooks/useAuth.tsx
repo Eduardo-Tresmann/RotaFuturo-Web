@@ -55,7 +55,7 @@ export const useAuth = (): AuthContextType => {
       try {
         await authService.login(credentials.usuEmail, credentials.usuSenha);
         await carregarUsuario();
-        router.push('/dashboard');
+        router.push('/home/dashboard');
       } catch (error: any) {
         console.error('Erro no login:', error.message);
         throw error;

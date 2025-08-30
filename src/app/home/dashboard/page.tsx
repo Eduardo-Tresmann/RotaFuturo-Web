@@ -53,7 +53,7 @@ export default function PaginaDashboard() {
     { label: 'Minha Conta', isLabel: true },
     {
       label: 'Perfil',
-      href: '/perfil',
+      href: '/home/perfil',
       icon: <User className="mr-2 h-4 w-4" />,
     },
     {

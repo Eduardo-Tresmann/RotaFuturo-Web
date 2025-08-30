@@ -134,7 +134,7 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
         position: 'top-center',
       });
       setTimeout(() => {
-        router.push('/dashboard');
+        router.push('/home/dashboard');
       }, 500);
     } catch (error: any) {
       if (error?.message?.includes('Email já cadastrado')) {
