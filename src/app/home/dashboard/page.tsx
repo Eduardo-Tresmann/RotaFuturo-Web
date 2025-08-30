@@ -1,6 +1,6 @@
 'use client';
 
-import { Header } from '@/components/Header';
+import { HeaderHome } from '@/components/HeaderHome';
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -32,7 +32,7 @@ export default function PaginaDashboard() {
   }
 
   const headerNavItems = [
-    { href: '/menu1', label: 'menu1' },
+    { href: '/home/desafios', label: 'Desafios' },
     { href: '/menu2', label: 'menu2' },
     { href: '/menu3', label: 'menu3' },
   ];
@@ -72,15 +72,7 @@ export default function PaginaDashboard() {
   return (
     <>
       <ProtectedRoute>
-        <Header
-          exibirBarraPesquisa={true}
-          navItems={headerNavItems}
-          exibirNavbar={true}
-          exibirPerfil={true}
-          perfilUsuario={usuarioProfileData}
-          profileMenuItems={ProfileMenuItems}
-          menuItemClassName="text-zinc-200 hover:text-zinc-300"
-          className="bg-zinc-900/95 backdrop-blur shadow"
+        <HeaderHome
           extra={
             <Breadcrumb>
               <BreadcrumbList>

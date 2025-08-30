@@ -1,6 +1,6 @@
 import { LoginResponse } from '@/types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8888/api';
 
 class BaseApiService {
   private token: string | null = null;
@@ -18,7 +18,6 @@ class BaseApiService {
 
   getToken(): string | null {
     if (typeof window !== 'undefined') {
-      
       this.token = localStorage.getItem('token');
     }
     return this.token;

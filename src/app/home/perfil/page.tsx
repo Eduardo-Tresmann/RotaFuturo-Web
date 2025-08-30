@@ -1,6 +1,6 @@
 'use client';
 
-import { Header } from '@/components/Header';
+import { HeaderHome } from '@/components/HeaderHome';
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import { LogOut, Settings, User } from 'lucide-react';
@@ -122,54 +122,15 @@ export default function PaginaPerfil() {
     }
   };
 
-  const headerNavItems = [
-    { href: '/menu1', label: 'menu1' },
-    { href: '/menu2', label: 'menu2' },
-    { href: '/menu3', label: 'menu3' },
-  ];
-
-  const usuarioProfileData = {
-  name: pessoa?.pesApelido || usuario?.usuEmail || 'Usuário',
-  email: usuario?.usuEmail,
-  avatarUrl: pessoa?.pesImagemperfil ? `${process.env.NEXT_PUBLIC_API_URL}${pessoa.pesImagemperfil}` : undefined,
-  };
-
-  const ProfileMenuItems = [
-    { label: 'Minha Conta', isLabel: true },
-    {
-      label: 'Perfil',
-      href: '/home/perfil',
-      icon: <User className="mr-2 h-4 w-4" />,
-    },
-    {
-      label: 'Configurações',
-      href: '/configuracoes',
-      icon: <Settings className="mr-2 h-4 w-4" />,
-    },
-    { isSeparator: true },
-    {
-      label: 'Sair',
-      onClick: logout,
-      icon: <LogOut className="mr-2 h-4 w-4" />,
-    },
-  ];
 
   return (
     <ProtectedRoute>
-      <Header
-        exibirBarraPesquisa={true}
-        navItems={headerNavItems}
-        exibirNavbar={true}
-        exibirPerfil={true}
-        perfilUsuario={usuarioProfileData}
-        profileMenuItems={ProfileMenuItems}
-        menuItemClassName="text-zinc-200 hover:text-zinc-300"
-        className='bg-zinc-900/95 backdrop-blur shadow'
+      <HeaderHome
         extra={
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
+                <BreadcrumbLink href="/home/dashboard">Dashboard</BreadcrumbLink>
                 <BreadcrumbSeparator />
               </BreadcrumbItem>
               <BreadcrumbItem>

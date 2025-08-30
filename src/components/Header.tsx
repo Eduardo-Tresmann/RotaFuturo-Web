@@ -1,4 +1,3 @@
-
 'use client';
 
 
@@ -41,7 +40,7 @@ interface DadosPerfilUsuario {
   email?: string;
 }
 
-interface HeaderProps {
+export interface HeaderProps {
   className?: string;
   exibirNavbar?: boolean;
   navItems?: NavItem[];
