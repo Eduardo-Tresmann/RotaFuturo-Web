@@ -6,6 +6,7 @@ import * as React from 'react';
 import '@/styles/globals.css';
 import Imagem from '@/components/Imagem';
 import ThemeSwitch from '@/components/ui/ThemeSwitch';
+import { useAuth } from '@/hooks/useAuth';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -199,7 +200,7 @@ export function Header({
     <header className={`w-full shadow-sm font-light ${className ?? 'bg-zinc-900 text-white dark:bg-zinc-900/95'}`}>
       <div className="w-full px-3 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-2 relative">
-          <Link href="/" className="flex items-center">
+          <Link href={perfilUsuario ? "/home" : "/"} className="flex items-center">
             <Imagem
               src="/imagens/rf.svg"
               alt="rf logo"

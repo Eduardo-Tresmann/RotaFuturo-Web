@@ -1,20 +1,13 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { LoginForm } from '@/app/auth/components/LoginForm';
 import { RegisterForm } from '@/app/auth/components/RegisterForm';
 import { useAuth } from '@/hooks/useAuth';
 import { ChevronLeft, ChevronRight, Award, BarChart2, Activity, Eye } from 'lucide-react';
 import { Header } from '@/components/Header';
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
 
 type ViewType = 'home' | 'login' | 'register';
 
@@ -58,6 +51,7 @@ const slides: Slide[] = [
 
 export default function Home() {
   const { logout } = useAuth();
+  const router = useRouter();
   const [currentView, setCurrentView] = useState<ViewType>('home');
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -109,7 +103,7 @@ export default function Home() {
 
   const handleLogout = () => {
     logout();
-    setCurrentView('home');
+    router.push('/');
   };
 
   const renderRightContent = () => {
@@ -165,21 +159,7 @@ export default function Home() {
         exibirNavbar={false}
         exibirBarraPesquisa={false}
         exibirPerfil={true}
-        className="bg-zinc-900/95 backdrop-blur shadow dark:bg-zinc-900/95"
-        extra={
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                <BreadcrumbSeparator />
-              </BreadcrumbItem>
-              <BreadcrumbItem>
-                <BreadcrumbPage>Autenticação</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        }
-      />
+        className="bg-zinc-900/95 backdrop-blur shadow dark:bg-zinc-900/95"/>
       <div className="container mx-auto px-2 py-6">
         <div className="flex flex-col md:flex-row min-h-[550px] md:h-[500px] shadow-soft hover:shadow-glow bg-zinc-300 dark:bg-zinc-900 rounded-3xl border-2 border-zinc-400 dark:border-zinc-800 overflow-hidden">
           <div

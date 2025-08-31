@@ -130,30 +130,26 @@ export default function PaginaPerfil() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/home/dashboard">Dashboard</BreadcrumbLink>
-                <BreadcrumbSeparator />
-              </BreadcrumbItem>
-              <BreadcrumbItem>
-                <BreadcrumbPage>Perfil</BreadcrumbPage>
+                <BreadcrumbPage>Home/Perfil</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         }
       />
       {editMode ? (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-zinc-100 flex items-center justify-center px-4 py-8">
-          <div className="max-w-xl w-full bg-white rounded-3xl shadow-2xl p-10 flex flex-col gap-10 border border-zinc-100">
-            <h2 className="text-3xl font-extrabold text-blue-700 mb-2 text-center">Editar Perfil</h2>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-              <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
-                <div className="flex flex-col items-center gap-3">
-                  <div className="w-28 h-28 rounded-full bg-gradient-to-br from-blue-100 to-zinc-200 flex items-center justify-center overflow-hidden shadow-lg border-4 border-blue-200">
+          <div className="min-h-screen bg-gradient-to-br from-blue-50 to-zinc-100 flex items-center justify-center px-6 py-10">
+          <div className="max-w-5xl w-full bg-white rounded-3xl shadow-2xl p-12 flex flex-col gap-12 border border-zinc-100">
+            <h2 className="text-4xl font-extrabold text-blue-700 mb-4 text-center">Editar Perfil</h2>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-10">
+              <div className="flex flex-col md:flex-row gap-12 items-start justify-center">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="w-36 h-36 rounded-full bg-gradient-to-br from-blue-100 to-zinc-200 flex items-center justify-center overflow-hidden shadow-lg border-4 border-blue-200">
                     {previewImagem ? (
-                      <img src={previewImagem} alt="Preview" className="w-28 h-28 object-cover" />
+                      <img src={previewImagem} alt="Preview" className="w-36 h-36 object-cover" />
                     ) : form.pesImagemperfil ? (
-                      <img src={`${process.env.NEXT_PUBLIC_API_URL}${form.pesImagemperfil}`} alt="Foto de perfil" className="w-28 h-28 object-cover" />
+                      <img src={`${process.env.NEXT_PUBLIC_API_URL}${form.pesImagemperfil}`} alt="Foto de perfil" className="w-36 h-36 object-cover" />
                     ) : (
-                      <User className="w-16 h-16 text-blue-300" />
+                      <User className="w-20 h-20 text-blue-300" />
                     )}
                   </div>
                   <FileInput
@@ -161,10 +157,10 @@ export default function PaginaPerfil() {
                     accept="image/*"
                     onChange={handleFileUpload}
                   />
-                  <Button type="button" variant="outline" size="sm" className="mt-1" onClick={() => setForm({ ...form, pesImagemperfil: '' })}>Remover foto</Button>
-                  {uploading && <span className="text-xs text-blue-600 mt-2">Enviando foto...</span>}
+                  <Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => setForm({ ...form, pesImagemperfil: '' })}>Remover foto</Button>
+                  {uploading && <span className="text-sm text-blue-600 mt-3">Enviando foto...</span>}
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
                   <TextField
                     name="pesNome"
                     id="pesNome"
@@ -173,22 +169,19 @@ export default function PaginaPerfil() {
                     value={form.pesNome ?? ''}
                     onChange={handleChange}
                     placeholder="Nome completo"
+                    className="md:col-span-1"
                   />
                   <TextField
                     name="pesApelido"
                     id="pesApelido"
                     label="Apelido"
+                    required
                     value={form.pesApelido ?? ''}
                     onChange={handleChange}
                     placeholder="Apelido"
+                    className="md:col-span-1"
                   />
-                  <EmailField
-                    name="email"
-                    id="email"
-                    label="E-mail"
-                    value={usuario?.usuEmail ?? ''}
-                    disabled
-                  />
+                  <div></div>
                   <PhoneField
                     name="pesTelefone1"
                     id="pesTelefone1"
@@ -196,19 +189,31 @@ export default function PaginaPerfil() {
                     value={form.pesTelefone1 ?? ''}
                     onChange={handleChange}
                     placeholder="(99) 99999-9999"
+                    className="md:col-span-1"
                   />
+                  <EmailField
+                    name="email"
+                    id="email"
+                    label="E-mail"
+                    value={usuario?.usuEmail ?? ''}
+                    disabled
+                    className="md:col-span-3"
+                  />
+                  <div></div>
                   <TextField
                     name="pesDatanascimento"
                     id="pesDatanascimento"
                     label="Data de Nascimento"
                     type="date"
+                    required
                     value={form.pesDatanascimento ?? ''}
                     onChange={handleChange}
+                    className="md:col-span-3"
                   />
                   
                 </div>
               </div>
-              <div className="flex justify-end gap-4 mt-2">
+              <div className="flex justify-end gap-6 mt-4">
                 <Button type="submit" size="lg" className="bg-blue-600 text-white rounded-xl shadow">Salvar alterações</Button>
                 <Button type="button" size="lg" variant="outline" className="rounded-xl" onClick={() => setEditMode(false)}>Cancelar</Button>
               </div>
