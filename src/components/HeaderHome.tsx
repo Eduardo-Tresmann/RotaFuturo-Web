@@ -30,8 +30,8 @@ export function HeaderHome({
   // Dados do perfil do usuário
   const usuarioProfileData = {
     name:
-      pessoa?.pesNome && pessoa?.pesNome.trim() !== ''
-        ? pessoa.pesNome
+      pessoa?.pesApelido && pessoa?.pesApelido.trim() !== ''
+        ? pessoa.pesApelido
         : usuario?.usuEmail || 'Usuário',
     email: usuario?.usuEmail,
     avatarUrl:
