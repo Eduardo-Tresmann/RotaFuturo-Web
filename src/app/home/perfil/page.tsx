@@ -160,7 +160,7 @@ export default function PaginaPerfil() {
                   <Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => setForm({ ...form, pesImagemperfil: '' })}>Remover foto</Button>
                   {uploading && <span className="text-sm text-blue-600 mt-3">Enviando foto...</span>}
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                   <TextField
                     name="pesNome"
                     id="pesNome"
@@ -169,7 +169,7 @@ export default function PaginaPerfil() {
                     value={form.pesNome ?? ''}
                     onChange={handleChange}
                     placeholder="Nome completo"
-                    className="md:col-span-1"
+                    className="w-full max-w-[300px]"
                   />
                   <TextField
                     name="pesApelido"
@@ -179,9 +179,8 @@ export default function PaginaPerfil() {
                     value={form.pesApelido ?? ''}
                     onChange={handleChange}
                     placeholder="Apelido"
-                    className="md:col-span-1"
+                    className="w-full max-w-[300px]"
                   />
-                  <div></div>
                   <PhoneField
                     name="pesTelefone1"
                     id="pesTelefone1"
@@ -189,17 +188,8 @@ export default function PaginaPerfil() {
                     value={form.pesTelefone1 ?? ''}
                     onChange={handleChange}
                     placeholder="(99) 99999-9999"
-                    className="md:col-span-1"
+                    className="w-full max-w-[300px]"
                   />
-                  <EmailField
-                    name="email"
-                    id="email"
-                    label="E-mail"
-                    value={usuario?.usuEmail ?? ''}
-                    disabled
-                    className="md:col-span-3"
-                  />
-                  <div></div>
                   <TextField
                     name="pesDatanascimento"
                     id="pesDatanascimento"
@@ -208,9 +198,8 @@ export default function PaginaPerfil() {
                     required
                     value={form.pesDatanascimento ?? ''}
                     onChange={handleChange}
-                    className="md:col-span-3"
+                    className="w-full max-w-[300px]"
                   />
-                  
                 </div>
               </div>
               <div className="flex justify-end gap-6 mt-4">
@@ -239,7 +228,7 @@ export default function PaginaPerfil() {
               </div>
               <h2 className="text-2xl font-bold text-zinc-900 mb-1">{pessoa?.pesNome || 'Nome do Usuário'}</h2>
               <p className="text-zinc-500 mb-2">{pessoa?.pesApelido || 'Apelido'}</p>
-              <p className="text-zinc-600 mb-4">{usuario?.usuEmail}</p>
+              <p className="text-zinc-600 mb-4"></p>
               <p className="text-zinc-400 mb-4">{pessoa?.pesDatanascimento ? `Nascimento: ${pessoa.pesDatanascimento}` : ''}</p>
               <div className="flex gap-2 mt-2">
                 {/* Removidos botões "Seguir" e "Mensagem" pois não implementados */}
@@ -250,7 +239,7 @@ export default function PaginaPerfil() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-zinc-700">
                 <div>
                   <div className="mb-2"><span className="font-semibold">Nome:</span> {pessoa?.pesNome}</div>
-                  <div className="mb-2"><span className="font-semibold">Email:</span> {usuario?.usuEmail}</div>
+                  {/* Email removido conforme solicitado */}
                   <div className="mb-2"><span className="font-semibold">Telefone 1:</span> {pessoa?.pesTelefone1}</div>
                   <div className="mb-2"><span className="font-semibold">Telefone 2:</span> {pessoa?.pesTelefone2}</div>
                 </div>
