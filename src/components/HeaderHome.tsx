@@ -3,7 +3,7 @@
 import { Header, HeaderProps } from '@/components/Header';
 import { useAuthContext } from '@/components/context/AuthContext';
 import { usePessoa } from '@/hooks/usePessoa';
-import { LogOut, Settings, User } from 'lucide-react';
+import { Building2, LogOut, Settings, User } from 'lucide-react';
 
 interface HeaderHomeProps extends Partial<HeaderProps> {
   // Props específicas que podem ser customizadas
@@ -30,8 +30,8 @@ export function HeaderHome({
   // Dados do perfil do usuário
   const usuarioProfileData = {
     name:
-      pessoa?.pesNome && pessoa?.pesNome.trim() !== ''
-        ? pessoa.pesNome
+      pessoa?.pesApelido && pessoa?.pesApelido.trim() !== ''
+        ? pessoa.pesApelido
         : usuario?.usuEmail || 'Usuário',
     email: usuario?.usuEmail,
     avatarUrl:
@@ -40,18 +40,22 @@ export function HeaderHome({
         : 'https://via.placeholder.com/48',
   };
 
-  // Itens do menu de perfil
   const profileMenuItems = [
-    { label: 'Minha Conta', isLabel: true },
     {
-      label: 'Perfil',
-      href: '/home/perfil',
-      icon: <User className="mr-2 h-4 w-4" />,
+      label: 'Administração',
+      href: '/home/admin',
+      icon: <Building2 className="mr-2 h-4 w-4 " />,
     },
+    { isSeparator: true },
     {
       label: 'Configurações',
-      href: '/configuracoes',
+      href: '/home/configuracoes',
       icon: <Settings className="mr-2 h-4 w-4" />,
+    },
+    {
+      label: 'Meu Perfil',
+      href: '/home/perfil',
+      icon: <User className="mr-2 h-4 w-4" />,
     },
     { isSeparator: true },
     {

@@ -1,14 +1,13 @@
-import { TextField } from './text-field'
-import { forwardRef } from 'react'
-import { LucideIcon } from 'lucide-react'
+import { TextField } from './text-field';
+import { forwardRef } from 'react';
+import { LucideIcon } from 'lucide-react';
 
-interface EmailFieldProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  error?: string
-  label?: string
-  required?: boolean
-  icon?: LucideIcon
-  iconColor?: string
+interface EmailFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  error?: string;
+  label?: React.ReactNode;
+  required?: boolean;
+  icon?: LucideIcon;
+  iconColor?: string;
 }
 
 export const EmailField = forwardRef<HTMLInputElement, EmailFieldProps>(
@@ -24,8 +23,8 @@ export const EmailField = forwardRef<HTMLInputElement, EmailFieldProps>(
         iconColor={iconColor}
         {...rest}
       />
-    )
-  }
-)
+    );
+  },
+);
 
-EmailField.displayName = 'EmailField'
+EmailField.displayName = 'EmailField';
