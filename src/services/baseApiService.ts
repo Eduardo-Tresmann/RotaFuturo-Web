@@ -1,6 +1,6 @@
-import { LoginResponse } from '@/types';
+import { LoginResponse } from '@/types/usuario';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8888/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 class BaseApiService {
   private token: string | null = null;
@@ -37,11 +37,9 @@ class BaseApiService {
     return null;
   }
 
-  public async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<T> {
-    const url = `${API_BASE_URL}${endpoint}`;
+  public async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+    // Garante que não haja barra duplicada
+    const url = `${API_BASE_URL}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
     const token = this.getToken();
 
     const config: RequestInit = {
@@ -56,9 +54,7 @@ class BaseApiService {
     const response = await fetch(url, config);
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(
-        errorData?.message || `HTTP error! status: ${response.status}`
-      );
+      throw new Error(errorData?.message || `HTTP error! status: ${response.status}`);
     }
 
     if (response.status === 204) {

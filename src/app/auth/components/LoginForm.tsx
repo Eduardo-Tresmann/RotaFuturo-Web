@@ -63,8 +63,13 @@ export function LoginForm({ onBack }: LoginFormProps) {
         position: 'top-center',
       });
     } catch (error: any) {
+      let errorMsg = error?.message || 'Email ou senha incorretos. Verifique suas credenciais.';
+      // Se vier erro HTTP, mostra status
+      if (errorMsg.includes('HTTP error!')) {
+        errorMsg = 'Erro de autenticação: usuário ou senha inválidos.';
+      }
       FormNotification.error({
-        message: 'Email ou senha incorretos. Verifique suas credenciais.',
+        message: errorMsg,
         icon: AlertCircle,
         duration: 5000,
         position: 'top-center',

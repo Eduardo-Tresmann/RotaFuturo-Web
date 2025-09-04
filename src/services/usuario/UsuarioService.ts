@@ -1,5 +1,5 @@
 import { baseApiService } from '@/services/baseApiService';
-import { Usuario } from '@/types';
+import { Usuario } from '@/types/usuario';
 
 class UsuarioService {
   async getCurrentUser(): Promise<Usuario> {
@@ -14,6 +14,22 @@ class UsuarioService {
     return baseApiService.request<Usuario>(`/usuario/${id}`, {
       method: 'PUT',
       body: JSON.stringify(userData),
+    });
+  }
+
+  async listAll(): Promise<Usuario[]> {
+    return baseApiService.request<Usuario[]>('/usuario');
+  }
+
+  async deleteUser(id: number): Promise<void> {
+    await baseApiService.request(`/usuario/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async inativarUser(id: number): Promise<Usuario> {
+    return baseApiService.request<Usuario>(`/usuario/${id}/inativar`, {
+      method: 'PATCH',
     });
   }
 }
