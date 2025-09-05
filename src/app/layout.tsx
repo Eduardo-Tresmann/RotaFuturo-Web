@@ -1,7 +1,6 @@
 import '@/styles/globals.css';
 import { ThemeProvider } from '@/components/context/ThemeContext';
-import type { Metadata } from "next";
-import { ThemeProvider } from "@/components/context/ThemeContext";
+import type { Metadata } from 'next';
 
 import ClientProviders from '@/components/context/ClientProviders';
 
