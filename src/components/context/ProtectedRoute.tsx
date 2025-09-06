@@ -18,9 +18,5 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     }
   }, [isAuthenticated, authResolved, router]);
 
-  if (loading || !authResolved) {
-    return <div className="p-4">Carregando...</div>;
-  }
-
   return <>{children}</>;
 }

@@ -15,13 +15,15 @@ export default function QuestoesAdminPage() {
       .catch(() => setQuestoes([]));
   }, []);
   return (
-    <div className="flex flex-row gap-8 w-full h-full min-h-[600px]">
-      <div className="w-full max-w-md flex-shrink-0">
-        <QuestaoForm />
+    <ProtectedRoute>
+      <div className="flex flex-row gap-8 w-full h-full min-h-[600px]">
+        <div className="w-full max-w-md flex-shrink-0">
+          <QuestaoForm />
+        </div>
+        <div className="flex-1">
+          <QuestaoTable questoes={questoes} onEdit={() => {}} onInativar={() => {}} />
+        </div>
       </div>
-      <div className="flex-1">
-        <QuestaoTable questoes={questoes} onEdit={() => {}} onInativar={() => {}} />
-      </div>
-    </div>
+    </ProtectedRoute>
   );
 }

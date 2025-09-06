@@ -44,10 +44,11 @@ import {
   BreadcrumbItem,
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb';
+import ProtectedRoute from '@/components/context/ProtectedRoute';
 
 export default function DesafiosPage() {
   return (
-    <>
+    <ProtectedRoute>
       <HeaderHome
         extra={
           <Breadcrumb>
@@ -73,7 +74,9 @@ export default function DesafiosPage() {
                     {desafio.label}
                   </div>
                   <CardHeader className="pt-10 pb-2">
-                    <CardTitle className="text-lg font-semibold text-gray-900">{desafio.titulo}</CardTitle>
+                    <CardTitle className="text-lg font-semibold text-gray-900">
+                      {desafio.titulo}
+                    </CardTitle>
                     <CardDescription className="text-gray-700">{desafio.descricao}</CardDescription>
                   </CardHeader>
                   <CardContent className="pt-0 pb-4 flex items-center justify-between">
@@ -90,6 +93,6 @@ export default function DesafiosPage() {
           </div>
         </div>
       </div>
-    </>
+    </ProtectedRoute>
   );
 }

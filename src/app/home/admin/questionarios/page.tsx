@@ -15,13 +15,19 @@ export default function QuestionariosAdminPage() {
       .catch(() => setQuestionarios([]));
   }, []);
   return (
-    <div className="flex flex-row gap-8 w-full h-full min-h-[600px]">
-      <div className="w-full max-w-md flex-shrink-0">
-        <QuestionarioForm />
+    <ProtectedRoute>
+      <div className="flex flex-row gap-8 w-full h-full min-h-[600px]">
+        <div className="w-full max-w-md flex-shrink-0">
+          <QuestionarioForm />
+        </div>
+        <div className="flex-1">
+          <QuestionarioTable
+            questionarios={questionarios}
+            onEdit={() => {}}
+            onInativar={() => {}}
+          />
+        </div>
       </div>
-      <div className="flex-1">
-        <QuestionarioTable questionarios={questionarios} onEdit={() => {}} onInativar={() => {}} />
-      </div>
-    </div>
+    </ProtectedRoute>
   );
 }

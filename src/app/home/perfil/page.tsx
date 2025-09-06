@@ -10,7 +10,7 @@ import { useAuthContext } from '@/components/context/AuthContext';
 import ProtectedRoute from '@/components/context/ProtectedRoute';
 import { usePessoa } from '@/hooks/usePessoa';
 import { pessoaService } from '@/services/pessoa/PessoaService';
-import { Pessoa } from '@/types/index';
+import { Pessoa } from '@/types/pessoa';
 import { TextField, EmailField, PhoneField, NumberField } from '@/components/ui/form-components/form-components';
 import { FileInput } from '@/components/ui/form-components/fileinput';
 import { arquivoService } from '@/services/arquivoService';
@@ -30,17 +30,11 @@ export default function PaginaPerfil() {
 
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/');
-    }
+  
     if (editMode && pessoa) {
       setForm(pessoa);
     }
-  }, [isAuthenticated, router, editMode, pessoa]);
-
-  if (!isAuthenticated) {
-    return null;
-  }
+  }, [editMode, pessoa]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -92,7 +86,6 @@ export default function PaginaPerfil() {
 
   const handleFileUpload = async (file: File | null) => {
     if (!file || !usuario?.usuId) return;
-    // Preview local imediato
     const reader = new FileReader();
     reader.onload = ev => {
       if (ev.target?.result) setPreviewImagem(ev.target.result as string);
@@ -130,7 +123,11 @@ export default function PaginaPerfil() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbPage>Home/Perfil</BreadcrumbPage>
+                <BreadcrumbLink href="/home">Home</BreadcrumbLink>
+              </BreadcrumbItem>
+                <BreadcrumbSeparator>|</BreadcrumbSeparator>
+              <BreadcrumbItem>
+                <BreadcrumbPage>Perfil</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

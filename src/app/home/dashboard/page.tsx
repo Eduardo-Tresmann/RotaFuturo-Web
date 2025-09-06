@@ -27,10 +27,6 @@ export default function PaginaDashboard() {
     }
   }, [isAuthenticated, router]);
 
-  if (!isAuthenticated) {
-    return null;
-  }
-
   const headerNavItems = [
     { href: '/home/desafios', label: 'Desafios' },
     { href: '/menu2', label: 'menu2' },
@@ -70,75 +66,71 @@ export default function PaginaDashboard() {
   ];
 
   return (
-    <>
-      <ProtectedRoute>
-        <HeaderHome
-          extra={
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Home/Dashboard</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          }
-        />
-        <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 p-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-2xl shadow-soft p-8">
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-zinc-900 to-zinc-700 rounded-full flex items-center justify-center">
-                    <User className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h1 className="text-3xl font-bold text-zinc-900">Dashboard</h1>
-                    <p className="text-zinc-600">Bem-vindo de volta, {usuario?.usuEmail}!</p>
-                  </div>
+    <ProtectedRoute>
+      <HeaderHome
+        extra={
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbPage>Home/Dashboard</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        }
+      />
+      <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 p-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-2xl shadow-soft p-8">
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-zinc-900 to-zinc-700 rounded-full flex items-center justify-center">
+                  <User className="w-6 h-6 text-white" />
                 </div>
-                <Button
-                  onClick={logout}
-                  variant="outline"
-                  className="flex items-center gap-2 hover:bg-red-50 hover:text-red-600 hover:border-red-200"
-                >
-                  <LogOut className="w-4 h-4" /> Sair
-                </Button>
+                <div>
+                  <h1 className="text-3xl font-bold text-zinc-900">Dashboard</h1>
+                  <p className="text-zinc-600">Bem-vindo de volta, {usuario?.usuEmail}!</p>
+                </div>
+              </div>
+              <Button
+                onClick={logout}
+                variant="outline"
+                className="flex items-center gap-2 hover:bg-red-50 hover:text-red-600 hover:border-red-200"
+              >
+                <LogOut className="w-4 h-4" /> Sair
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100">
+                <h3 className="text-lg font-semibold text-blue-900 mb-2">Informações do Usuário</h3>
+                <div className="space-y-2 text-sm text-blue-800">
+                  <p>
+                    <strong>Email:</strong> {usuario?.usuEmail}
+                  </p>
+                  <p>
+                    <strong>ID:</strong> {usuario?.usuId}
+                  </p>
+                  <p>
+                    <strong>Data de Cadastro:</strong> {usuario?.usuDataCadastro}
+                  </p>
+                  <p>
+                    <strong>Status:</strong> {usuario?.usuAtivo ? 'Ativo' : 'Inativo'}
+                  </p>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100">
-                  <h3 className="text-lg font-semibold text-blue-900 mb-2">
-                    Informações do Usuário
-                  </h3>
-                  <div className="space-y-2 text-sm text-blue-800">
-                    <p>
-                      <strong>Email:</strong> {usuario?.usuEmail}
-                    </p>
-                    <p>
-                      <strong>ID:</strong> {usuario?.usuId}
-                    </p>
-                    <p>
-                      <strong>Data de Cadastro:</strong> {usuario?.usuDataCadastro}
-                    </p>
-                    <p>
-                      <strong>Status:</strong> {usuario?.usuAtivo ? 'Ativo' : 'Inativo'}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-100">
-                  <h3 className="text-lg font-semibold text-green-900 mb-2">Status da Conta</h3>
-                  <div className="space-y-2 text-sm text-green-800">
-                    <p>
-                      <strong>Email Validado:</strong> {usuario?.usuEmailValidado ? 'Sim' : 'Não'}
-                    </p>
-                  </div>
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-100">
+                <h3 className="text-lg font-semibold text-green-900 mb-2">Status da Conta</h3>
+                <div className="space-y-2 text-sm text-green-800">
+                  <p>
+                    <strong>Email Validado:</strong> {usuario?.usuEmailValidado ? 'Sim' : 'Não'}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </ProtectedRoute>
-    </>
+      </div>
+    </ProtectedRoute>
   );
 }

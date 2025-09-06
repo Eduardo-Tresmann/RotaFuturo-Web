@@ -15,13 +15,15 @@ export default function CursosAdminPage() {
       .catch(() => setCursos([]));
   }, []);
   return (
-    <div className="flex flex-row gap-8 w-full h-full min-h-[600px]">
-      <div className="w-full max-w-md flex-shrink-0">
-        <CursoForm />
+    <ProtectedRoute>
+      <div className="flex flex-row gap-8 w-full h-full min-h-[600px]">
+        <div className="w-full max-w-md flex-shrink-0">
+          <CursoForm />
+        </div>
+        <div className="flex-1">
+          <CursoTable cursos={cursos} onEdit={() => {}} onInativar={() => {}} />
+        </div>
       </div>
-      <div className="flex-1">
-        <CursoTable cursos={cursos} onEdit={() => {}} onInativar={() => {}} />
-      </div>
-    </div>
+    </ProtectedRoute>
   );
 }
