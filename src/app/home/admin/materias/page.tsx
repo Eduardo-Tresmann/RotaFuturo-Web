@@ -15,13 +15,15 @@ export default function MateriasAdminPage() {
       .catch(() => setMaterias([]));
   }, []);
   return (
-    <div className="flex flex-row gap-8 w-full h-full min-h-[600px]">
-      <div className="w-full max-w-md flex-shrink-0">
-        <MateriaForm />
+    <ProtectedRoute>
+      <div className="flex flex-row gap-8 w-full h-full min-h-[600px]">
+        <div className="w-full max-w-md flex-shrink-0">
+          <MateriaForm />
+        </div>
+        <div className="flex-1">
+          <MateriaTable materias={materias} onEdit={() => {}} onInativar={() => {}} />
+        </div>
       </div>
-      <div className="flex-1">
-        <MateriaTable materias={materias} onEdit={() => {}} onInativar={() => {}} />
-      </div>
-    </div>
+    </ProtectedRoute>
   );
 }

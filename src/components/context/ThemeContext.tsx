@@ -25,7 +25,6 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(theme);
-    // Salvar tema no localStorage
     localStorage.setItem('theme', theme);
   }, [theme]);
 

@@ -76,7 +76,7 @@ export function CursoTable({ cursos, onEdit, onInativar }: CursoTableProps) {
     <div>
       <div className="flex items-center mb-4">
         <button
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
           onClick={() => setShowFilters((v) => !v)}
         >
           {showFilters ? 'Ocultar Filtros' : 'Filtro'}

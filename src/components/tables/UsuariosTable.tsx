@@ -90,7 +90,7 @@ export function UsuariosTable({ usuarios, onEdit, onInativar }: UsuariosTablePro
         </button>
       </div>
       {showFilters && (
-  <div className="mb-4 p-4 bg-gray-50 rounded-md shadow flex flex-wrap gap-4">
+        <div className="mb-4 p-4 bg-gray-50 rounded-md shadow flex flex-wrap gap-4">
           <div>
             <label className="block text-xs font-bold mb-1">ID</label>
             <input
@@ -149,7 +149,7 @@ export function UsuariosTable({ usuarios, onEdit, onInativar }: UsuariosTablePro
           </div>
         </div>
       )}
-  <div className="overflow-auto rounded-md border-2 border-zinc-300 bg-white shadow-lg">
+      <div className="overflow-auto rounded-md border-2 border-zinc-300 bg-white shadow-lg">
         <table className="min-w-full text-sm font-inter border-separate border-spacing-0">
           <caption className="text-zinc-500 text-xs py-2">Lista de usuários do sistema</caption>
           <thead className="sticky top-0 bg-zinc-800 z-10">

@@ -1,4 +1,4 @@
-'use client';
+// Backup do HeaderHome antes da inversão
 import { Header, HeaderProps } from '@/components/Header';
 import { useAuthContext } from '@/components/context/AuthContext';
 import { usePessoa } from '@/hooks/usePessoa';
