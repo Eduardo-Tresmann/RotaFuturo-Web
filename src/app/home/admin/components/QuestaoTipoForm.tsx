@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { TextField } from '../ui/form-components/text-field';
-import { FormNotification } from '../ui/form-components/form-notification';
+import { TextField } from '../../../../components/ui/form-components/text-field';
+import { FormNotification } from '../../../../components/ui/form-components/form-notification';
 // Adapte o tipo conforme seu backend
 export interface QuestaoTipo {
   quetId?: number;

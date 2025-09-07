@@ -1,9 +1,9 @@
 'use client';
 import React, { useState } from 'react';
-import { TextField } from '../ui/form-components/text-field';
-import { AutoCompleteField } from '../ui/form-components/autocomplete-field';
-import { Questionario } from '../../types/questionario';
-import { FormNotification } from '../ui/form-components/form-notification';
+import { TextField } from '../../../../components/ui/form-components/text-field';
+import { AutoCompleteField } from '../../../../components/ui/form-components/autocomplete-field';
+import { Questionario } from '../../../../types/questionario';
+import { FormNotification } from '../../../../components/ui/form-components/form-notification';
 import { questionarioService } from '@/services/questionario/QuestionarioService';
 import { areaService } from '@/services/area/AreaService';
 import { areaSubService } from '@/services/areasub/AreaSubService';

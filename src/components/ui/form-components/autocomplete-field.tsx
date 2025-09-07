@@ -27,6 +27,30 @@ export function AutoCompleteField({
   const [options, setOptions] = useState<Option[]>([]);
   const [showOptions, setShowOptions] = useState(false);
 
+  // Sempre que o value mudar, sincroniza o inputValue com o label correspondente,
+  // buscando a opção se necessário
+  useEffect(() => {
+    async function syncInputValue() {
+      if (value !== undefined && value !== null) {
+        let selected = options.find(opt => String(opt.value) === String(value));
+        if (!selected && typeof fetchOptions === 'function') {
+          const fetched = await fetchOptions('');
+          const found = fetched.find(opt => String(opt.value) === String(value));
+          if (found) {
+            const filtered = options.filter(opt => String(opt.value) !== String(found.value));
+            setOptions([found, ...filtered]);
+            selected = found;
+          }
+        }
+        if (selected && inputValue !== selected.label) {
+          setInputValue(selected.label);
+        }
+      }
+    }
+    syncInputValue();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
   useEffect(() => {
     const safeValue = typeof inputValue === 'string' ? inputValue : String(inputValue ?? '');
     if (safeValue.length > 0) {

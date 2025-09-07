@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { AdminModalView } from '../ui/AdminModalView';
+import { AdminModalView } from './AdminModalView';
 import { QuestaoTableContent } from './QuestaoTableContent';
 import { Questao } from '@/types/questao';
 
@@ -113,12 +113,11 @@ export function QuestaoTable({ questoes, onEdit, onInativar }: QuestaoTableProps
           <AdminModalView open={true} onClose={() => setShowForm('none')} title="Cadastrar Questão">
             <div className="w-[400px] mx-auto p-4">
               <React.Suspense fallback={<div>Carregando...</div>}>
-                {React.createElement(require('../forms/QuestaoForm').default)}
+                {React.createElement(require('./QuestaoForm').default)}
               </React.Suspense>
             </div>
           </AdminModalView>
         )}
-        {/* Modal para QuestaoTipoForm */}
         {showForm === 'tipo' && (
           <AdminModalView
             open={true}
@@ -127,7 +126,7 @@ export function QuestaoTable({ questoes, onEdit, onInativar }: QuestaoTableProps
           >
             <div className="w-[400px] mx-auto p-4">
               <React.Suspense fallback={<div>Carregando...</div>}>
-                {React.createElement(require('../forms/QuestaoTipoForm').default)}
+                {React.createElement(require('./QuestaoTipoForm').default)}
               </React.Suspense>
             </div>
           </AdminModalView>

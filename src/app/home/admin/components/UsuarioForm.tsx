@@ -1,8 +1,8 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { EmailField } from '../ui/form-components/email-field';
-import { PasswordField } from '../ui/form-components/password-field';
-import { Usuario } from '../../types/usuario';
+import { EmailField } from '../../../../components/ui/form-components/email-field';
+import { PasswordField } from '../../../../components/ui/form-components/password-field';
+import { Usuario } from '../../../../types/usuario';
 import { usuarioService } from '@/services/usuario/UsuarioService';
 import { FormNotification } from '@/components/ui/form-components/form-notification';
 
@@ -62,36 +62,32 @@ export default function UsuarioForm({ usuario, onClose }: UsuarioFormProps) {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-soft p-8 max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold text-blue-700 mb-8 text-center">Cadastro de Usuário</h2>
-      <form className="grid grid-cols-1 md:grid-cols-3 gap-8" onSubmit={handleSubmit}>
-        <div className="md:col-span-2">
-          <EmailField
-            name="usuEmail"
-            label={<span>Email</span>}
-            value={form.usuEmail || ''}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="md:col-span-1">
-          <PasswordField
-            name="usuSenha"
-            label={<span>Senha</span>}
-            value={form.usuSenha || ''}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="md:col-span-3 flex gap-6 mt-4">
+    <section className="w-full max-w-md mx-auto bg-white rounded-2xl p-6 flex flex-col gap-6">
+      <h2 className="text-lg font-semibold text-zinc-800 text-center">{form.usuId ? 'Editar Usuário' : 'Cadastro de Usuário'}</h2>
+      <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+        <EmailField
+          name="usuEmail"
+          label={<span className="font-medium text-zinc-700">E-mail</span>}
+          value={form.usuEmail || ''}
+          onChange={handleChange}
+          required
+        />
+        <PasswordField
+          name="usuSenha"
+          label={<span className="font-medium text-zinc-700">Senha</span>}
+          value={form.usuSenha || ''}
+          onChange={handleChange}
+          required
+        />
+        <div className="flex flex-col gap-2">
           <label className="flex items-center gap-2">
             <input
               name="usuEmailValidado"
               type="checkbox"
               checked={!!form.usuEmailValidado}
               onChange={handleChange}
-            />{' '}
-            Email Validado
+            />
+            <span className="text-sm text-zinc-700">Email Validado</span>
           </label>
           <label className="flex items-center gap-2">
             <input
@@ -99,8 +95,8 @@ export default function UsuarioForm({ usuario, onClose }: UsuarioFormProps) {
               type="checkbox"
               checked={!!form.usuAtivo}
               onChange={handleChange}
-            />{' '}
-            Ativo
+            />
+            <span className="text-sm text-zinc-700">Ativo</span>
           </label>
           <label className="flex items-center gap-2">
             <input
@@ -108,11 +104,11 @@ export default function UsuarioForm({ usuario, onClose }: UsuarioFormProps) {
               type="checkbox"
               checked={!!form.usuTrocaSenha}
               onChange={handleChange}
-            />{' '}
-            Troca Senha
+            />
+            <span className="text-sm text-zinc-700">Troca Senha</span>
           </label>
         </div>
-        <div className="md:col-span-3 flex justify-end mt-8 gap-4">
+        <div className="flex justify-end mt-2 gap-4">
           <button
             type="submit"
             className="bg-blue-600 text-white rounded-xl px-8 py-3 font-bold shadow hover:bg-blue-700 transition"
@@ -130,6 +126,6 @@ export default function UsuarioForm({ usuario, onClose }: UsuarioFormProps) {
           )}
         </div>
       </form>
-    </div>
+    </section>
   );
 }
