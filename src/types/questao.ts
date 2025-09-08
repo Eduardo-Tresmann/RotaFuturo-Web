@@ -7,7 +7,9 @@ export interface Questao {
   questaoExperiencia: number;
   questaoAtivo: boolean;
   questaoNivel?: any;
+  questaoNivelDescricao?: string;
   questaoTipo?: any;
+  questaoTipoDescricao?: string;
   area?: any;
   areaSub?: any;
 }

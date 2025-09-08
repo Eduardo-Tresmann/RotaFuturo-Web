@@ -2,6 +2,13 @@ import { baseApiService } from '@/services/baseApiService';
 import { Usuario } from '@/types/usuario';
 
 class UsuarioService {
+  async alterarSenha(id: number, novaSenha: string): Promise<void> {
+    await baseApiService.request(`/usuario/${id}/alterar-senha`, {
+      method: 'POST',
+      body: JSON.stringify({ novaSenha }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
   async getCurrentUser(): Promise<Usuario> {
     return baseApiService.request<Usuario>('/usuario/me');
   }

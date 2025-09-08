@@ -8,6 +8,7 @@ export interface Pessoa {
   pesTelefone1: string;
   pesTelefone2: string;
   pesImagemperfil: string;
+  pesImagemCapaPerfil: string;
   pesImagemcurriculo: string;
   pesNivel: number;
   pesXp: number;

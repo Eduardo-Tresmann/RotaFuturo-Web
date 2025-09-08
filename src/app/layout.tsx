@@ -2,6 +2,8 @@ import '@/styles/globals.css';
 import { ThemeProvider } from '@/components/context/ThemeContext';
 import type { Metadata } from 'next';
 
+
+import { Toaster } from 'sonner';
 import ClientProviders from '@/components/context/ClientProviders';
 
 export const metadata: Metadata = {
@@ -24,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ClientProviders>
           <ThemeProvider>{children}</ThemeProvider>
         </ClientProviders>
+        <Toaster richColors />
       </body>
     </html>
   );

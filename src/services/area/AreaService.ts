@@ -22,6 +22,11 @@ export const areaService = {
       method: 'PATCH',
     });
   },
+  async ativar(id: number): Promise<Area> {
+    return baseApiService.request<Area>(`/area/${id}/ativar`, {
+      method: 'PATCH',
+    });
+  },
   async search(query: string): Promise<Area[]> {
     return baseApiService.request<Area[]>(`/area?search=${encodeURIComponent(query)}`);
   },

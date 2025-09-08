@@ -1,7 +1,12 @@
 import { baseApiService } from '@/services/baseApiService';
-import { Pessoa } from '@/types';
+import { Pessoa } from '@/types/pessoa';
+
 
 class PessoaService {
+  async listAll(): Promise<Pessoa[]> {
+    return baseApiService.request<Pessoa[]>('/pessoa');
+  }
+
   async getMyPessoa(): Promise<Pessoa | null> {
     try {
       return await baseApiService.request<Pessoa>('/pessoa/me');
