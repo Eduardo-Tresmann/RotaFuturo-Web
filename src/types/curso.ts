@@ -4,6 +4,8 @@ export interface Curso {
   curHoracadastro: string;
   curDescricao: string;
   curAtivo: boolean;
-  area?: any;
-  areaSub?: any;
+  area?: number;
+  areaSub?: number;
+  areaDescricao?: string;
+  areaSubDescricao?: string;
 }

@@ -6,6 +6,8 @@ import { User, Tag, Phone } from 'lucide-react';
 import { Pessoa } from '@/types/pessoa';
 import { pessoaService } from '@/services/pessoa/PessoaService';
 import { FormNotification } from '@/components/ui/form-components/form-notification';
+import { AutoCompleteField } from '@/components/ui/form-components/autocomplete-field';
+import { usuarioService } from '@/services/usuario/UsuarioService';
 
 interface PessoaFormProps {
   pessoa?: Pessoa;
@@ -65,7 +67,7 @@ export default function PessoaForm({ pessoa, onClose, onSaved }: PessoaFormProps
   }
 
   return (
-  <section className="w-full max-w-4xl mx-auto bg-white rounded-2xl p-6 flex flex-col gap-6">
+    <section className="w-full max-w-4xl mx-auto bg-white rounded-2xl p-6 flex flex-col gap-6">
       <h2 className="text-lg font-semibold text-zinc-800 text-center">{form.pesId ? 'Editar Pessoa' : 'Cadastro de Pessoa'}</h2>
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -105,28 +107,21 @@ export default function PessoaForm({ pessoa, onClose, onSaved }: PessoaFormProps
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <TextField
-            label="Nível"
-            name="pesNivel"
-            type="number"
-            value={form.pesNivel?.toString() || '0'}
-            onChange={handleChange}
-          />
-          <TextField
-            label="XP"
-            name="pesXp"
-            type="number"
-            value={form.pesXp?.toString() || '0'}
-            onChange={handleChange}
+          <AutoCompleteField
+            name="usuId"
+            label="Vincular Usuário (e-mail)"
+            value={form.usuId}
+            onChange={usuId => setForm(f => ({ ...f, usuId: typeof usuId === 'string' ? Number(usuId) : usuId }))}
+            fetchOptions={async (query) => {
+              const usuarios = await usuarioService.listAll();
+              return usuarios
+                .filter(u => u.usuEmail.toLowerCase().includes(query.toLowerCase()))
+                .map(u => ({ value: u.usuId, label: u.usuEmail }));
+            }}
+            required
           />
         </div>
         <div className="flex justify-end mt-2 gap-4">
-          <button
-            type="submit"
-            className="bg-blue-600 text-white rounded-xl px-8 py-3 font-bold shadow hover:bg-blue-700 transition"
-          >
-            Salvar
-          </button>
           {onClose && (
             <button
               type="button"
@@ -136,6 +131,12 @@ export default function PessoaForm({ pessoa, onClose, onSaved }: PessoaFormProps
               Cancelar
             </button>
           )}
+          <button
+            type="submit"
+            className="bg-blue-600 text-white rounded-xl px-8 py-3 font-bold shadow hover:bg-blue-700 transition"
+          >
+            Salvar
+          </button>
         </div>
       </form>
     </section>

@@ -5,9 +5,7 @@ import { Sidebar, SidebarItem } from '@/components/ui/sidebar';
 export const adminLinks = [
   { key: 'areas', label: 'Áreas', icon: <UserCog className="w-5 h-5" /> },
   { key: 'cursos', label: 'Cursos', icon: <ListChecks className="w-5 h-5" /> },
-  { key: 'materias', label: 'Matérias', icon: <Layers className="w-5 h-5" /> },
   { key: 'questionarios', label: 'Questionários', icon: <BookOpen className="w-5 h-5" /> },
-  { key: 'questoes', label: 'Questões', icon: <FileText className="w-5 h-5" /> },
   { key: 'usuarios', label: 'Usuários', icon: <Users className="w-5 h-5" /> },
 ];
 

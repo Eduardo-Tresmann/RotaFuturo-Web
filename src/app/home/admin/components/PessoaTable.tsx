@@ -91,7 +91,7 @@ export function PessoaTable({ pessoas, usuarios = [], onEdit, onInativar }: Pess
               style={{ width: '20%', minWidth: '12rem', color: '#18181b' }}>
               E-mail do Usuário
             </TableHead>
-            <TableHead className="w-28 text-zinc-900 uppercase tracking-tight"
+            <TableHead className="w-28 text-zinc-900  tracking-tight"
               style={{ width: '9rem', minWidth: '7rem', color: '#18181b' }}>
               Ações
             </TableHead>
@@ -139,13 +139,7 @@ export function PessoaTable({ pessoas, usuarios = [], onEdit, onInativar }: Pess
                   >
                     <Pencil size={18} />
                   </button>
-                  <button
-                    className="text-red-700 hover:text-red-500 p-1"
-                    title="Inativar"
-                    onClick={() => onInativar(pessoa)}
-                  >
-                    <Trash2 size={18} />
-                  </button>
+                 
                 </TableCell>
               </TableRow>
             ))

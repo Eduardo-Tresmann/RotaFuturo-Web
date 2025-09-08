@@ -6,18 +6,23 @@ import { Materia } from '@/types/materia';
 
 export function MateriasAdminContent() {
   const [materias, setMaterias] = useState<Materia[]>([]);
+  async function refreshMaterias() {
+    const data = await materiaService.listAll();
+    setMaterias(data);
+  }
   useEffect(() => {
-    materiaService
-      .listAll()
-      .then(setMaterias)
-      .catch(() => setMaterias([]));
+    refreshMaterias();
   }, []);
   return (
     <div className="flex flex-col gap-10 w-full font-montserrat">
       <div className="w-full max-w-2xl mx-auto">
         <MateriaForm />
       </div>
-      <MateriaTable materias={materias} onEdit={() => {}} onInativar={() => {}} />
+      <MateriaTable
+        materias={materias}
+        onEdit={() => {}}
+        onRefresh={refreshMaterias}
+      />
     </div>
   );
 }

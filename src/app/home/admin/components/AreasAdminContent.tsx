@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Filter, BrushCleaning } from 'lucide-react';
+import { Filter } from 'lucide-react';
 import AreaForm from '@/app/home/admin/components/AreaForm';
 import AreaSubForm from '@/app/home/admin/components/AreaSubForm';
 import {
@@ -14,6 +14,7 @@ import { areaSubService } from '@/services/areasub/AreaSubService';
 import { AreaSub } from '@/types/areasub';
 import { areaService } from '@/services/area/AreaService';
 import { Area } from '@/types/area';
+import { AdminPageContent } from '@/components/admin/AdminPageContent';
 
 export function AreasAdminContent() {
   const [areas, setAreas] = useState<Area[]>([]);
@@ -64,23 +65,49 @@ export function AreasAdminContent() {
 
   useEffect(() => { refreshAreas(); refreshAreaSubs(); }, []);
   return (
-    <div className="flex flex-col gap-1 w-full ">
-      <div className="flex flex-wrap items-center gap-2 mb-4 justify-between ">
-        <div className="flex gap-2">
-          <button
-            className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 font-medium"
-            onClick={() => setModal('area')}
-          >
-            Criar Área
-          </button>
-          <button
-            className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 font-medium"
-            onClick={() => setModal('subarea')}
-          >
-            Criar SubÁrea
-          </button>
-        </div>
-      </div>
+    <AdminPageContent
+      actionButtons={[
+        <button
+          key="nova-area"
+          className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 font-medium"
+          onClick={() => setModal('area')}
+        >
+          Criar Área
+        </button>,
+        <button
+          key="nova-subarea"
+          className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 font-medium"
+          onClick={() => setModal('subarea')}
+        >
+          Criar SubÁrea
+        </button>
+      ]}
+      tabs={[
+        { label: 'Áreas', value: 'areas' },
+        { label: 'Subáreas', value: 'subareas' }
+      ]}
+      currentTab={tab}
+      onTabChange={tab => setTab(tab as 'areas' | 'subareas')}
+      filterButton={
+        <button
+          className={`px-4 py-2 rounded flex items-center gap-2 font-medium transition-colors bg-zinc-800 text-white hover:bg-zinc-700 ${
+            ((tab === 'areas' && (areaFilter.descricao || areaFilter.ativo)) ||
+              (tab === 'subareas' && (subFilter.descricao || subFilter.area || subFilter.ativo)))
+              ? 'ring-2 ring-blue-500 text-blue-500 bg-white hover:bg-zinc-100 border border-blue-500'
+              : ''
+          }`}
+          onClick={() => setShowFilters(true)}
+          style={{ minWidth: 160 }}
+        >
+          <Filter size={18} className={
+            ((tab === 'areas' && (areaFilter.descricao || areaFilter.ativo)) ||
+              (tab === 'subareas' && (subFilter.descricao || subFilter.area || subFilter.ativo)))
+              ? 'text-blue-500' : ''
+          } />
+          Filtro
+        </button>
+      }
+      filterModal={
         <Dialog open={showFilters} onOpenChange={setShowFilters}>
           <DialogContent>
             <DialogHeader>
@@ -116,6 +143,13 @@ export function AreasAdminContent() {
                   <span className="text-sm text-zinc-700">Somente áreas ativas</span>
                 </label>
                 <div className="flex justify-end gap-2 mt-2">
+                  <button
+                    type="button"
+                    className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 font-medium"
+                    onClick={() => setAreaFilter({ descricao: '', ativo: false })}
+                  >
+                    Limpar filtros
+                  </button>
                   <button type="button" className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300" onClick={() => setShowFilters(false)}>Cancelar</button>
                   <button type="submit" className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Filtrar</button>
                 </div>
@@ -158,6 +192,13 @@ export function AreasAdminContent() {
                   <span className="text-sm text-zinc-700">Somente subáreas ativas</span>
                 </label>
                 <div className="flex justify-end gap-2 mt-2">
+                  <button
+                    type="button"
+                    className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 font-medium"
+                    onClick={() => setSubFilter({ descricao: '', area: '', ativo: false })}
+                  >
+                    Limpar filtros
+                  </button>
                   <button type="button" className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300" onClick={() => setShowFilters(false)}>Cancelar</button>
                   <button type="submit" className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Filtrar</button>
                 </div>
@@ -165,6 +206,8 @@ export function AreasAdminContent() {
             )}
           </DialogContent>
         </Dialog>
+      }
+    >
       <Dialog open={modal === 'area'} onOpenChange={open => setModal(open ? 'area' : null)}>
         <DialogContent>
           <DialogHeader>
@@ -210,88 +253,35 @@ export function AreasAdminContent() {
           )}
         </DialogContent>
       </Dialog>
-      <div className="w-full">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex gap-2">
-            <button
-              className={`px-4 py-2 rounded-t-md font-semibold border-b-2 transition-colors ${tab === 'areas' ? 'border-blue-600 text-blue-700 bg-white' : 'border-transparent text-zinc-500 bg-zinc-100'}`}
-              onClick={() => setTab('areas')}
-            >
-              Áreas
-            </button>
-            <button
-              className={`px-4 py-2 rounded-t-md font-semibold border-b-2 transition-colors ${tab === 'subareas' ? 'border-blue-600 text-blue-700 bg-white' : 'border-transparent text-zinc-500 bg-zinc-100'}`}
-              onClick={() => setTab('subareas')}
-            >
-              Subáreas
-            </button>
-          </div>
-          <div className="relative flex items-center">
-            <div className="relative">
-              <button
-                className="px-4 pr-9 py-2 bg-zinc-800 text-white rounded hover:bg-zinc-700 flex items-center gap-2"
-                onClick={() => setShowFilters(true)}
-                style={{ minWidth: 160 }}
-              >
-                <Filter size={18} />
-                Filtro
-              </button>
-              {(
-                (tab === 'areas' && (areaFilter.descricao || areaFilter.ativo)) ||
-                (tab === 'subareas' && (subFilter.descricao || subFilter.area || subFilter.ativo))
-              ) && (
-                <button
-                  className="text-zinc-300 p-2 rounded bg-zinc-600 hover:bg-zinc-500 focus:outline-none absolute right-2 top-1/2 -translate-y-1/2 flex items-center"
-                  title="Limpar filtros"
-                  tabIndex={0}
-                  type="button"
-                  style={{ pointerEvents: 'auto' }}
-                  onClick={e => {
-                    e.stopPropagation();
-                    if (tab === 'areas') setAreaFilter({ descricao: '', ativo: false });
-                    else setSubFilter({ descricao: '', area: '', ativo: false });
-                  }}
-                >
-                  <BrushCleaning size={18} />
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="relative w-full overflow-auto shadow-lg rounded-xl bg-white">
-          <div className="min-w-full">
-            {tab === 'areas' ? (
-              <AreaTable
-                areas={areas.filter(a => {
-                  const descMatch = (a.areaDescricao || '').toLowerCase().includes((areaFilter.descricao || '').toLowerCase());
-                  const ativoMatch = !areaFilter.ativo || a.areaAtivo;
-                  return descMatch && ativoMatch;
-                })}
-                onEdit={handleEditArea}
-                onInativar={() => {}}
-                onAreaCreated={refreshAreas}
-                columnWidths={{ id: '2%', situacao: '5%', acoes: '10%' }}
-              />
-            ) : (
-              <AreaSubTable
-                areaSubs={areaSubs.filter(s => {
-                  const descMatch = (s.areasDescricao || '').toLowerCase().includes((subFilter.descricao || '').toLowerCase());
-                  const ativoMatch = !subFilter.ativo || s.areasAtivo;
-                  // Busca área vinculada pelo nome
-                  let areaMatch = true;
-                  if (subFilter.area) {
-                    const areaObj = areas.find(a => a.areaId === s.areaId);
-                    areaMatch = areaObj ? (areaObj.areaDescricao || '').toLowerCase().includes((subFilter.area || '').toLowerCase()) : false;
-                  }
-                  return descMatch && ativoMatch && areaMatch;
-                })}
-                onEdit={handleEditSubarea}
-                onInativar={handleInativarSubarea}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
+      {tab === 'areas' ? (
+        <AreaTable
+          areas={areas.filter(a => {
+            const descMatch = (a.areaDescricao || '').toLowerCase().includes((areaFilter.descricao || '').toLowerCase());
+            const ativoMatch = !areaFilter.ativo || a.areaAtivo;
+            return descMatch && ativoMatch;
+          })}
+          onEdit={handleEditArea}
+          onInativar={() => {}}
+          onAreaCreated={refreshAreas}
+          columnWidths={{ id: '2%', situacao: '5%', acoes: '10%' }}
+        />
+      ) : (
+        <AreaSubTable
+          areaSubs={areaSubs.filter(s => {
+            const descMatch = (s.areasDescricao || '').toLowerCase().includes((subFilter.descricao || '').toLowerCase());
+            const ativoMatch = !subFilter.ativo || s.areasAtivo;
+            // Busca área vinculada pelo nome
+            let areaMatch = true;
+            if (subFilter.area) {
+              const areaObj = areas.find(a => a.areaId === s.areaId);
+              areaMatch = areaObj ? (areaObj.areaDescricao || '').toLowerCase().includes((subFilter.area || '').toLowerCase()) : false;
+            }
+            return descMatch && ativoMatch && areaMatch;
+          })}
+          onEdit={handleEditSubarea}
+          onInativar={handleInativarSubarea}
+        />
+      )}
+    </AdminPageContent>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Pencil, Ban, CheckCircle } from 'lucide-react';
 import {
   Table,
   TableHeader,
@@ -14,34 +15,25 @@ import { Materia } from '@/types/materia';
 interface MateriaTableProps {
   materias: Materia[];
   onEdit: (materia: Materia) => void;
-  onInativar: (materia: Materia) => void;
+  onRefresh?: () => void;
 }
 
-export function MateriaTable({ materias, onEdit, onInativar }: MateriaTableProps) {
-  const [search, setSearch] = useState<string>('');
-  const [showFilters, setShowFilters] = useState(false);
-  const [filterId, setFilterId] = useState('');
-  const [filterDescricao, setFilterDescricao] = useState('');
-  const [filterAtivo, setFilterAtivo] = useState('');
+import { Badge } from '@/components/ui/Badge';
+import { Pagination } from '@/components/ui/pagination';
+import { materiaService } from '@/services/materia/MateriaService';
+import { FormNotification } from '@/components/ui/form-components/form-notification';
+
+export function MateriaTable({ materias, onEdit, onRefresh }: MateriaTableProps) {
+  // Ordenação
   type SortKey = 'matId' | 'matDescricao' | 'matAtivo';
   const [sortKey, setSortKey] = useState<SortKey>('matId');
   const [sortAsc, setSortAsc] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const pageSize = 10;
 
-  const filtered = useMemo(() => {
-    let data = materias.filter((m: Materia) => {
-      const matchSearch =
-        m.matDescricao.toLowerCase().includes(search.toLowerCase()) ||
-        String(m.matId).includes(search);
-      const matchId = filterId ? String(m.matId) === filterId : true;
-      const matchDescricao = filterDescricao
-        ? m.matDescricao.toLowerCase().includes(filterDescricao.toLowerCase())
-        : true;
-      const matchAtivo = filterAtivo ? String(m.matAtivo) === filterAtivo : true;
-      return matchSearch && matchId && matchDescricao && matchAtivo;
-    });
-    data = [...data].sort((a, b) => {
+  const sorted = useMemo(() => {
+    let data = [...materias];
+    data = data.sort((a, b) => {
       let valA: string | number | boolean = a[sortKey];
       let valB: string | number | boolean = b[sortKey];
       if (typeof valA === 'string' && typeof valB === 'string') {
@@ -53,14 +45,14 @@ export function MateriaTable({ materias, onEdit, onInativar }: MateriaTableProps
       return 0;
     });
     return data;
-  }, [materias, search, sortKey, sortAsc, filterId, filterDescricao, filterAtivo]);
+  }, [materias, sortKey, sortAsc]);
 
   const paginated = useMemo(() => {
     const start = (page - 1) * pageSize;
-    return filtered.slice(start, start + pageSize);
-  }, [filtered, page]);
+    return sorted.slice(start, start + pageSize);
+  }, [sorted, page]);
 
-  const totalPages = Math.ceil(filtered.length / pageSize);
+  const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize));
 
   function handleSort(key: SortKey) {
     if (sortKey === key) setSortAsc((asc) => !asc);
@@ -71,139 +63,141 @@ export function MateriaTable({ materias, onEdit, onInativar }: MateriaTableProps
   }
 
   return (
-    <div>
-      <div className="flex items-center mb-4">
-        <button
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          onClick={() => setShowFilters((v) => !v)}
-        >
-          {showFilters ? 'Ocultar Filtros' : 'Filtro'}
-        </button>
-      </div>
-      {showFilters && (
-        <div className="mb-4 p-4 bg-gray-50 rounded shadow flex flex-wrap gap-4">
-          <div>
-            <label className="block text-xs font-bold mb-1">ID</label>
-            <input
-              type="number"
-              value={filterId}
-              onChange={(e) => {
-                setFilterId(e.target.value);
-                setPage(1);
-              }}
-              className="border rounded px-2 py-1 w-24"
-              placeholder="ID"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-bold mb-1">Descrição</label>
-            <input
-              type="text"
-              value={filterDescricao}
-              onChange={(e) => {
-                setFilterDescricao(e.target.value);
-                setPage(1);
-              }}
-              className="border rounded px-2 py-1 w-40"
-              placeholder="Descrição"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-bold mb-1">Ativo</label>
-            <select
-              value={filterAtivo}
-              onChange={(e) => {
-                setFilterAtivo(e.target.value);
-                setPage(1);
-              }}
-              className="border rounded px-2 py-1 w-24"
-            >
-              <option value="">Todos</option>
-              <option value="true">Ativo</option>
-              <option value="false">Inativo</option>
-            </select>
-          </div>
-        </div>
-      )}
-      <Table>
-        <TableCaption>Lista de matérias do sistema</TableCaption>
+    <div className="w-full max-w-screen-2xl mx-auto ">
+      <Table className="text-base min-w-full max-w-6xl mx-auto align-middle rounded overflow-hidden [&_th]:py-4 [&_td]:py-3 [&_th]:text-base [&_td]:text-base">
         <TableHeader>
-          <TableRow>
-            <TableHead className="cursor-pointer" onClick={() => handleSort('matId')}>
-              ID {sortKey === 'matId' && (sortAsc ? '▲' : '▼')}
+          <TableRow className="bg-zinc-300/70">
+            <TableHead className="w-16 text-zinc-900 font-bold uppercase tracking-tight"
+              style={{ width: '6rem', minWidth: '6rem', maxWidth: '6rem', color: '#18181b' }}
+              onClick={() => handleSort('matId')}
+            >
+              # {sortKey === 'matId' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="cursor-pointer" onClick={() => handleSort('matDescricao')}>
+            <TableHead className="w-2/5 text-zinc-900 tracking-tight"
+              style={{ width: '50%', minWidth: '18rem', color: '#18181b' }}
+              onClick={() => handleSort('matDescricao')}
+            >
               Descrição {sortKey === 'matDescricao' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="cursor-pointer" onClick={() => handleSort('matAtivo')}>
-              Ativo {sortKey === 'matAtivo' && (sortAsc ? '▲' : '▼')}
+            <TableHead className="text-zinc-900 tracking-tight"
+              style={{ width: '12rem', minWidth: '10rem', color: '#18181b' }}
+            >
+              Área
             </TableHead>
-            <TableHead>Ações</TableHead>
+            <TableHead className="text-zinc-900 tracking-tight"
+              style={{ width: '12rem', minWidth: '10rem', color: '#18181b' }}
+            >
+              Área Sub
+            </TableHead>
+            <TableHead className="text-zinc-900 tracking-tight"
+              style={{ width: '10rem', minWidth: '8rem', color: '#18181b' }}
+              onClick={() => handleSort('matAtivo')}
+            >
+              Situação {sortKey === 'matAtivo' && (sortAsc ? '▲' : '▼')}
+            </TableHead>
+            <TableHead className="w-28 text-zinc-900 uppercase tracking-tight"
+              style={{ width: '9rem', minWidth: '7rem', color: '#18181b' }}>
+              Ações
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {paginated.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={4} className="text-center text-gray-400">
+              <TableCell colSpan={4} className="text-center text-zinc-400">
                 Nenhuma matéria encontrada
               </TableCell>
             </TableRow>
           ) : (
             paginated.map((materia) => (
-              <TableRow key={materia.matId}>
-                <TableCell>{materia.matId}</TableCell>
-                <TableCell>{materia.matDescricao}</TableCell>
-                <TableCell>
-                  <span
-                    className={
-                      materia.matAtivo ? 'text-green-600 font-bold' : 'text-red-600 font-bold'
-                    }
-                  >
-                    {materia.matAtivo ? 'Ativo' : 'Inativo'}
-                  </span>
+              <TableRow key={materia.matId} className={'hover:bg-zinc-50'}>
+                <TableCell className="w-16 border-r border-zinc-300/20"
+                  style={{ width: '6rem', minWidth: '6rem', maxWidth: '6rem' }}>
+                  {materia.matId}
                 </TableCell>
-                <TableCell>
+                <TableCell className="w-2/5 border-r border-zinc-300/20"
+                  style={{ width: '50%', minWidth: '18rem' }}>
+                  {materia.matDescricao}
+                </TableCell>
+                <TableCell className="border-r border-zinc-300/20"
+                  style={{ width: '12rem', minWidth: '10rem' }}>
+                  {materia.areaDescricao || '-'}
+                </TableCell>
+                <TableCell className="border-r border-zinc-300/20"
+                  style={{ width: '12rem', minWidth: '10rem' }}>
+                  {materia.areaSubDescricao || '-'}
+                </TableCell>
+                <TableCell className="border-r border-zinc-300/20"
+                  style={{ width: '10rem', minWidth: '8rem' }}>
+                  {materia.matAtivo ? (
+                    <Badge color="green" variant="solid" className="shadow-md border border-green-700/30">Ativo</Badge>
+                  ) : (
+                    <Badge color="red" variant="solid" className="shadow-md border border-red-700/30">Inativo</Badge>
+                  )}
+                </TableCell>
+                <TableCell className="w-28 flex gap-2"
+                  style={{ width: '9rem', minWidth: '7rem' }}>
                   <button
-                    className="text-blue-600 hover:bg-blue-100 rounded p-1 mr-2"
+                    className="text-zinc-600 hover:text-blue-500 p-1"
                     title="Editar"
                     onClick={() => onEdit(materia)}
                   >
-                    ✏️
+                    <Pencil size={18} strokeWidth={2.2} />
                   </button>
-                  <button
-                    className="text-red-600 hover:bg-red-100 rounded p-1"
-                    title="Inativar"
-                    onClick={() => onInativar(materia)}
-                  >
-                    🗑️
-                  </button>
+                  {materia.matAtivo ? (
+                    <button
+                      className="text-red-700 hover:text-red-500 p-1"
+                      title="Inativar"
+                      onClick={async () => {
+                        await materiaService.inativar(materia.matId);
+                        FormNotification.success({ message: 'Matéria inativada com sucesso!' });
+                        if (onRefresh) await onRefresh();
+                      }}
+                    >
+                      <Ban size={18} />
+                    </button>
+                  ) : (
+                    <button
+                      className="text-green-600 hover:text-green-800 p-1"
+                      title="Ativar"
+                      onClick={async () => {
+                        await materiaService.update(materia.matId, { ...materia, matAtivo: true });
+                        FormNotification.success({ message: 'Matéria ativada com sucesso!' });
+                        if (onRefresh) await onRefresh();
+                      }}
+                    >
+                      <CheckCircle size={18} />
+                    </button>
+                  )}
                 </TableCell>
               </TableRow>
             ))
           )}
         </TableBody>
-        <TableFooter>
+        <TableFooter className='bg-transparent'>
           <TableRow>
-            <TableCell colSpan={4} className="text-center">
-              <div className="flex items-center justify-center gap-2">
-                <button
-                  disabled={page === 1}
-                  onClick={() => setPage(page - 1)}
-                  className="px-2 py-1 rounded bg-gray-200 disabled:opacity-50"
-                >
-                  Anterior
-                </button>
-                <span>
-                  Página {page} de {totalPages}
-                </span>
-                <button
-                  disabled={page === totalPages || totalPages === 0}
-                  onClick={() => setPage(page + 1)}
-                  className="px-2 py-1 rounded bg-gray-200 disabled:opacity-50"
-                >
-                  Próxima
-                </button>
-              </div>
+            <TableCell colSpan={6} className="text-center">
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2">
+                  <button
+                    disabled={page === 1}
+                    onClick={() => setPage(page - 1)}
+                    className="px-2 py-1 rounded bg-gray-200 disabled:opacity-50"
+                  >
+                    Anterior
+                  </button>
+                  <span>
+                    Página {page} de {totalPages}
+                  </span>
+                  <button
+                    disabled={page === totalPages}
+                    onClick={() => setPage(page + 1)}
+                    className="px-2 py-1 rounded bg-gray-200 disabled:opacity-50"
+                  >
+                    Próxima
+                  </button>
+                </div>
+              )}
             </TableCell>
           </TableRow>
         </TableFooter>

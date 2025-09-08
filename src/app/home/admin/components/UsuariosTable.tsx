@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Badge } from '@/components/ui/Badge';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Ban, CheckCircle } from 'lucide-react';
 import {
   Table,
   TableHeader,
@@ -20,7 +20,9 @@ interface UsuariosTableProps {
   onInativar: (usuario: Usuario) => void;
 }
 
-export function UsuariosTable({ usuarios, onEdit, onInativar }: UsuariosTableProps) {
+import { usuarioService } from '@/services/usuario/UsuarioService';
+import { FormNotification } from '@/components/ui/form-components/form-notification';
+export function UsuariosTable({ usuarios, onEdit, onInativar, onRefresh }: UsuariosTableProps & { onRefresh?: () => void }) {
   const [search, setSearch] = useState<string>('');
   const [showFilters, setShowFilters] = useState(false);
   const [filterId, setFilterId] = useState('');
@@ -83,7 +85,7 @@ export function UsuariosTable({ usuarios, onEdit, onInativar }: UsuariosTablePro
 
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
-      <Table className="text-base min-w-full max-w-6xl mx-auto align-middle rounded-sm overflow-hidden [&_th]:py-4 [&_td]:py-3 [&_th]:text-base [&_td]:text-base">
+      <Table className="text-base min-w-full max-w-6xl mx-auto align-middle rounded overflow-hidden [&_th]:py-4 [&_td]:py-3 [&_th]:text-base [&_td]:text-base">
         <TableHeader>
           <TableRow className="bg-zinc-300/70">
             <TableHead className="w-16 text-zinc-900 font-bold uppercase tracking-tight"
@@ -108,9 +110,9 @@ export function UsuariosTable({ usuarios, onEdit, onInativar }: UsuariosTablePro
               style={{ width: '10rem', minWidth: '8rem', color: '#18181b' }}
               onClick={() => handleSort('usuEmailValidado')}
             >
-              Email Validado {sortKey === 'usuEmailValidado' && (sortAsc ? '▲' : '▼')}
+              E-mail Validado {sortKey === 'usuEmailValidado' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="w-28 text-zinc-900 uppercase tracking-tight"
+            <TableHead className="w-28 text-zinc-900  tracking-tight"
               style={{ width: '9rem', minWidth: '7rem', color: '#18181b' }}>
               Ações
             </TableHead>
@@ -162,13 +164,31 @@ export function UsuariosTable({ usuarios, onEdit, onInativar }: UsuariosTablePro
                   >
                     <Pencil size={18} />
                   </button>
-                  <button
-                    className="text-red-700 hover:text-red-500 p-1"
-                    title="Inativar"
-                    onClick={() => onInativar(usuario)}
-                  >
-                    <Trash2 size={18} />
-                  </button>
+                  {usuario.usuAtivo ? (
+                    <button
+                      className="text-red-700 hover:text-red-500 p-1"
+                      title="Inativar"
+                      onClick={async () => {
+                        await usuarioService.inativarUser(usuario.usuId);
+                        FormNotification.success({ message: 'Usuário inativado com sucesso!' });
+                        if (onRefresh) onRefresh();
+                      }}
+                    >
+                      <Ban size={18} />
+                    </button>
+                  ) : (
+                    <button
+                      className="text-green-600 hover:text-green-800 p-1"
+                      title="Ativar"
+                      onClick={async () => {
+                        await usuarioService.updateUser(usuario.usuId, { ...usuario, usuAtivo: true });
+                        FormNotification.success({ message: 'Usuário ativado com sucesso!' });
+                        if (onRefresh) onRefresh();
+                      }}
+                    >
+                      <CheckCircle size={18} />
+                    </button>
+                  )}
                 </TableCell>
               </TableRow>
             ))

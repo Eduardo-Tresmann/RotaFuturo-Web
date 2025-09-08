@@ -4,6 +4,7 @@ import { EmailField } from '../../../../components/ui/form-components/email-fiel
 import { PasswordField } from '../../../../components/ui/form-components/password-field';
 import { Usuario } from '../../../../types/usuario';
 import { usuarioService } from '@/services/usuario/UsuarioService';
+import { authService } from '@/services/auth/AuthService';
 import { FormNotification } from '@/components/ui/form-components/form-notification';
 
 interface UsuarioFormProps {
@@ -52,8 +53,13 @@ export default function UsuarioForm({ usuario, onClose }: UsuarioFormProps) {
         await usuarioService.updateUser(form.usuId, payload);
         success({ message: 'Usuário atualizado com sucesso!' });
       } else {
-        // TODO: Implementar criação de usuário se necessário
-        error({ message: 'Criação de usuário não implementada.' });
+        // Usar o mesmo fluxo de registro do authService (usado em /auth)
+        if (!form.usuEmail || !form.usuSenha) {
+          error({ message: 'Preencha email e senha.' });
+          return;
+        }
+        await authService.registrar(form.usuEmail, form.usuSenha);
+        success({ message: 'Usuário criado com sucesso!' });
       }
       if (onClose) onClose();
     } catch (err: any) {

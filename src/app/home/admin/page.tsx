@@ -5,10 +5,9 @@ import { Users, Layers, Grid, BookOpen, GraduationCap, ListChecks, HelpCircle, B
 import { AdminModalView } from '@/app/home/admin/components/AdminModalView';
 import ProtectedRoute from '@/components/context/ProtectedRoute';
 import { UsuariosAdminContent } from './components/UsuariosAdminContent';
-import { QuestoesAdminContent } from './components/QuestoesAdminContent';
+// import { QuestoesAdminContent } from './components/QuestoesAdminContent';
 import { QuestionariosAdminContent } from './components/QuestionariosAdminContent';
-import { MateriasAdminContent } from './components/MateriasAdminContent';
-import { CursosAdminContent } from './components/CursosAdminContent';
+import { CursosMateriasAdminContent } from './components/CursosMateriasAdminContent';
 import { AreasAdminContent } from './components/AreasAdminContent';
 import { AreaSubAdminContent } from './components/AreaSubAdminContent';
 import { AdminSidebar, adminLinks } from './components/AdminSidebar';
@@ -26,17 +25,16 @@ import Link from 'next/link';
 
 const moduloComponents: Record<string, React.ComponentType> = {
   usuarios: UsuariosAdminContent,
-  questoes: QuestoesAdminContent,
+  // questoes: QuestoesAdminContent,
   questionarios: QuestionariosAdminContent,
-  materias: MateriasAdminContent,
-  cursos: CursosAdminContent,
+  cursos: CursosMateriasAdminContent,
   areas: AreasAdminContent,
   areasub: AreaSubAdminContent,
 };
 
 export default function AdminHome() {
   const [moduloSelecionado, setModuloSelecionado] = useState<keyof typeof moduloComponents | ''>(
-    '',
+    'questoes',
   );
 
   function renderModulo() {

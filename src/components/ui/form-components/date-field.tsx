@@ -1,9 +1,12 @@
 
-import React from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { Calendar } from 'lucide-react';
-import ptBR from './ptBR-datepicker';
+
+import * as React from "react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
 
 interface DateFieldProps {
   label?: string;
@@ -11,8 +14,6 @@ interface DateFieldProps {
   onChange: (date: string | null) => void;
   required?: boolean;
   name?: string;
-  minDate?: Date;
-  maxDate?: Date;
 }
 
 export const DateField: React.FC<DateFieldProps> = ({
@@ -21,9 +22,10 @@ export const DateField: React.FC<DateFieldProps> = ({
   onChange,
   required,
   name,
-  minDate,
-  maxDate,
 }) => {
+  const [open, setOpen] = React.useState(false);
+  const selected = value ? new Date(value) : undefined;
+
   return (
     <div className="w-full space-y-2">
       {label && (
@@ -31,45 +33,59 @@ export const DateField: React.FC<DateFieldProps> = ({
           {label} {required && <span className="text-red-500">*</span>}
         </label>
       )}
-      <div className="relative">
-        <DatePicker
-          selected={value ? new Date(value) : null}
-          onChange={date => onChange(date ? (date as Date).toISOString().slice(0, 10) : null)}
-          dateFormat="yyyy-MM-dd"
-          className="flex h-12 w-full rounded-xl border-2 border-zinc-200 bg-white px-10 py-3 text-sm ring-offset-background placeholder:text-zinc-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:border-blue-400 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 shadow-soft hover:shadow-glow"
-          name={name}
-          minDate={minDate}
-          maxDate={maxDate}
-          placeholderText="Selecione a data"
-          locale={ptBR}
-          renderCustomHeader={({ date, decreaseMonth, increaseMonth, prevMonthButtonDisabled, nextMonthButtonDisabled }) => (
-            <div className="flex items-center justify-between px-2 py-2 bg-blue-50 rounded-t-lg border-b border-blue-100">
-              <button
-                onClick={e => { e.preventDefault(); e.stopPropagation(); decreaseMonth(); }}
-                disabled={prevMonthButtonDisabled}
-                className="text-zinc-400 px-2 py-1 rounded hover:bg-zinc-200 transition disabled:opacity-40"
-                type="button"
-              >{'<'}</button>
-              <span className="text-blue-700 font-semibold text-base">
-                {date.toLocaleString('pt-BR', { month: 'long', year: 'numeric' })}
-              </span>
-              <button
-                onClick={e => { e.preventDefault(); e.stopPropagation(); increaseMonth(); }}
-                disabled={nextMonthButtonDisabled}
-                className="text-zinc-400 px-2 py-1 rounded hover:bg-zinc-200 transition disabled:opacity-40"
-                type="button"
-              >{'>'}</button>
-            </div>
-          )}
-          calendarClassName="!border-zinc-200 !shadow-lg !rounded-xl !bg-white"
-          dayClassName={date =>
-            'text-zinc-700 font-medium hover:bg-blue-100 focus:bg-blue-200 rounded-full transition-all duration-100' +
-            (date.toDateString() === (value ? new Date(value).toDateString() : '') ? ' !bg-blue-500 !text-white' : '')
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <button
+            type="button"
+            className="flex h-12 w-full items-center rounded-xl border-2 border-zinc-200 bg-white px-10 py-3 text-sm ring-offset-background placeholder:text-zinc-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:border-blue-400 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 shadow-soft hover:shadow-glow relative"
+          >
+            <span className="absolute left-3 top-1/2 -translate-y-1/2">
+              <CalendarIcon className="h-5 w-5 text-purple-500" />
+            </span>
+            {selected ? format(selected, "dd/MM/yyyy", { locale: ptBR }) : "Selecione a data"}
+          </button>
+        </PopoverTrigger>
+        <PopoverContent
+          side="bottom"
+          align="start"
+          className="min-w-[240px] max-w-[320px] p-0 bg-white rounded-xl shadow-lg border border-zinc-200 z-[9999] animate-datepicker-fade-slide"
+          style={{ zIndex: 9999 }}
+        >
+          <DayPicker
+            mode="single"
+            selected={selected}
+            onSelect={date => {
+              setOpen(false);
+              onChange(date ? date.toISOString().slice(0, 10) : null);
+            }}
+            locale={ptBR}
+            captionLayout="dropdown"
+            fromYear={1950}
+            toYear={new Date().getFullYear()}
+            modifiersClassNames={{
+              selected: "bg-blue-500 text-white",
+              today: "border border-blue-500",
+            }}
+            className="p-1 text-sm"
+            style={{ fontSize: '0.92rem' }}
+          />
+        </PopoverContent>
+      <style jsx global>{`
+        @keyframes datepicker-fade-slide {
+          from {
+            opacity: 0;
+            transform: translateY(12px) scale(0.98);
           }
-          weekDayClassName={() => 'text-zinc-400 font-semibold text-xs'}
-        />
-        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-purple-500 pointer-events-none" />
-      </div>
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+        .animate-datepicker-fade-slide {
+          animation: datepicker-fade-slide 0.22s cubic-bezier(.4,0,.2,1);
+        }
+      `}</style>
+      </Popover>
     </div>
   );
 };

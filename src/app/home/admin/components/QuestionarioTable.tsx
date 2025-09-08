@@ -72,18 +72,11 @@ export function QuestionarioTable({ questionarios, onEdit, onInativar }: Questio
 
   return (
     <div>
-      <div className="flex items-center mb-4">
-        <button
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          onClick={() => setShowFilters((v) => !v)}
-        >
-          {showFilters ? 'Ocultar Filtros' : 'Filtro'}
-        </button>
-      </div>
+  {/* Filtro removido conforme solicitado */}
       {showFilters && (
         <div className="mb-4 p-4 bg-gray-50 rounded shadow flex flex-wrap gap-4">
           <div>
-            <label className="block text-xs font-bold mb-1">ID</label>
+            <label className="block text-xs font-bold mb-1">#</label>
             <input
               type="number"
               value={filterId}
@@ -130,10 +123,13 @@ export function QuestionarioTable({ questionarios, onEdit, onInativar }: Questio
         <TableHeader>
           <TableRow>
             <TableHead className="cursor-pointer" onClick={() => handleSort('quesId')}>
-              ID {sortKey === 'quesId' && (sortAsc ? '▲' : '▼')}
+              # {sortKey === 'quesId' && (sortAsc ? '▲' : '▼')}
             </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort('quesDescricao')}>
               Descrição {sortKey === 'quesDescricao' && (sortAsc ? '▲' : '▼')}
+            </TableHead>
+            <TableHead>
+              Tipo de Questionário
             </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort('quesAtivo')}>
               Ativo {sortKey === 'quesAtivo' && (sortAsc ? '▲' : '▼')}
@@ -153,6 +149,7 @@ export function QuestionarioTable({ questionarios, onEdit, onInativar }: Questio
               <TableRow key={questionario.quesId}>
                 <TableCell>{questionario.quesId}</TableCell>
                 <TableCell>{questionario.quesDescricao}</TableCell>
+                <TableCell>{questionario.questionarioTipo?.descricao || questionario.questionarioTipo?.questDescricao || '-'}</TableCell>
                 <TableCell>
                   <span
                     className={
@@ -162,21 +159,31 @@ export function QuestionarioTable({ questionarios, onEdit, onInativar }: Questio
                     {questionario.quesAtivo ? 'Ativo' : 'Inativo'}
                   </span>
                 </TableCell>
-                <TableCell>
+                <TableCell className="w-28 flex gap-2" style={{ width: '9rem', minWidth: '7rem' }}>
                   <button
-                    className="text-blue-600 hover:bg-blue-100 rounded p-1 mr-2"
+                    className="text-zinc-600 hover:text-blue-500 p-1"
                     title="Editar"
                     onClick={() => onEdit(questionario)}
                   >
-                    ✏️
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
                   </button>
-                  <button
-                    className="text-red-600 hover:bg-red-100 rounded p-1"
-                    title="Inativar"
-                    onClick={() => onInativar(questionario)}
-                  >
-                    🗑️
-                  </button>
+                  {questionario.quesAtivo ? (
+                    <button
+                      className="text-red-700 hover:text-red-500 p-1"
+                      title="Inativar"
+                      onClick={() => onInativar(questionario)}
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                    </button>
+                  ) : (
+                    <button
+                      className="text-green-600 hover:text-green-800 p-1"
+                      title="Ativar"
+                      onClick={() => onInativar(questionario)}
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 15 9"/></svg>
+                    </button>
+                  )}
                 </TableCell>
               </TableRow>
             ))

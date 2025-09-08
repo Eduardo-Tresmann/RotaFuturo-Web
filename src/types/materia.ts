@@ -6,4 +6,6 @@ export interface Materia {
   matAtivo: boolean;
   area?: any;
   areaSub?: any;
+  areaDescricao?: string;
+  areaSubDescricao?: string;
 }

@@ -87,7 +87,7 @@ export function AreaSubTable({ areaSubs, onEdit, onInativar }: AreaSubTableProps
 
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
-      <Table className="text-base min-w-full max-w-6xl mx-auto align-middle rounded-sm overflow-hidden [&_th]:py-4 [&_td]:py-3 [&_th]:text-base [&_td]:text-base"> 
+      <Table className="text-base min-w-full max-w-6xl mx-auto align-middle rounded overflow-hidden [&_th]:py-4 [&_td]:py-3 [&_th]:text-base [&_td]:text-base"> 
         <TableHeader>
           <TableRow className="bg-zinc-300/70">
             <TableHead className="w-16 text-zinc-900 font-bold uppercase tracking-tight"

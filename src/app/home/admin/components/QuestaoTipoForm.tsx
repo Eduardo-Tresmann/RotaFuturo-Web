@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+
+
+import React, { useState, useEffect } from 'react';
 import { TextField } from '../../../../components/ui/form-components/text-field';
 import { FormNotification } from '../../../../components/ui/form-components/form-notification';
-// Adapte o tipo conforme seu backend
-export interface QuestaoTipo {
-  quetId?: number;
-  quetDescricao: string;
-}
+import { questaoTipoService, TipoQuestao } from '@/services/questao/QuestaoTipoService';
 
-export default function QuestaoTipoForm({ onSuccess }: { onSuccess?: () => void }) {
-  const [form, setForm] = useState<Partial<QuestaoTipo>>({ quetDescricao: '' });
+export default function QuestaoTipoForm({ onSuccess, data }: { onSuccess?: () => void, data?: Partial<TipoQuestao> }) {
+  const [form, setForm] = useState<Partial<TipoQuestao>>(data ?? { quetDescricao: '' });
+
+  useEffect(() => {
+    if (data) setForm(data);
+  }, [data]);
+
   const { error, success } = FormNotification;
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -18,13 +21,17 @@ export default function QuestaoTipoForm({ onSuccess }: { onSuccess?: () => void 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      // TODO: Chamar o service para criar QuestaoTipo
-      // await questaoTipoService.create(form);
-      success({ message: 'Questão Tipo salva!' });
+      if (form.quetId) {
+        await questaoTipoService.update(form.quetId, form);
+        success({ message: 'Tipo de Questão atualizado!' });
+      } else {
+        await questaoTipoService.create(form);
+        success({ message: 'Tipo de Questão salvo!' });
+      }
       setForm({ quetDescricao: '' });
       if (onSuccess) onSuccess();
     } catch (err: any) {
-      error({ message: err?.message || 'Erro ao salvar Questão Tipo' });
+      error({ message: err?.message || 'Erro ao salvar Tipo de Questão' });
     }
   }
 
@@ -40,7 +47,7 @@ export default function QuestaoTipoForm({ onSuccess }: { onSuccess?: () => void 
       />
       <button
         type="submit"
-        className="bg-purple-600 text-white rounded-xl px-8 py-3 font-bold shadow hover:bg-purple-700 transition"
+        className="bg-blue-600 text-white rounded-xl px-8 py-3 font-bold shadow hover:bg-blue-700 transition"
       >
         Salvar Tipo
       </button>

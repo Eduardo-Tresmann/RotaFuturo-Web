@@ -16,15 +16,38 @@ const initialState: Partial<Questionario> = {
   areaSub: 0,
 };
 
-export default function QuestionarioForm() {
+interface QuestionarioFormProps {
+  onSuccess?: () => void;
+  data?: Partial<Questionario>;
+}
+
+export default function QuestionarioForm({ onSuccess, data }: QuestionarioFormProps) {
+  // Normaliza o tipo para sempre ter id/descricao
+  function normalizeTipo(tipo: any) {
+    if (!tipo) return undefined;
+    if (tipo.id && tipo.descricao) return tipo;
+    if (tipo.questId && tipo.questDescricao) return { id: tipo.questId, descricao: tipo.questDescricao, ativo: tipo.questAtivo };
+    return undefined;
+  }
+
   const [form, setForm] = useState<Partial<Questionario>>({
-    quesDescricao: '',
-    quesPeso: undefined,
-    questionarioTipo: undefined,
-    area: undefined,
-    areaSub: undefined,
+    ...data,
+    questionarioTipo: normalizeTipo(data?.questionarioTipo),
+    quesDescricao: data?.quesDescricao || '',
+    quesPeso: data?.quesPeso,
+    area: data?.area,
+    areaSub: data?.areaSub,
   });
   const { error, success } = FormNotification;
+
+  React.useEffect(() => {
+    if (data) {
+      setForm({
+        ...data,
+        questionarioTipo: normalizeTipo(data.questionarioTipo),
+      });
+    }
+  }, [data]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -34,9 +57,26 @@ export default function QuestionarioForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      await questionarioService.create(form);
-      success({ message: 'Questionário salvo!' });
+      // Monta o payload conforme o backend espera
+      const payload: any = {
+        quesDescricao: form.quesDescricao,
+        quesPeso: Number(form.quesPeso),
+        quesAtivo: form.quesAtivo !== undefined ? form.quesAtivo : true,
+        questionarioTipo: form.questionarioTipo?.id ? { questId: form.questionarioTipo.id } : undefined,
+        area: form.area ? { areaId: form.area } : undefined,
+        areaSub: form.areaSub ? { areasId: form.areaSub } : undefined,
+        quesDatacadastro: form.quesDatacadastro,
+        quesHoracadastro: form.quesHoracadastro,
+      };
+      if (form.quesId) {
+        await questionarioService.update(form.quesId, payload);
+        success({ message: 'Questionário atualizado!' });
+      } else {
+        await questionarioService.create(payload);
+        success({ message: 'Questionário salvo!' });
+      }
       setForm(initialState);
+      if (onSuccess) onSuccess();
     } catch (err: any) {
       error({ message: err?.message || 'Erro ao salvar questionário' });
     }
@@ -45,7 +85,7 @@ export default function QuestionarioForm() {
   return (
     <div className="bg-white rounded-2xl shadow-soft p-8 max-w-3xl mx-auto">
       <h2 className="text-2xl font-bold text-blue-700 mb-8 text-center">
-        Cadastro de Questionário
+        {form.quesId ? 'Editar Questionário' : 'Cadastro de Questionário'}
       </h2>
       <form className="grid grid-cols-1 md:grid-cols-3 gap-8" onSubmit={handleSubmit}>
         <div className="md:col-span-2">
@@ -69,14 +109,24 @@ export default function QuestionarioForm() {
           />
         </div>
         <div className="md:col-span-1">
-          <TextField
-            name="questionarioTipo"
-            type="number"
-            label="Tipo"
-            value={form.questionarioTipo || ''}
-            onChange={handleChange}
-            required
-          />
+          <AutoCompleteField
+              name="questionarioTipo"
+              label="Tipo de Questionário"
+              value={form.questionarioTipo?.id || ''}
+              onChange={async (value) => {
+                // Busca o objeto completo ao selecionar
+                const tipos = await import('@/services/questionario/QuestionarioTipoService').then(m => m.questionarioTipoService.listAll());
+                const tipoObj = tipos.find(t => t.id === value);
+                setForm((prev) => ({ ...prev, questionarioTipo: tipoObj }));
+              }}
+              fetchOptions={async (query) => {
+                const tipos = await import('@/services/questionario/QuestionarioTipoService').then(m => m.questionarioTipoService.listAll());
+                return tipos
+                  .filter(t => t.descricao && t.descricao.toLowerCase().includes(query.toLowerCase()))
+                  .map(t => ({ value: t.id, label: t.descricao }));
+              }}
+              required
+            />
         </div>
         <div className="md:col-span-1">
           <AutoCompleteField
