@@ -1,5 +1,5 @@
 import { baseApiService } from '@/services/baseApiService';
-import { LoginResponse } from '@/types';
+import { LoginResponse } from '@/types/usuario';
 
 class AuthService {
   async login(email: string, password: string): Promise<string> {

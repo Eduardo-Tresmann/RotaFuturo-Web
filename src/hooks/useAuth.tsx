@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { authService } from '@/services/auth/AuthService';
 import { usuarioService } from '@/services/usuario/UsuarioService';
-import { Usuario, LoginRequest, UsuarioCriacaoDTO } from '@/types';
+import { Usuario, LoginRequest, UsuarioCriacaoDTO } from '@/types/usuario';
 
 interface AuthContextType {
   usuario: Usuario | null;
