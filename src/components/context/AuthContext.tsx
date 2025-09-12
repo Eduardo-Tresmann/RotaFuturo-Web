@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, ReactNode } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { Usuario, LoginRequest, UsuarioCriacaoDTO } from '@/types';
+import { Usuario, LoginRequest, UsuarioCriacaoDTO } from '@/types/usuario';
 
 interface AuthContextType {
   usuario: Usuario | null;
