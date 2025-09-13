@@ -1,7 +1,17 @@
 import React from 'react';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-
+  import { HeaderHome } from '@/components/HeaderHome';
+  import {
+    Breadcrumb,
+    BreadcrumbList,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+  } from '@/components/ui/breadcrumb';
+  import ProtectedRoute from '@/components/context/ProtectedRoute';
+  import { useAuthContext } from '@/components/context/AuthContext';
 const desafios = [
   {
     id: 1,
@@ -37,18 +47,10 @@ const desafios = [
   },
 ];
 
-import { HeaderHome } from '@/components/HeaderHome';
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import ProtectedRoute from '@/components/context/ProtectedRoute';
 
 export default function DesafiosPage() {
+  const { authResolved } = useAuthContext();
+  if (!authResolved) return <div>Carregando...</div>;
   return (
     <ProtectedRoute>
       <HeaderHome
