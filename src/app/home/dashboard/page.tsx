@@ -17,15 +17,11 @@ import ProtectedRoute from '@/components/context/ProtectedRoute';
 import { usePessoa } from '@/hooks/usePessoa';
 
 export default function PaginaDashboard() {
-  const { usuario, logout, isAuthenticated } = useAuthContext();
+  const { usuario, logout, authResolved } = useAuthContext();
   const { pessoa } = usePessoa();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/');
-    }
-  }, [isAuthenticated, router]);
+  if (!authResolved) return <div>Carregando...</div>;
 
   const headerNavItems = [
     { href: '/home/desafios', label: 'Desafios' },

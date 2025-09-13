@@ -1,7 +1,6 @@
 import { baseApiService } from '@/services/baseApiService';
 import { Pessoa } from '@/types/pessoa';
 
-
 class PessoaService {
   async listAll(): Promise<Pessoa[]> {
     return baseApiService.request<Pessoa[]>('/pessoa');
@@ -15,11 +14,22 @@ class PessoaService {
     }
   }
 
-  async createPessoa(pessoa: Partial<Pessoa>): Promise<Pessoa> {
-    return baseApiService.request<Pessoa>('/pessoa', {
-      method: 'POST',
-      body: JSON.stringify(pessoa),
-    });
+  async createPessoa(pessoa: Partial<Pessoa> | FormData): Promise<Pessoa> {
+    let options: RequestInit;
+    if (pessoa instanceof FormData) {
+      options = {
+        method: 'POST',
+        body: pessoa,
+        // Não define Content-Type, o browser faz isso automaticamente
+      };
+    } else {
+      options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(pessoa),
+      };
+    }
+    return baseApiService.request<Pessoa>('/pessoa', options);
   }
 
   async updatePessoa(id: number, pessoa: Partial<Pessoa>): Promise<Pessoa> {
