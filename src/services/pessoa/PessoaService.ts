@@ -20,7 +20,6 @@ class PessoaService {
       options = {
         method: 'POST',
         body: pessoa,
-        // Não define Content-Type, o browser faz isso automaticamente
       };
     } else {
       options = {

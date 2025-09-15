@@ -1,16 +1,16 @@
 import React, { forwardRef } from 'react';
 import { Input } from '@/components/ui/input';
-import { FormLabel } from './form-label';
 import { cn } from '@/lib/utils';
 import { LucideIcon } from 'lucide-react';
 
 interface PhoneFieldProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   error?: string;
-  label?: string;
   required?: boolean;
   icon?: LucideIcon;
   iconColor?: string;
+  className?: string;
+  label?: React.ReactNode; // Adicionado
 }
 
 export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(
@@ -18,10 +18,10 @@ export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(
     {
       className,
       error,
-      label,
       required,
       icon: Icon,
       iconColor = 'text-zinc-400',
+      label, // Adicionado
       ...props
     },
     ref
@@ -29,9 +29,10 @@ export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(
     return (
       <div className="w-full space-y-2">
         {label && (
-          <FormLabel htmlFor={props.id} required={required}>
+          <label className="font-medium text-zinc-700 dark:text-zinc-200 mb-1 block">
             {label}
-          </FormLabel>
+            {required && <span className="text-red-500 ml-1">*</span>}
+          </label>
         )}
         <div className="relative">
           {Icon && (

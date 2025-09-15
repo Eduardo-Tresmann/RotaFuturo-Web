@@ -24,6 +24,8 @@ import {
   TableCell,
 } from '@/components/ui/table';
 
+import { Badge } from '@/components/ui/Badge';
+
 export function AlternativaTable({ alternativas, onEdit, onInativar }: AlternativaTableProps) {
   const [search, setSearch] = useState('');
   type SortKey = 'quesaId' | 'quesaDescricao' | 'quesaCorreta' | 'questaoCodigo';
@@ -81,38 +83,35 @@ export function AlternativaTable({ alternativas, onEdit, onInativar }: Alternati
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
      
-      <Table className="text-base min-w-full max-w-6xl mx-auto align-middle rounded overflow-hidden [&_th]:py-4 [&_td]:py-3 [&_th]:text-base [&_td]:text-base">
+      <Table >
         <TableHeader>
           <TableRow className="bg-zinc-300/70">
             <TableHead
-              className="w-16 text-zinc-900 font-bold uppercase tracking-tight"
-              style={{ width: '6rem', minWidth: '6rem', maxWidth: '6rem', color: '#18181b' }}
+             
               onClick={() => handleSort('quesaId')}
             >
               # {sortKey === 'quesaId' && (sortAsc ? '\u25b2' : '\u25bc')}
             </TableHead>
             <TableHead
-              className="w-2/5 text-zinc-900 tracking-tight"
-              style={{ width: '50%', minWidth: '18rem', color: '#18181b' }}
+              
+              onClick={() => handleSort('questaoCodigo')}
+            >
+              Código {sortKey === 'questaoCodigo' && (sortAsc ? '\u25b2' : '\u25bc')}
+            </TableHead>
+            <TableHead
+             
               onClick={() => handleSort('quesaDescricao')}
             >
               Descrição {sortKey === 'quesaDescricao' && (sortAsc ? '\u25b2' : '\u25bc')}
             </TableHead>
             <TableHead
-              className="text-zinc-900 tracking-tight"
-              style={{ width: '10rem', minWidth: '8rem', color: '#18181b' }}
+             
               onClick={() => handleSort('quesaCorreta')}
             >
-              Correta? {sortKey === 'quesaCorreta' && (sortAsc ? '\u25b2' : '\u25bc')}
+              Correta {sortKey === 'quesaCorreta' && (sortAsc ? '\u25b2' : '\u25bc')}
             </TableHead>
-            <TableHead
-              className="text-zinc-900 tracking-tight"
-              style={{ width: '10rem', minWidth: '8rem', color: '#18181b' }}
-              onClick={() => handleSort('questaoCodigo')}
-            >
-              Questão Código {sortKey === 'questaoCodigo' && (sortAsc ? '\u25b2' : '\u25bc')}
-            </TableHead>
-            <TableHead className="w-28 text-zinc-900 uppercase tracking-tight" style={{ width: '9rem', minWidth: '7rem', color: '#18181b' }}>
+            
+            <TableHead>
               Ações
             </TableHead>
           </TableRow>
@@ -126,19 +125,20 @@ export function AlternativaTable({ alternativas, onEdit, onInativar }: Alternati
             </TableRow>
           ) : (
             paginated.map((a, idx) => (
-              <TableRow key={a.quesaId ?? `alt-${idx}`} className={'hover:bg-zinc-50'}>
-                <TableCell className="w-16 border-r border-zinc-300/20">{a.quesaId}</TableCell>
-                <TableCell className="w-2/5 border-r border-zinc-300/20">{a.quesaDescricao}</TableCell>
-                <TableCell className="border-r border-zinc-300/20">
+                <TableRow key={a.quesaId}>
+                <TableCell>{a.quesaId}</TableCell>
+                <TableCell>{a.questao?.questaoCodigo || a.questao?.questaoId}</TableCell>
+                <TableCell>{a.quesaDescricao}</TableCell>
+                <TableCell>
                   {a.quesaCorreta === 1 ? (
-                    <span className="inline-block px-2 py-1 rounded bg-green-100 text-green-800 text-xs font-bold">SIM</span>
+                    <Badge color="green" variant="solid" className="shadow-md border border-green-700/30">SIM</Badge>
                   ) : (
-                    <span className="inline-block px-2 py-1 rounded bg-red-100 text-red-800 text-xs font-bold">NÃO</span>
+                    <Badge color="red" variant="solid" className="shadow-md border border-red-700/30">NÃO</Badge>
                   )}
                 </TableCell>
-                <TableCell className="border-r border-zinc-300/20">{a.questao?.questaoCodigo || a.questao?.questaoId}</TableCell>
-                <TableCell className="w-28 flex gap-2">
-                  <button className="text-blue-600 mr-2" onClick={() => onEdit(a)} title="Editar"><Pencil size={16} /></button>
+                
+                <TableCell>
+                  <button className=" mr-2" onClick={() => onEdit(a)} title="Editar"><Pencil size={18} /></button>
                 </TableCell>
               </TableRow>
             ))

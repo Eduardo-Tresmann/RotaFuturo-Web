@@ -85,35 +85,30 @@ export function UsuariosTable({ usuarios, onEdit, onInativar, onRefresh }: Usuar
 
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
-      <Table className="text-base min-w-full max-w-6xl mx-auto align-middle rounded overflow-hidden [&_th]:py-4 [&_td]:py-3 [&_th]:text-base [&_td]:text-base">
+      <Table >
         <TableHeader>
           <TableRow className="bg-zinc-300/70">
-            <TableHead className="w-16 text-zinc-900 font-bold uppercase tracking-tight"
-              style={{ width: '6rem', minWidth: '6rem', maxWidth: '6rem', color: '#18181b' }}
+            <TableHead 
               onClick={() => handleSort('usuId')}
             >
               # {sortKey === 'usuId' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="w-2/5 text-zinc-900 tracking-tight"
-              style={{ width: '50%', minWidth: '18rem', color: '#18181b' }}
+            <TableHead 
               onClick={() => handleSort('usuEmail')}
             >
               E-mail {sortKey === 'usuEmail' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="text-zinc-900 tracking-tight"
-              style={{ width: '10rem', minWidth: '8rem', color: '#18181b' }}
+            <TableHead 
               onClick={() => handleSort('usuAtivo')}
             >
               Situação {sortKey === 'usuAtivo' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="text-zinc-900 tracking-tight"
-              style={{ width: '10rem', minWidth: '8rem', color: '#18181b' }}
+            <TableHead 
               onClick={() => handleSort('usuEmailValidado')}
             >
               E-mail Validado {sortKey === 'usuEmailValidado' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="w-28 text-zinc-900  tracking-tight"
-              style={{ width: '9rem', minWidth: '7rem', color: '#18181b' }}>
+            <TableHead >
               Ações
             </TableHead>
           </TableRow>
@@ -131,34 +126,25 @@ export function UsuariosTable({ usuarios, onEdit, onInativar, onRefresh }: Usuar
                 key={usuario.usuId}
                 className={'hover:bg-zinc-50'}
               >
-                <TableCell className="w-16 border-r border-zinc-300/20"
-                  style={{ width: '6rem', minWidth: '6rem', maxWidth: '6rem' }}>
-                  {usuario.usuId}
-                </TableCell>
-                <TableCell className="w-2/5 border-r border-zinc-300/20"
-                  style={{ width: '50%', minWidth: '18rem' }}>
-                  {usuario.usuEmail}
-                </TableCell>
-                <TableCell className="border-r border-zinc-300/20"
-                  style={{ width: '10rem', minWidth: '8rem' }}>
+                <TableCell>{usuario.usuId}</TableCell>
+                <TableCell>{usuario.usuEmail}</TableCell>
+                <TableCell>
                   {usuario.usuAtivo ? (
                     <Badge color="green" variant="solid" className="shadow-md border border-green-700/30">Ativo</Badge>
                   ) : (
                     <Badge color="red" variant="solid" className="shadow-md border border-red-700/30">Inativo</Badge>
                   )}
                 </TableCell>
-                <TableCell className="border-r border-zinc-300/20"
-                  style={{ width: '10rem', minWidth: '8rem' }}>
+                <TableCell>
                   {usuario.usuEmailValidado ? (
                     <Badge color="green" variant="soft" className="border border-green-700/20">Validado</Badge>
                   ) : (
                     <Badge color="yellow" variant="soft" className="border border-yellow-700/20">Não validado</Badge>
                   )}
                 </TableCell>
-                <TableCell className="w-28 flex gap-2"
-                  style={{ width: '9rem', minWidth: '7rem' }}>
+                <TableCell>
                   <button
-                    className="text-zinc-600 hover:text-blue-500 p-1"
+                    className="text-zinc-600 dark:text-zinc-200 hover:text-blue-500 p-1"
                     title="Editar"
                     onClick={() => onEdit(usuario)}
                   >

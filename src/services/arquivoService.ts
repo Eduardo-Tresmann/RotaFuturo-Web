@@ -15,7 +15,6 @@ export const arquivoService = {
       formData,
       { headers }
     );
-    // Garante que retorna { url: string }
     if (response.data && response.data.url) {
       return { url: response.data.url };
     }

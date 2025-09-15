@@ -87,7 +87,7 @@ export function QuestaoTipoTable({ tipos, onEdit, setTipos }: QuestaoTipoTablePr
           <TableRow>
             <TableHead onClick={() => handleSort('id')}>#</TableHead>
             <TableHead onClick={() => handleSort('descricao')}>Descrição</TableHead>
-            <TableHead onClick={() => handleSort('ativo')}>Ativo</TableHead>
+            <TableHead onClick={() => handleSort('ativo')}>Situação</TableHead>
             <TableHead>Ações</TableHead>
           </TableRow>
         </TableHeader>
@@ -105,7 +105,7 @@ export function QuestaoTipoTable({ tipos, onEdit, setTipos }: QuestaoTipoTablePr
               </TableCell>
               <TableCell>
                 <button
-                  className="text-zinc-600 hover:text-blue-500 p-1"
+                  className="text-zinc-600 dark:text-zinc-200 hover:text-blue-500 p-1"
                   title="Editar"
                   onClick={() => onEdit(t)}
                 >

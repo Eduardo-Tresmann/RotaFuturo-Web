@@ -120,10 +120,10 @@ export function UsuariosAdminContent() {
                 }}
               >
                 <label className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-zinc-700">E-mail</span>
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">E-mail</span>
                   <input
                     type="text"
-                    className="border rounded px-3 py-2"
+                    className="border rounded px-3 py-2 bg-white text-zinc-900 placeholder-zinc-400 focus:ring-2 focus:ring-blue-400 outline-none dark:bg-neutral-800 dark:text-zinc-100 dark:placeholder-zinc-500 dark:border-neutral-700"
                     placeholder="Buscar por e-mail..."
                     value={userFilter.email}
                     onChange={e => setUserFilter(f => ({ ...f, email: e.target.value }))}
@@ -132,20 +132,20 @@ export function UsuariosAdminContent() {
                 <label className="flex items-center gap-2">
                   <input
                     type="checkbox"
-                    className="accent-blue-600"
+                    className="accent-blue-600 dark:accent-blue-500"
                     checked={userFilter.ativo}
                     onChange={e => setUserFilter(f => ({ ...f, ativo: e.target.checked }))}
                   />
-                  <span className="text-sm text-zinc-700">Somente usuários ativos</span>
+                  <span className="text-sm text-zinc-700 dark:text-zinc-200">Somente usuários ativos</span>
                 </label>
                 <label className="flex items-center gap-2">
                   <input
                     type="checkbox"
-                    className="accent-green-600"
+                    className="accent-green-600 dark:accent-green-500"
                     checked={userFilter.validado}
                     onChange={e => setUserFilter(f => ({ ...f, validado: e.target.checked }))}
                   />
-                  <span className="text-sm text-zinc-700">Somente e-mails validados</span>
+                  <span className="text-sm text-zinc-700 dark:text-zinc-200">Somente e-mails validados</span>
                 </label>
                 <div className="flex justify-end gap-2 mt-2">
                   <button
@@ -155,7 +155,7 @@ export function UsuariosAdminContent() {
                   >
                     Limpar filtros
                   </button>
-                  <button type="button" className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300" onClick={() => setShowFilters(false)}>Cancelar</button>
+                  <button type="button" className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300 dark:bg-neutral-800 dark:text-zinc-100 dark:border-neutral-700 dark:hover:bg-neutral-700" onClick={() => setShowFilters(false)}>Cancelar</button>
                   <button type="submit" className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Filtrar</button>
                 </div>
               </form>
@@ -168,30 +168,30 @@ export function UsuariosAdminContent() {
                 }}
               >
                 <label className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-zinc-700">Nome</span>
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Nome</span>
                   <input
                     type="text"
-                    className="border rounded px-3 py-2"
+                    className="border rounded px-3 py-2 bg-white text-zinc-900 placeholder-zinc-400 focus:ring-2 focus:ring-blue-400 outline-none dark:bg-neutral-800 dark:text-zinc-100 dark:placeholder-zinc-500 dark:border-neutral-700"
                     placeholder="Buscar por nome..."
                     value={pessoaFilter.nome}
                     onChange={e => setPessoaFilter(f => ({ ...f, nome: e.target.value }))}
                   />
                 </label>
                 <label className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-zinc-700">Apelido</span>
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Apelido</span>
                   <input
                     type="text"
-                    className="border rounded px-3 py-2"
+                    className="border rounded px-3 py-2 bg-white text-zinc-900 placeholder-zinc-400 focus:ring-2 focus:ring-blue-400 outline-none dark:bg-neutral-800 dark:text-zinc-100 dark:placeholder-zinc-500 dark:border-neutral-700"
                     placeholder="Buscar por apelido..."
                     value={pessoaFilter.apelido}
                     onChange={e => setPessoaFilter(f => ({ ...f, apelido: e.target.value }))}
                   />
                 </label>
                 <label className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-zinc-700">Nível</span>
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Nível</span>
                   <input
                     type="number"
-                    className="border rounded px-3 py-2"
+                    className="border rounded px-3 py-2 bg-white text-zinc-900 placeholder-zinc-400 focus:ring-2 focus:ring-blue-400 outline-none dark:bg-neutral-800 dark:text-zinc-100 dark:placeholder-zinc-500 dark:border-neutral-700"
                     placeholder="Buscar por nível..."
                     value={pessoaFilter.nivel}
                     onChange={e => setPessoaFilter(f => ({ ...f, nivel: e.target.value }))}
@@ -205,7 +205,7 @@ export function UsuariosAdminContent() {
                   >
                     Limpar filtros
                   </button>
-                  <button type="button" className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300" onClick={() => setShowPessoaFilters(false)}>Cancelar</button>
+                  <button type="button" className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300 dark:bg-neutral-800 dark:text-zinc-100 dark:border-neutral-700 dark:hover:bg-neutral-700" onClick={() => setShowPessoaFilters(false)}>Cancelar</button>
                   <button type="submit" className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Filtrar</button>
                 </div>
               </form>

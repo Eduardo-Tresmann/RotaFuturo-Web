@@ -27,7 +27,6 @@ import { FormNotification } from '@/components/ui/form-components/form-notificat
 
 export function CursoTable({ cursos, onEdit, onInativar, onRefresh }: CursoTableProps & { onRefresh?: () => void }) {
   const { success, error } = FormNotification;
-  // Ordenação
   type SortKey = 'curId' | 'curDescricao' | 'curAtivo' | 'areaDescricao' | 'areaSubDescricao';
   const [sortKey, setSortKey] = useState<SortKey>('curId');
   const [sortAsc, setSortAsc] = useState<boolean>(true);
@@ -67,41 +66,40 @@ export function CursoTable({ cursos, onEdit, onInativar, onRefresh }: CursoTable
 
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
-      <Table className="text-base min-w-full max-w-6xl mx-auto align-middle rounded overflow-hidden [&_th]:py-4 [&_td]:py-3 [&_th]:text-base [&_td]:text-base">
+      <Table>
         <TableHeader>
-          <TableRow className="bg-zinc-300/70">
-            <TableHead className="w-16 text-zinc-900 font-bold uppercase tracking-tight"
-              style={{ width: '6rem', minWidth: '6rem', maxWidth: '6rem', color: '#18181b' }}
+          <TableRow className="bg-zinc-300/70 dark:bg-neutral-800">
+            <TableHead
+              className="text-zinc-900 dark:text-zinc-100 font-bold uppercase tracking-tight"
               onClick={() => handleSort('curId')}
             >
               # {sortKey === 'curId' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="w-2/5 text-zinc-900 tracking-tight"
-              style={{ width: '30%', minWidth: '12rem', color: '#18181b' }}
+            <TableHead
+              className="text-zinc-900 dark:text-zinc-100 tracking-tight"
               onClick={() => handleSort('curDescricao')}
             >
               Descrição {sortKey === 'curDescricao' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="text-zinc-900 tracking-tight"
-              style={{ width: '18%', minWidth: '8rem', color: '#18181b' }}
+            <TableHead
+              className="text-zinc-900 dark:text-zinc-100 tracking-tight"
               onClick={() => handleSort('areaDescricao')}
             >
               Área {sortKey === 'areaDescricao' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="text-zinc-900 tracking-tight"
-              style={{ width: '18%', minWidth: '8rem', color: '#18181b' }}
+            <TableHead
+              className="text-zinc-900 dark:text-zinc-100 tracking-tight"
               onClick={() => handleSort('areaSubDescricao')}
             >
               Subárea {sortKey === 'areaSubDescricao' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="text-zinc-900 tracking-tight"
-              style={{ width: '10rem', minWidth: '8rem', color: '#18181b' }}
+            <TableHead
+              className="text-zinc-900 dark:text-zinc-100 tracking-tight"
               onClick={() => handleSort('curAtivo')}
             >
               Situação {sortKey === 'curAtivo' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="w-28 text-zinc-900 uppercase tracking-tight"
-              style={{ width: '9rem', minWidth: '7rem', color: '#18181b' }}>
+            <TableHead className="text-zinc-900 dark:text-zinc-100 tracking-tight">
               Ações
             </TableHead>
           </TableRow>
@@ -109,41 +107,27 @@ export function CursoTable({ cursos, onEdit, onInativar, onRefresh }: CursoTable
         <TableBody>
           {paginated.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={4} className="text-center text-zinc-400">
+              <TableCell colSpan={6} className="text-center text-zinc-400 dark:text-zinc-500">
                 Nenhum curso encontrado
               </TableCell>
             </TableRow>
           ) : (
             paginated.map((curso) => (
-              <TableRow key={curso.curId} className={'hover:bg-zinc-50'}>
-                <TableCell className="w-16 border-r border-zinc-300/20"
-                  style={{ width: '6rem', minWidth: '6rem', maxWidth: '6rem' }}>
-                  {curso.curId}
-                </TableCell>
-                <TableCell className="w-2/5 border-r border-zinc-300/20"
-                  style={{ width: '30%', minWidth: '12rem' }}>
-                  {curso.curDescricao}
-                </TableCell>
-                <TableCell className="border-r border-zinc-300/20"
-                  style={{ width: '18%', minWidth: '8rem' }}>
-                  {curso.areaDescricao || <span className="text-zinc-400">-</span>}
-                </TableCell>
-                <TableCell className="border-r border-zinc-300/20"
-                  style={{ width: '18%', minWidth: '8rem' }}>
-                  {curso.areaSubDescricao || <span className="text-zinc-400">-</span>}
-                </TableCell>
-                <TableCell className="border-r border-zinc-300/20"
-                  style={{ width: '10rem', minWidth: '8rem' }}>
+              <TableRow key={curso.curId} className="dark:hover:bg-neutral-900">
+                <TableCell className="dark:text-zinc-100">{curso.curId}</TableCell>
+                <TableCell className="dark:text-zinc-100">{curso.curDescricao}</TableCell>
+                <TableCell className="dark:text-zinc-100">{curso.areaDescricao || <span className="text-zinc-400 dark:text-zinc-500">-</span>}</TableCell>
+                <TableCell className="dark:text-zinc-100">{curso.areaSubDescricao || <span className="text-zinc-400 dark:text-zinc-500">-</span>}</TableCell>
+                <TableCell className="dark:text-zinc-100">
                   {curso.curAtivo ? (
                     <Badge color="green" variant="solid" className="shadow-md border border-green-700/30">Ativo</Badge>
                   ) : (
                     <Badge color="red" variant="solid" className="shadow-md border border-red-700/30">Inativo</Badge>
                   )}
                 </TableCell>
-                <TableCell className="w-28 flex gap-2"
-                  style={{ width: '9rem', minWidth: '7rem' }}>
+                <TableCell className="dark:text-zinc-100">
                   <button
-                    className="text-zinc-600 hover:text-blue-500 p-1"
+                    className="text-zinc-600 dark:text-zinc-300 hover:text-blue-500 dark:hover:text-blue-400 p-1"
                     title="Editar"
                     onClick={() => onEdit(curso)}
                   >
@@ -151,7 +135,7 @@ export function CursoTable({ cursos, onEdit, onInativar, onRefresh }: CursoTable
                   </button>
                   {curso.curAtivo ? (
                     <button
-                      className="text-red-700 hover:text-red-500 p-1"
+                      className="text-red-700 dark:text-red-400 hover:text-red-500 dark:hover:text-red-300 p-1"
                       title="Inativar"
                       onClick={async () => {
                         try {
@@ -167,7 +151,7 @@ export function CursoTable({ cursos, onEdit, onInativar, onRefresh }: CursoTable
                     </button>
                   ) : (
                     <button
-                      className="text-green-600 hover:text-green-800 p-1"
+                      className="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 p-1"
                       title="Ativar"
                       onClick={async () => {
                         try {
@@ -189,7 +173,7 @@ export function CursoTable({ cursos, onEdit, onInativar, onRefresh }: CursoTable
         </TableBody>
         <TableFooter className='bg-transparent'>
           <TableRow>
-            <TableCell colSpan={4} className="text-center">
+            <TableCell colSpan={6} className="text-center">
               {totalPages > 1 && (
                 <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
               )}

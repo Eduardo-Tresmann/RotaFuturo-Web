@@ -61,18 +61,22 @@ export default function QuestaoAlternativaForm({ onSuccess, data }: { onSuccess?
   }
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+    <form className="flex flex-col gap-6 bg-white dark:bg-neutral-900 p-8 rounded-2xl max-w-lg mx-auto shadow-soft" onSubmit={handleSubmit}>
+      <h2 className="text-2xl font-bold text-blue-700 dark:text-blue-300 mb-2 text-center">
+        {form.quesaId ? 'Editar Alternativa' : 'Cadastro de Alternativa'}
+      </h2>
       <TextField
         name="quesaDescricao"
         type="text"
-        label={<span>Descrição da Alternativa</span>}
+        label={<span className="font-medium text-zinc-700 dark:text-zinc-200">Descrição da Alternativa</span>}
         value={form.quesaDescricao || ''}
         onChange={handleChange}
         required
+        className="bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg px-4 py-2 transition-colors dark:bg-neutral-800 dark:border-neutral-600 dark:text-gray-100 dark:placeholder:text-neutral-400"
       />
       <AutoCompleteField
         name="questaoId"
-        label={<span>Questão</span>}
+        label={<span className="font-medium text-zinc-700 dark:text-zinc-200">Questão</span>}
         value={form.questaoId || ''}
         onChange={(value) => setForm((prev) => ({ ...prev, questaoId: Number(value) }))}
         fetchOptions={async (query) => {
@@ -85,6 +89,7 @@ export default function QuestaoAlternativaForm({ onSuccess, data }: { onSuccess?
             .map(q => ({ value: q.questaoId, label: `${q.questaoId} - ${q.questaoDescricao}` }));
         }}
         required
+        inputClassName="bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg px-4 py-2 transition-colors dark:bg-neutral-800 dark:border-neutral-600 dark:text-gray-100 dark:placeholder:text-neutral-400"
       />
       <label className="flex items-center gap-2">
         <input
@@ -92,12 +97,13 @@ export default function QuestaoAlternativaForm({ onSuccess, data }: { onSuccess?
           name="quesaCorreta"
           checked={form.quesaCorreta || false}
           onChange={handleChange}
+          className="w-4 h-4 accent-blue-600 dark:accent-blue-500"
         />
-        Correta
+        <span className="text-zinc-700 dark:text-zinc-200 font-medium select-none cursor-pointer text-sm">Correta</span>
       </label>
       <button
         type="submit"
-        className="bg-blue-600 text-white rounded-xl px-8 py-3 font-bold shadow hover:bg-blue-700 transition"
+        className="bg-blue-600 text-white rounded-xl px-8 py-3 font-bold shadow hover:bg-blue-700 transition dark:bg-blue-700 dark:hover:bg-blue-800"
       >
         Salvar Alternativa
       </button>

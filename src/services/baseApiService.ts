@@ -38,12 +38,9 @@ class BaseApiService {
   }
 
   public async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    // Garante que não haja barra duplicada
     const url = `${API_BASE_URL}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
-    // Sempre busca o token atualizado do localStorage
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : this.token;
 
-    // Sempre cria um objeto headers simples
     let headers: Record<string, string> = {};
     if (options.headers instanceof Headers) {
       options.headers.forEach((value, key) => {
@@ -53,7 +50,6 @@ class BaseApiService {
       headers = { ...headers, ...(options.headers as Record<string, string>) };
     }
 
-    // Força o Authorization
     if (token) headers['Authorization'] = `Bearer ${token}`;
     if (!(options.body instanceof FormData)) headers['Content-Type'] = 'application/json';
 

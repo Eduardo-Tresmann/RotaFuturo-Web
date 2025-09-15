@@ -28,12 +28,12 @@ export function HeaderHome({
 
   const usuarioProfileData = {
     name:
-      pessoa?.pesApelido && pessoa?.pesApelido.trim() !== ''
+      pessoa && pessoa.pesApelido && pessoa.pesApelido.trim() !== ''
         ? pessoa.pesApelido
         : usuario?.usuEmail || 'Usuário',
-    email: usuario?.usuEmail,
+    email: usuario?.usuEmail || '',
     avatarUrl:
-      pessoa?.pesImagemperfil && pessoa?.pesImagemperfil.startsWith('storage/')
+      pessoa && pessoa.pesImagemperfil && pessoa.pesImagemperfil.startsWith('storage/')
         ? `${process.env.NEXT_PUBLIC_API_URL}/api/arquivo/view/${usuario?.usuId}/${getFileName(pessoa.pesImagemperfil)}`
         : 'https://via.placeholder.com/48',
   };
@@ -63,7 +63,6 @@ export function HeaderHome({
     },
   ];
 
-  // Transparência dinâmica igual landing page
   const [headerTransparent, setHeaderTransparent] = useState(true);
   useEffect(() => {
     const onScroll = () => {

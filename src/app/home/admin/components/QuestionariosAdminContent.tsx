@@ -130,20 +130,33 @@ export function QuestionariosAdminContent() {
       }
       filterModal={
         <Dialog open={showFiltro} onOpenChange={setShowFiltro}>
-          <DialogContent>
+          <DialogContent className="dark:bg-neutral-900 dark:border-neutral-700">
             <DialogHeader>
-              <DialogTitle>Filtro</DialogTitle>
+              <DialogTitle className="dark:text-zinc-100">Filtro</DialogTitle>
             </DialogHeader>
             {/* Filtros dinâmicos por aba */}
-            <form className="flex flex-col gap-4 py-2" onSubmit={e => { e.preventDefault(); setShowFiltro(false); }}>
+            <form
+              className="flex flex-col gap-4 py-2"
+              onSubmit={e => { e.preventDefault(); setShowFiltro(false); }}
+            >
               <label className="flex flex-col gap-1">
-                <span className="text-sm font-medium text-zinc-700">Descrição</span>
-                <input type="text" className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none" placeholder="Buscar por descrição..." value={filtros[tab].descricao || ''} onChange={e => setFiltros(f => ({ ...f, [tab]: { ...f[tab], descricao: e.target.value } }))} />
+                <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Descrição</span>
+                <input
+                  type="text"
+                  className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none dark:bg-neutral-800 dark:text-zinc-100 dark:border-neutral-700"
+                  placeholder="Buscar por descrição..."
+                  value={filtros[tab].descricao || ''}
+                  onChange={e => setFiltros(f => ({ ...f, [tab]: { ...f[tab], descricao: e.target.value } }))}
+                />
               </label>
               {'correta' in filtros[tab] && (
                 <label className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-zinc-700">Correta?</span>
-                  <select className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none" value={typeof filtros[tab].correta === 'string' ? filtros[tab].correta : ''} onChange={e => setFiltros(f => ({ ...f, [tab]: { ...f[tab], correta: e.target.value } }))}>
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Correta?</span>
+                  <select
+                    className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none dark:bg-neutral-800 dark:text-zinc-100 dark:border-neutral-700"
+                    value={typeof filtros[tab].correta === 'string' ? filtros[tab].correta : ''}
+                    onChange={e => setFiltros(f => ({ ...f, [tab]: { ...f[tab], correta: e.target.value } }))}
+                  >
                     <option value="">Todas</option>
                     <option value="true">Sim</option>
                     <option value="false">Não</option>
@@ -152,8 +165,12 @@ export function QuestionariosAdminContent() {
               )}
               {'ativo' in filtros[tab] && (
                 <label className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-zinc-700">Ativo</span>
-                  <select className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none" value={typeof filtros[tab].ativo === 'string' ? filtros[tab].ativo : ''} onChange={e => setFiltros(f => ({ ...f, [tab]: { ...f[tab], ativo: e.target.value } }))}>
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Ativo</span>
+                  <select
+                    className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none dark:bg-neutral-800 dark:text-zinc-100 dark:border-neutral-700"
+                    value={typeof filtros[tab].ativo === 'string' ? filtros[tab].ativo : ''}
+                    onChange={e => setFiltros(f => ({ ...f, [tab]: { ...f[tab], ativo: e.target.value } }))}
+                  >
                     <option value="">Todos</option>
                     <option value="true">Ativo</option>
                     <option value="false">Inativo</option>
@@ -161,9 +178,26 @@ export function QuestionariosAdminContent() {
                 </label>
               )}
               <div className="flex justify-end gap-2 mt-2">
-                <button type="button" className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 font-medium" onClick={() => setFiltros(f => ({ ...f, [tab]: Object.fromEntries(Object.keys(f[tab]).map(k => [k, ''])) }))}>Limpar filtros</button>
-                <button type="button" className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300 border border-zinc-300" onClick={() => setShowFiltro(false)}>Cancelar</button>
-                <button type="submit" className="px-4 py-2 rounded bg-zinc-800 text-white hover:bg-zinc-700">Filtrar</button>
+                <button
+                  type="button"
+                  className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 font-medium"
+                  onClick={() => setFiltros(f => ({ ...f, [tab]: Object.fromEntries(Object.keys(f[tab]).map(k => [k, ''])) }))}
+                >
+                  Limpar filtros
+                </button>
+                <button
+                  type="button"
+                  className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300 border border-zinc-300 dark:bg-neutral-800 dark:text-zinc-100 dark:border-neutral-700"
+                  onClick={() => setShowFiltro(false)}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded bg-zinc-800 text-white hover:bg-zinc-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+                >
+                  Filtrar
+                </button>
               </div>
             </form>
           </DialogContent>
@@ -195,7 +229,28 @@ export function QuestionariosAdminContent() {
         <QuestaoTable
           questoes={questoes}
           onEdit={q => setModal({ tipo: 'editar-questao', data: q })}
-          onInativar={q => setModal({ tipo: 'inativar-questao', data: q })}
+          onInativar={async (q) => {
+            const { success, error } = FormNotification;
+            try {
+              const novoStatus = !q.questaoAtivo;
+              await questaoService.update(q.questaoId, {
+                questaoCodigo: q.questaoCodigo,
+                questaoDescricao: q.questaoDescricao,
+                questaoExperiencia: q.questaoExperiencia,
+                questaoTipo: q.questaoTipo,
+                questaoNivel: q.questaoNivel,
+                area: q.area,
+                areaSub: q.areaSub,
+                questaoDatacadastro: q.questaoDatacadastro,
+                questaoHoracadastro: q.questaoHoracadastro,
+                questaoAtivo: novoStatus,
+              });
+              setQuestoes(prev => prev.map(item => item.questaoId === q.questaoId ? { ...item, questaoAtivo: novoStatus } : item));
+              success({ message: `Questão ${novoStatus ? 'ativada' : 'inativada'} com sucesso!` });
+            } catch (err: any) {
+              error({ message: err?.message || 'Erro ao atualizar questão!' });
+            }
+          }}
         />
       )}
       {tab === 'tiposQuestionario' && (
@@ -265,8 +320,10 @@ export function QuestionariosAdminContent() {
               <QuestaoNivelForm onSuccess={() => { setModal(null); refreshNiveisQuestao(); }} />
             ) : modal?.tipo === 'editar-nivel-questao' ? (
               <QuestaoNivelForm onSuccess={() => { setModal(null); refreshNiveisQuestao(); }} data={modal?.data} />
-            ) : modal?.tipo === 'inserir-questao' || modal?.tipo === 'editar-questao' ? (
+            ) : modal?.tipo === 'inserir-questao' ? (
               <QuestaoForm onSuccess={() => { setModal(null); refreshQuestoes(); }} />
+            ) : modal?.tipo === 'editar-questao' ? (
+              <QuestaoForm onSuccess={() => { setModal(null); refreshQuestoes(); }} data={modal?.data} />
             ) : modal?.tipo === 'inserir-alternativa' ? (
               <QuestaoAlternativaForm onSuccess={() => { setModal(null); refreshAlternativas(); }} />
             ) : modal?.tipo === 'editar-alternativa' ? (

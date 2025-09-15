@@ -60,39 +60,33 @@ export function PessoaTable({ pessoas, usuarios = [], onEdit, onInativar }: Pess
 
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
-      <Table className="text-base min-w-full max-w-6xl mx-auto align-middle rounded-sm overflow-hidden [&_th]:py-4 [&_td]:py-3 [&_th]:text-base [&_td]:text-base">
+      <Table >
         <TableHeader>
           <TableRow className="bg-zinc-300/70">
-            <TableHead className="w-16 text-zinc-900 font-bold uppercase tracking-tight"
-              style={{ width: '6rem', minWidth: '6rem', maxWidth: '6rem', color: '#18181b' }}
+            <TableHead 
               onClick={() => handleSort('pesId')}
             >
               # {sortKey === 'pesId' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="w-2/5 text-zinc-900 tracking-tight"
-              style={{ width: '50%', minWidth: '18rem', color: '#18181b' }}
+            <TableHead 
               onClick={() => handleSort('pesNome')}
             >
               Nome {sortKey === 'pesNome' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="text-zinc-900 tracking-tight"
-              style={{ width: '20%', minWidth: '8rem', color: '#18181b' }}
+            <TableHead 
               onClick={() => handleSort('pesApelido')}
             >
               Apelido {sortKey === 'pesApelido' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="text-zinc-900 tracking-tight"
-              style={{ width: '10%', minWidth: '8rem', color: '#18181b' }}
+            <TableHead 
               onClick={() => handleSort('pesNivel')}
             >
               Nível {sortKey === 'pesNivel' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="text-zinc-900 tracking-tight"
-              style={{ width: '20%', minWidth: '12rem', color: '#18181b' }}>
+            <TableHead >
               E-mail do Usuário
             </TableHead>
-            <TableHead className="w-28 text-zinc-900  tracking-tight"
-              style={{ width: '9rem', minWidth: '7rem', color: '#18181b' }}>
+            <TableHead >
               Ações
             </TableHead>
           </TableRow>
@@ -106,34 +100,15 @@ export function PessoaTable({ pessoas, usuarios = [], onEdit, onInativar }: Pess
             </TableRow>
           ) : (
             paginated.map((pessoa) => (
-              <TableRow
-                key={pessoa.pesId}
-                className={'hover:bg-zinc-50'}
-              >
-                <TableCell className="w-16 border-r border-zinc-300/20"
-                  style={{ width: '6rem', minWidth: '6rem', maxWidth: '6rem' }}>
-                  {pessoa.pesId}
-                </TableCell>
-                <TableCell className="w-2/5 border-r border-zinc-300/20"
-                  style={{ width: '50%', minWidth: '18rem' }}>
-                  {pessoa.pesNome}
-                </TableCell>
-                <TableCell className="border-r border-zinc-300/20"
-                  style={{ width: '20%', minWidth: '8rem' }}>
-                  {pessoa.pesApelido}
-                </TableCell>
-                <TableCell className="border-r border-zinc-300/20"
-                  style={{ width: '10%', minWidth: '8rem' }}>
-                  <Badge color="blue" variant="soft" className="border border-blue-700/20">{pessoa.pesNivel}</Badge>
-                </TableCell>
-                <TableCell className="border-r border-zinc-300/20"
-                  style={{ width: '20%', minWidth: '12rem' }}>
-                  {usuarios.find(u => u.usuId === pessoa.usuId)?.usuEmail || <span className="text-zinc-400 italic">(sem usuário)</span>}
-                </TableCell>
-                <TableCell className="w-28 flex gap-2"
-                  style={{ width: '9rem', minWidth: '7rem' }}>
+              <TableRow key={pessoa.pesId}>
+                <TableCell>{pessoa.pesId}</TableCell>
+                <TableCell>{pessoa.pesNome}</TableCell>
+                <TableCell>{pessoa.pesApelido}</TableCell>
+                <TableCell><Badge color="blue" variant="soft" className="border border-blue-700/20">{pessoa.pesNivel}</Badge></TableCell>
+                <TableCell>{usuarios.find(u => u.usuId === pessoa.usuId)?.usuEmail || <span className="text-zinc-400 italic">(sem usuário)</span>}</TableCell>
+                <TableCell>
                   <button
-                    className="text-zinc-600 hover:text-blue-500 p-1"
+                    className="text-zinc-600 dark:text-zinc-200 hover:text-blue-500 p-1"
                     title="Editar"
                     onClick={() => onEdit(pessoa)}
                   >

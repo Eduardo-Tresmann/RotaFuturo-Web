@@ -1,10 +1,10 @@
+
 import '@/styles/globals.css';
 import { ThemeProvider } from '@/components/context/ThemeContext';
 import type { Metadata } from 'next';
-
-
 import { Toaster } from 'sonner';
 import ClientProviders from '@/components/context/ClientProviders';
+import ClientOnlyLoader from '@/components/ui/ClientOnlyLoader';
 
 export const metadata: Metadata = {
   title: 'RotaFuturo',
@@ -19,11 +19,14 @@ export const metadata: Metadata = {
   },
 };
 
+
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body className="antialiased bg-zinc-50 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-50">
+      <body className="antialiased text-zinc-900 dark:bg-zinc-900 dark:text-zinc-50">
         <ClientProviders>
+          <ClientOnlyLoader />
           <ThemeProvider>{children}</ThemeProvider>
         </ClientProviders>
         <Toaster richColors />

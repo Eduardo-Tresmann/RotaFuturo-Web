@@ -1,4 +1,3 @@
-
 import React, { forwardRef } from "react";
 import { cn } from "@/lib/utils";
 import { FormLabel } from "./form-label";
@@ -60,40 +59,25 @@ export const FileField = forwardRef<HTMLInputElement, FileFieldProps>(
     return (
       <div className="w-full space-y-2">
         {label && (
-          <FormLabel htmlFor={props.id} required={required}>
+          <FormLabel htmlFor={props.id} required={required} className="text-zinc-700 dark:text-zinc-300">
             {label}
           </FormLabel>
         )}
-        <label className="block cursor-pointer group">
-          <div className={cn(
-            "flex items-center h-12 w-full rounded-xl border-2 border-zinc-200 bg-zinc-50 px-4 text-zinc-600 transition-all duration-150 shadow-sm hover:border-blue-500 hover:shadow-lg focus-within:border-blue-600 focus-within:shadow-lg",
-            error && "border-red-500 focus-visible:ring-red-500 focus-visible:border-red-500",
+        <input
+          ref={ref}
+          type="file"
+          className={cn(
+            "block w-full text-sm text-zinc-800 dark:text-zinc-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-100 dark:file:bg-zinc-800 file:text-blue-700 dark:file:text-blue-300 hover:file:bg-zinc-200 dark:hover:file:bg-zinc-700",
             className
-          )}>
-            <svg className="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 16v-8m0 0l-3.5 3.5M12 8l3.5 3.5M21 16.5V19a2 2 0 01-2 2H5a2 2 0 01-2-2v-2.5a2 2 0 01.59-1.42l7-7a2 2 0 012.82 0l7 7A2 2 0 0121 16.5z" /></svg>
-            {label && <span className="text-sm text-zinc-900 font-bold">{label}</span>}
-            {getCurrentFileInfo() ? (
-              <span className="ml-3 text-xs text-blue-700 font-semibold">{getCurrentFileInfo()?.name} <span className="text-zinc-400">({formatSize(getCurrentFileInfo()?.size ?? 0)})</span></span>
-            ) : (
-              <span className="ml-3 text-xs text-zinc-400 font-normal">Clique para selecionar uma imagem</span>
-            )}
-          </div>
-          <input
-            type="file"
-            accept={onlyImages ? 'image/*' : accept}
-            multiple={multiple}
-            className="sr-only"
-            ref={el => {
-              if (typeof ref === 'function') ref(el);
-              // @ts-ignore
-              inputRef.current = el;
-            }}
-            onChange={handleChange}
-            {...props}
-          />
-        </label>
-        {error && (
-          <p className="text-sm text-red-500">{error}</p>
+          )}
+          onChange={handleChange}
+          {...props}
+        />
+        {error && <p className="text-red-500 text-sm">{error}</p>}
+        {getCurrentFileInfo() && (
+          <span className="ml-3 text-xs text-zinc-400">
+            {getCurrentFileInfo()?.name} ({formatSize(getCurrentFileInfo()?.size ?? 0)})
+          </span>
         )}
       </div>
     );
