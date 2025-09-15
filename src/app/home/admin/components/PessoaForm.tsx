@@ -67,26 +67,29 @@ export default function PessoaForm({ pessoa, onClose, onSaved }: PessoaFormProps
   }
 
   return (
-    <section className="w-full max-w-4xl mx-auto bg-white rounded-2xl p-6 flex flex-col gap-6">
-      <h2 className="text-lg font-semibold text-zinc-800 text-center">{form.pesId ? 'Editar Pessoa' : 'Cadastro de Pessoa'}</h2>
+    <section className="w-full max-w-4xl mx-auto bg-white dark:bg-neutral-900 rounded-2xl p-6 flex flex-col gap-6 shadow-soft">
+      <h2 className="text-lg font-semibold text-zinc-800 dark:text-blue-300 text-center">{form.pesId ? 'Editar Pessoa' : 'Cadastro de Pessoa'}</h2>
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <TextField
-            label="Nome"
+            label={<span className="font-medium text-zinc-700 dark:text-zinc-200">Nome</span>}
             name="pesNome"
             value={form.pesNome || ''}
             onChange={handleChange}
             required
             icon={User}
             iconColor="text-blue-500"
+            // Remova o px-4 e use pl-10 para alinhar o texto após o ícone
+            className="bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 rounded-lg pl-10 py-2 transition-colors dark:bg-neutral-900 dark:border-neutral-700 dark:text-gray-100 dark:placeholder:text-neutral-400"
           />
           <TextField
-            label="Apelido"
+            label={<span className="font-medium text-zinc-700 dark:text-zinc-200">Apelido</span>}
             name="pesApelido"
             value={form.pesApelido || ''}
             onChange={handleChange}
             icon={Tag}
             iconColor="text-pink-500"
+            className="bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 rounded-lg pl-10 py-2 transition-colors dark:bg-neutral-900 dark:border-neutral-700 dark:text-gray-100 dark:placeholder:text-neutral-400"
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -96,20 +99,24 @@ export default function PessoaForm({ pessoa, onClose, onSaved }: PessoaFormProps
             value={form.pesDatanascimento || ''}
             onChange={date => setForm(f => ({ ...f, pesDatanascimento: date || undefined }))}
             required
+            className="bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 rounded-lg px-10 py-2 transition-colors dark:bg-neutral-900 dark:border-neutral-700 dark:text-gray-100 dark:placeholder:text-neutral-400"
           />
-          <PhoneField
-            label="Telefone"
-            name="pesTelefone1"
-            value={form.pesTelefone1 || ''}
-            onChange={handleChange}
-            icon={Phone}
-            iconColor="text-cyan-500"
-          />
+          <div>
+            <label className="font-medium text-zinc-700 dark:text-zinc-200 mb-1 block">Telefone</label>
+            <PhoneField
+              name="pesTelefone1"
+              value={form.pesTelefone1 || ''}
+              onChange={handleChange}
+              icon={Phone}
+              iconColor="text-cyan-500"
+              className="bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 rounded-lg px-10 py-2 transition-colors dark:bg-neutral-900 dark:border-neutral-700 dark:text-gray-100 dark:placeholder:text-neutral-400"
+            />
+          </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <AutoCompleteField
             name="usuId"
-            label="Vincular Usuário (e-mail)"
+            label={<span className="font-medium text-zinc-700 dark:text-zinc-200">Vincular Usuário (e-mail)</span>}
             value={form.usuId}
             onChange={usuId => setForm(f => ({ ...f, usuId: typeof usuId === 'string' ? Number(usuId) : usuId }))}
             fetchOptions={async (query) => {
@@ -119,13 +126,14 @@ export default function PessoaForm({ pessoa, onClose, onSaved }: PessoaFormProps
                 .map(u => ({ value: u.usuId, label: u.usuEmail }));
             }}
             required
+            inputClassName="bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 rounded-lg px-4 py-2 transition-colors dark:bg-neutral-900 dark:border-neutral-700 dark:text-gray-100 dark:placeholder:text-neutral-400"
           />
         </div>
         <div className="flex justify-end mt-2 gap-4">
           {onClose && (
             <button
               type="button"
-              className="bg-gray-300 text-gray-800 rounded-xl px-8 py-3 font-bold shadow hover:bg-gray-400 transition"
+              className="rounded border border-gray-300 bg-white text-gray-900 hover:bg-gray-100 dark:bg-neutral-800/70 dark:text-gray-200 dark:border-neutral-700 dark:hover:bg-neutral-700 px-4 py-2 transition-colors disabled:opacity-60"
               onClick={onClose}
             >
               Cancelar
@@ -133,7 +141,7 @@ export default function PessoaForm({ pessoa, onClose, onSaved }: PessoaFormProps
           )}
           <button
             type="submit"
-            className="bg-blue-600 text-white rounded-xl px-8 py-3 font-bold shadow hover:bg-blue-700 transition"
+            className="bg-neutral-700 hover:bg-neutral-600 text-white rounded shadow dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-white px-4 py-2 transition-colors disabled:opacity-60"
           >
             Salvar
           </button>

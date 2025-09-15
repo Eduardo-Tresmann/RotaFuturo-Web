@@ -7,12 +7,11 @@ import {
   Table,
   TableHeader,
   TableBody,
-  TableFooter,
   TableHead,
   TableRow,
-  TableCell,
-  TableCaption
+  TableCell
 } from '@/components/ui/table';
+import { Badge } from '@/components/ui/Badge';
 
 interface QuestaoTableProps {
   questoes: Questao[];
@@ -91,26 +90,23 @@ export function QuestaoTable({ questoes, onEdit, onInativar }: QuestaoTableProps
 
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
-      <Table className="text-base min-w-full max-w-6xl mx-auto align-middle rounded overflow-hidden [&_th]:py-4 [&_td]:py-3 [&_th]:text-base [&_td]:text-base">
+      <Table>
         <TableHeader>
           <TableRow className="bg-zinc-300/70">
-            <TableHead className="w-16 text-zinc-900 font-bold uppercase tracking-tight"
-              style={{ width: '6rem', minWidth: '6rem', maxWidth: '6rem', color: '#18181b' }}
-              onClick={() => handleSort('questaoId')}
-            >
-              # {sortKey === 'questaoId' && (sortAsc ? '▲' : '▼')}
-            </TableHead>
-            <TableHead className="text-zinc-900 tracking-tight">Código</TableHead>
-            <TableHead className="text-zinc-900 tracking-tight">Descrição</TableHead>
-            <TableHead className="text-zinc-900 tracking-tight">Tipo</TableHead>
-            <TableHead className="text-zinc-900 tracking-tight">Área</TableHead>
-            <TableHead className="text-zinc-900 tracking-tight">Subárea</TableHead>
-            <TableHead className="text-zinc-900 tracking-tight">Experiência</TableHead>
-            <TableHead className="text-zinc-900 tracking-tight">Nível</TableHead>
-            <TableHead className="cursor-pointer text-zinc-900 tracking-tight" onClick={() => handleSort('questaoAtivo')}>
-              Ativo {sortKey === 'questaoAtivo' && (sortAsc ? '▲' : '▼')}
-            </TableHead>
-            <TableHead className="w-28 text-zinc-900 uppercase tracking-tight" style={{ width: '9rem', minWidth: '7rem', color: '#18181b' }}>Ações</TableHead>
+              <TableHead onClick={() => handleSort('questaoId')}>
+                # {sortKey === 'questaoId' && (sortAsc ? '\u25b2' : '\u25bc')}
+              </TableHead>
+              <TableHead>Código</TableHead>
+              <TableHead>Descrição</TableHead>
+              <TableHead>Tipo</TableHead>
+              <TableHead>Área</TableHead>
+              <TableHead>Subárea</TableHead>
+              <TableHead>Experiência</TableHead>
+              <TableHead>Nível</TableHead>
+              <TableHead onClick={() => handleSort('questaoAtivo')}>
+                Ativo {sortKey === 'questaoAtivo' && (sortAsc ? '\u25b2' : '\u25bc')}
+              </TableHead>
+              <TableHead>Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -122,25 +118,23 @@ export function QuestaoTable({ questoes, onEdit, onInativar }: QuestaoTableProps
             </TableRow>
           ) : (
             paginated.map((questao) => (
-              <TableRow key={questao.questaoId} className={'hover:bg-zinc-50'}>
-                <TableCell className="w-16 border-r border-zinc-300/20" style={{ width: '6rem', minWidth: '6rem', maxWidth: '6rem' }}>{questao.questaoId}</TableCell>
-                <TableCell className="border-r border-zinc-300/20">{questao.questaoCodigo}</TableCell>
-                <TableCell className="border-r border-zinc-300/20">{questao.questaoDescricao}</TableCell>
-                <TableCell className="border-r border-zinc-300/20">{questao.questaoTipoDescricao ?? '-'}</TableCell>
-                <TableCell className="border-r border-zinc-300/20">{questao.area?.areaDescricao ?? '-'}</TableCell>
-                <TableCell className="border-r border-zinc-300/20">{questao.areaSub?.areasDescricao ?? '-'}</TableCell>
-                <TableCell className="border-r border-zinc-300/20">{questao.questaoExperiencia ?? '-'}</TableCell>
-                <TableCell className="border-r border-zinc-300/20">{
-                  questao.questaoNivelDescricao ?? questao.questaoNivel ?? '-'
-                }</TableCell>
-                <TableCell className="border-r border-zinc-300/20">
+              <TableRow key={questao.questaoId}>
+                <TableCell>{questao.questaoId}</TableCell>
+                <TableCell>{questao.questaoCodigo}</TableCell>
+                <TableCell>{questao.questaoDescricao}</TableCell>
+                <TableCell>{questao.questaoTipoDescricao ?? '-'}</TableCell>
+                <TableCell>{questao.area?.areaDescricao ?? '-'}</TableCell>
+                <TableCell>{questao.areaSub?.areasDescricao ?? '-'}</TableCell>
+                <TableCell>{questao.questaoExperiencia ?? '-'}</TableCell>
+                <TableCell>{questao.questaoNivelDescricao ?? questao.questaoNivel ?? '-'}</TableCell>
+                <TableCell>
                   <span className={questao.questaoAtivo ? 'text-green-600 font-bold' : 'text-red-600 font-bold'}>
                     {questao.questaoAtivo ? 'Ativo' : 'Inativo'}
                   </span>
                 </TableCell>
                 <TableCell className="w-28 flex gap-2" style={{ width: '9rem', minWidth: '7rem' }}>
                   <button
-                    className="text-zinc-600 hover:text-blue-500 p-1"
+                    className="text-zinc-600 dark:text-zinc-200 hover:text-blue-500 p-1"
                     title="Editar"
                     onClick={() => onEdit(questao)}
                   >
@@ -168,10 +162,11 @@ export function QuestaoTable({ questoes, onEdit, onInativar }: QuestaoTableProps
             ))
           )}
         </TableBody>
-        <TableFooter className='bg-transparent'>
-          <TableRow>
-            <TableCell colSpan={9} className="text-center">
-              {totalPages > 1 && (
+       
+        {totalPages > 1 && (
+          <tfoot className="bg-transparent">
+            <tr>
+              <td colSpan={11} className="text-center">
                 <div className="flex items-center justify-center gap-2">
                   <button
                     disabled={page === 1}
@@ -191,10 +186,10 @@ export function QuestaoTable({ questoes, onEdit, onInativar }: QuestaoTableProps
                     Próxima
                   </button>
                 </div>
-              )}
-            </TableCell>
-          </TableRow>
-        </TableFooter>
+              </td>
+            </tr>
+          </tfoot>
+        )}
       </Table>
     </div>
   );

@@ -9,6 +9,7 @@ import {
   TableHead,
   TableCell,
 } from '@/components/ui/table';
+import { Badge } from '@/components/ui/Badge';
 
 
 interface NivelQuestao {
@@ -71,31 +72,19 @@ export function QuestaoNivelTable({ niveis, onEdit, onInativar }: QuestaoNivelTa
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
       
-      <Table className="text-base min-w-full max-w-6xl mx-auto align-middle rounded overflow-hidden [&_th]:py-4 [&_td]:py-3 [&_th]:text-base [&_td]:text-base">
+      <Table >
         <TableHeader>
-          <TableRow className="bg-zinc-300/70">
-            <TableHead
-              className="w-16 text-zinc-900 font-bold uppercase tracking-tight"
-              style={{ width: '6rem', minWidth: '6rem', maxWidth: '6rem', color: '#18181b' }}
-              onClick={() => handleSort('quesnId')}
-            >
+          <TableRow>
+            <TableHead onClick={() => handleSort('quesnId')}>
               # {sortKey === 'quesnId' && (sortAsc ? '\u25b2' : '\u25bc')}
             </TableHead>
-            <TableHead
-              className="w-2/5 text-zinc-900 tracking-tight"
-              style={{ width: '50%', minWidth: '18rem', color: '#18181b' }}
-              onClick={() => handleSort('quesnDescricao')}
-            >
+            <TableHead onClick={() => handleSort('quesnDescricao')}>
               Descrição {sortKey === 'quesnDescricao' && (sortAsc ? '\u25b2' : '\u25bc')}
             </TableHead>
-            <TableHead
-              className="text-zinc-900 tracking-tight"
-              style={{ width: '10rem', minWidth: '8rem', color: '#18181b' }}
-              onClick={() => handleSort('quesnAtivo')}
-            >
-              Ativo? {sortKey === 'quesnAtivo' && (sortAsc ? '\u25b2' : '\u25bc')}
+            <TableHead onClick={() => handleSort('quesnAtivo')}>
+              Situação {sortKey === 'quesnAtivo' && (sortAsc ? '\u25b2' : '\u25bc')}
             </TableHead>
-            <TableHead className="w-28 text-zinc-900 uppercase tracking-tight" style={{ width: '9rem', minWidth: '7rem', color: '#18181b' }}>
+            <TableHead>
               Ações
             </TableHead>
           </TableRow>
@@ -109,18 +98,18 @@ export function QuestaoNivelTable({ niveis, onEdit, onInativar }: QuestaoNivelTa
             </TableRow>
           ) : (
             paginated.map((n) => (
-              <TableRow key={n.quesnId} className={'hover:bg-zinc-50'}>
-                <TableCell className="w-16 border-r border-zinc-300/20">{n.quesnId}</TableCell>
-                <TableCell className="w-2/5 border-r border-zinc-300/20">{n.quesnDescricao}</TableCell>
-                <TableCell className="border-r border-zinc-300/20">
+              <TableRow key={n.quesnId}>
+                <TableCell>{n.quesnId}</TableCell>
+                <TableCell>{n.quesnDescricao}</TableCell>
+                <TableCell>
                   {n.quesnAtivo ? (
-                    <span className="inline-block px-2 py-1 rounded bg-green-100 text-green-800 text-xs font-bold">SIM</span>
+                    <Badge color="green" variant="solid" className="shadow-md border border-green-700/30">Ativo</Badge>
                   ) : (
-                    <span className="inline-block px-2 py-1 rounded bg-red-100 text-red-800 text-xs font-bold">NÃO</span>
+                    <Badge color="red" variant="solid" className="shadow-md border border-red-700/30">Inativo</Badge>
                   )}
                 </TableCell>
-                <TableCell className="w-28 flex gap-2">
-                  <button className="text-blue-600 mr-2" onClick={() => onEdit(n)} title="Editar"><Pencil size={16} /></button>
+                <TableCell>
+                  <button className="mr-2" onClick={() => onEdit(n)} title="Editar"><Pencil size={18} /></button>
                   {n.quesnAtivo ? (
                     <button
                       className="text-red-700 hover:text-red-500 p-1"

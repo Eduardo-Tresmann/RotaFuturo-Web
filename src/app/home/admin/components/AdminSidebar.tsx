@@ -11,8 +11,7 @@ export const adminLinks = [
 
 export function AdminSidebar({ current, onSelect }: { current?: string, onSelect?: (key: string) => void }) {
   return (
-    <Sidebar>
-      
+    <Sidebar className="!h-screen !min-h-screen !w-72 !rounded-none !border-r !border-gray-200 dark:!border-neutral-700 !bg-white dark:!bg-neutral-950 shadow-md">
       <nav className="flex flex-col gap-1">
         {adminLinks.map(link => (
           <SidebarItem
@@ -20,6 +19,11 @@ export function AdminSidebar({ current, onSelect }: { current?: string, onSelect
             active={current === link.key}
             icon={link.icon}
             onClick={() => onSelect && onSelect(link.key)}
+            className={
+              current === link.key
+                ? 'bg-gray-100 dark:bg-neutral-800 text-gray-900 dark:text-white font-bold'
+                : 'text-gray-700 dark:text-gray-300'
+            }
           >
             {link.label}
           </SidebarItem>

@@ -16,7 +16,7 @@ export const FormButton = forwardRef<HTMLButtonElement, FormButtonProps>(
         variant={variant}
         size={size}
         className={cn(
-          "w-full",
+          "w-full text-zinc-800 dark:text-zinc-100 bg-zinc-50 dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700",
           className
         )}
         disabled={disabled || loading}

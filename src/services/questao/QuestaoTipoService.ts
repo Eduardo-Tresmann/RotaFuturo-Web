@@ -11,7 +11,6 @@ export const questaoTipoService = {
     return baseApiService.request<TipoQuestao[]>('/questao-tipo');
   },
   async create(data: Partial<TipoQuestao>): Promise<TipoQuestao> {
-    // Garante que envia os campos corretos
     const payload = {
       quetDescricao: data.quetDescricao,
       quetAtivo: data.quetAtivo ?? true,

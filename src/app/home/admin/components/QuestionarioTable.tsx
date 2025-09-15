@@ -1,4 +1,6 @@
 import React, { useState, useMemo } from 'react';
+import { Pencil, Ban, CheckCircle } from 'lucide-react';
+import { Badge } from '@/components/ui/Badge';
 import {
   Table,
   TableHeader,
@@ -72,7 +74,6 @@ export function QuestionarioTable({ questionarios, onEdit, onInativar }: Questio
 
   return (
     <div>
-  {/* Filtro removido conforme solicitado */}
       {showFilters && (
         <div className="mb-4 p-4 bg-gray-50 rounded shadow flex flex-wrap gap-4">
           <div>
@@ -119,53 +120,62 @@ export function QuestionarioTable({ questionarios, onEdit, onInativar }: Questio
         </div>
       )}
       <Table>
-        <TableCaption>Lista de questionários do sistema</TableCaption>
         <TableHeader>
-          <TableRow>
-            <TableHead className="cursor-pointer" onClick={() => handleSort('quesId')}>
-              # {sortKey === 'quesId' && (sortAsc ? '▲' : '▼')}
+          <TableRow className="bg-zinc-300/70 dark:bg-neutral-800">
+            <TableHead className="text-zinc-900 dark:text-zinc-100 font-bold uppercase tracking-tight">
+              #
             </TableHead>
-            <TableHead className="cursor-pointer" onClick={() => handleSort('quesDescricao')}>
-              Descrição {sortKey === 'quesDescricao' && (sortAsc ? '▲' : '▼')}
+            <TableHead className="text-zinc-900 dark:text-zinc-100 tracking-tight">
+              Título
             </TableHead>
-            <TableHead>
-              Tipo de Questionário
+            <TableHead className="text-zinc-900 dark:text-zinc-100 tracking-tight">
+              Área
             </TableHead>
-            <TableHead className="cursor-pointer" onClick={() => handleSort('quesAtivo')}>
-              Ativo {sortKey === 'quesAtivo' && (sortAsc ? '▲' : '▼')}
+            <TableHead className="text-zinc-900 dark:text-zinc-100 tracking-tight">
+              Situação
             </TableHead>
-            <TableHead>Ações</TableHead>
+            <TableHead
+              className="text-zinc-900 dark:text-zinc-100 tracking-tight"
+              style={{ borderRight: '1px solid transparent' }}
+            >
+              Ações
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {paginated.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={4} className="text-center text-gray-400">
+              <TableCell
+                colSpan={4}
+                className="text-center text-gray-400"
+                style={{ borderBottom: '1px solid transparent' }}
+              >
                 Nenhum questionário encontrado
               </TableCell>
             </TableRow>
           ) : (
             paginated.map((questionario) => (
-              <TableRow key={questionario.quesId}>
-                <TableCell>{questionario.quesId}</TableCell>
-                <TableCell>{questionario.quesDescricao}</TableCell>
-                <TableCell>{questionario.questionarioTipo?.descricao || questionario.questionarioTipo?.questDescricao || '-'}</TableCell>
-                <TableCell>
-                  <span
-                    className={
-                      questionario.quesAtivo ? 'text-green-600 font-bold' : 'text-red-600 font-bold'
-                    }
-                  >
-                    {questionario.quesAtivo ? 'Ativo' : 'Inativo'}
-                  </span>
+              <TableRow key={questionario.quesId} className="dark:hover:bg-neutral-900">
+                <TableCell className="dark:text-zinc-100">{questionario.quesId}</TableCell>
+                <TableCell className="dark:text-zinc-100">{questionario.quesDescricao}</TableCell>
+                <TableCell className="dark:text-zinc-100">{questionario.area?.areaDescricao || '-'}</TableCell>
+                <TableCell className="dark:text-zinc-100">
+                  {questionario.quesAtivo ? (
+                    <Badge color="green" variant="solid" className="shadow-md border border-green-700/30">Ativo</Badge>
+                  ) : (
+                    <Badge color="red" variant="solid" className="shadow-md border border-red-700/30">Inativo</Badge>
+                  )}
                 </TableCell>
-                <TableCell className="w-28 flex gap-2" style={{ width: '9rem', minWidth: '7rem' }}>
+                <TableCell
+                  className="w-28 flex gap-2 dark:text-zinc-100"
+                  style={{ width: '9rem', minWidth: '7rem', borderRight: '1px solid transparent' }}
+                >
                   <button
-                    className="text-zinc-600 hover:text-blue-500 p-1"
+                    className="text-zinc-600 dark:text-zinc-200 hover:text-blue-500 p-1"
                     title="Editar"
                     onClick={() => onEdit(questionario)}
                   >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+                    <Pencil size={18} strokeWidth={2.2} />
                   </button>
                   {questionario.quesAtivo ? (
                     <button
@@ -173,7 +183,7 @@ export function QuestionarioTable({ questionarios, onEdit, onInativar }: Questio
                       title="Inativar"
                       onClick={() => onInativar(questionario)}
                     >
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                      <Ban size={18} />
                     </button>
                   ) : (
                     <button
@@ -181,7 +191,7 @@ export function QuestionarioTable({ questionarios, onEdit, onInativar }: Questio
                       title="Ativar"
                       onClick={() => onInativar(questionario)}
                     >
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 15 9"/></svg>
+                      <CheckCircle size={18} />
                     </button>
                   )}
                 </TableCell>
@@ -189,28 +199,10 @@ export function QuestionarioTable({ questionarios, onEdit, onInativar }: Questio
             ))
           )}
         </TableBody>
-        <TableFooter>
+        <TableFooter className="bg-transparent">
           <TableRow>
-            <TableCell colSpan={4} className="text-center">
-              <div className="flex items-center justify-center gap-2">
-                <button
-                  disabled={page === 1}
-                  onClick={() => setPage(page - 1)}
-                  className="px-2 py-1 rounded bg-gray-200 disabled:opacity-50"
-                >
-                  Anterior
-                </button>
-                <span>
-                  Página {page} de {totalPages}
-                </span>
-                <button
-                  disabled={page === totalPages || totalPages === 0}
-                  onClick={() => setPage(page + 1)}
-                  className="px-2 py-1 rounded bg-gray-200 disabled:opacity-50"
-                >
-                  Próxima
-                </button>
-              </div>
+            <TableCell colSpan={5} className="text-center">
+              {/* paginação ou info */}
             </TableCell>
           </TableRow>
         </TableFooter>

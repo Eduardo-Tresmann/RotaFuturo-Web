@@ -64,39 +64,34 @@ export function MateriaTable({ materias, onEdit, onRefresh }: MateriaTableProps)
 
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
-      <Table className="text-base min-w-full max-w-6xl mx-auto align-middle rounded overflow-hidden [&_th]:py-4 [&_td]:py-3 [&_th]:text-base [&_td]:text-base">
+      <Table>
         <TableHeader>
-          <TableRow className="bg-zinc-300/70">
-            <TableHead className="w-16 text-zinc-900 font-bold uppercase tracking-tight"
-              style={{ width: '6rem', minWidth: '6rem', maxWidth: '6rem', color: '#18181b' }}
+          <TableRow className="bg-zinc-300/70 dark:bg-neutral-800">
+            <TableHead
+              className="text-zinc-900 dark:text-zinc-100 font-bold uppercase tracking-tight"
               onClick={() => handleSort('matId')}
             >
               # {sortKey === 'matId' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="w-2/5 text-zinc-900 tracking-tight"
-              style={{ width: '50%', minWidth: '18rem', color: '#18181b' }}
+            <TableHead
+              className="text-zinc-900 dark:text-zinc-100 tracking-tight"
               onClick={() => handleSort('matDescricao')}
             >
               Descrição {sortKey === 'matDescricao' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="text-zinc-900 tracking-tight"
-              style={{ width: '12rem', minWidth: '10rem', color: '#18181b' }}
-            >
+            <TableHead className="text-zinc-900 dark:text-zinc-100 tracking-tight">
               Área
             </TableHead>
-            <TableHead className="text-zinc-900 tracking-tight"
-              style={{ width: '12rem', minWidth: '10rem', color: '#18181b' }}
-            >
+            <TableHead className="text-zinc-900 dark:text-zinc-100 tracking-tight">
               Área Sub
             </TableHead>
-            <TableHead className="text-zinc-900 tracking-tight"
-              style={{ width: '10rem', minWidth: '8rem', color: '#18181b' }}
+            <TableHead
+              className="text-zinc-900 dark:text-zinc-100 tracking-tight"
               onClick={() => handleSort('matAtivo')}
             >
               Situação {sortKey === 'matAtivo' && (sortAsc ? '▲' : '▼')}
             </TableHead>
-            <TableHead className="w-28 text-zinc-900 uppercase tracking-tight"
-              style={{ width: '9rem', minWidth: '7rem', color: '#18181b' }}>
+            <TableHead className="text-zinc-900 dark:text-zinc-100 tracking-tight">
               Ações
             </TableHead>
           </TableRow>
@@ -104,41 +99,27 @@ export function MateriaTable({ materias, onEdit, onRefresh }: MateriaTableProps)
         <TableBody>
           {paginated.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={4} className="text-center text-zinc-400">
+              <TableCell colSpan={6} className="text-center text-zinc-400 dark:text-zinc-500">
                 Nenhuma matéria encontrada
               </TableCell>
             </TableRow>
           ) : (
             paginated.map((materia) => (
-              <TableRow key={materia.matId} className={'hover:bg-zinc-50'}>
-                <TableCell className="w-16 border-r border-zinc-300/20"
-                  style={{ width: '6rem', minWidth: '6rem', maxWidth: '6rem' }}>
-                  {materia.matId}
-                </TableCell>
-                <TableCell className="w-2/5 border-r border-zinc-300/20"
-                  style={{ width: '50%', minWidth: '18rem' }}>
-                  {materia.matDescricao}
-                </TableCell>
-                <TableCell className="border-r border-zinc-300/20"
-                  style={{ width: '12rem', minWidth: '10rem' }}>
-                  {materia.areaDescricao || '-'}
-                </TableCell>
-                <TableCell className="border-r border-zinc-300/20"
-                  style={{ width: '12rem', minWidth: '10rem' }}>
-                  {materia.areaSubDescricao || '-'}
-                </TableCell>
-                <TableCell className="border-r border-zinc-300/20"
-                  style={{ width: '10rem', minWidth: '8rem' }}>
+              <TableRow key={materia.matId} className="dark:hover:bg-neutral-900">
+                <TableCell className="dark:text-zinc-100">{materia.matId}</TableCell>
+                <TableCell className="dark:text-zinc-100">{materia.matDescricao}</TableCell>
+                <TableCell className="dark:text-zinc-100">{materia.areaDescricao || '-'}</TableCell>
+                <TableCell className="dark:text-zinc-100">{materia.areaSubDescricao || '-'}</TableCell>
+                <TableCell className="dark:text-zinc-100">
                   {materia.matAtivo ? (
                     <Badge color="green" variant="solid" className="shadow-md border border-green-700/30">Ativo</Badge>
                   ) : (
                     <Badge color="red" variant="solid" className="shadow-md border border-red-700/30">Inativo</Badge>
                   )}
                 </TableCell>
-                <TableCell className="w-28 flex gap-2"
-                  style={{ width: '9rem', minWidth: '7rem' }}>
+                <TableCell className="dark:text-zinc-100">
                   <button
-                    className="text-zinc-600 hover:text-blue-500 p-1"
+                    className="text-zinc-600 dark:text-zinc-300 hover:text-blue-500 dark:hover:text-blue-400 p-1"
                     title="Editar"
                     onClick={() => onEdit(materia)}
                   >
@@ -146,7 +127,7 @@ export function MateriaTable({ materias, onEdit, onRefresh }: MateriaTableProps)
                   </button>
                   {materia.matAtivo ? (
                     <button
-                      className="text-red-700 hover:text-red-500 p-1"
+                      className="text-red-700 dark:text-red-400 hover:text-red-500 dark:hover:text-red-300 p-1"
                       title="Inativar"
                       onClick={async () => {
                         await materiaService.inativar(materia.matId);
@@ -158,7 +139,7 @@ export function MateriaTable({ materias, onEdit, onRefresh }: MateriaTableProps)
                     </button>
                   ) : (
                     <button
-                      className="text-green-600 hover:text-green-800 p-1"
+                      className="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 p-1"
                       title="Ativar"
                       onClick={async () => {
                         await materiaService.update(materia.matId, { ...materia, matAtivo: true });
@@ -182,17 +163,17 @@ export function MateriaTable({ materias, onEdit, onRefresh }: MateriaTableProps)
                   <button
                     disabled={page === 1}
                     onClick={() => setPage(page - 1)}
-                    className="px-2 py-1 rounded bg-gray-200 disabled:opacity-50"
+                    className="px-2 py-1 rounded bg-gray-200 dark:bg-neutral-700 disabled:opacity-50"
                   >
                     Anterior
                   </button>
-                  <span>
+                  <span className="dark:text-zinc-100">
                     Página {page} de {totalPages}
                   </span>
                   <button
                     disabled={page === totalPages}
                     onClick={() => setPage(page + 1)}
-                    className="px-2 py-1 rounded bg-gray-200 disabled:opacity-50"
+                    className="px-2 py-1 rounded bg-gray-200 dark:bg-neutral-700 disabled:opacity-50"
                   >
                     Próxima
                   </button>
@@ -205,3 +186,4 @@ export function MateriaTable({ materias, onEdit, onRefresh }: MateriaTableProps)
     </div>
   );
 }
+         

@@ -31,8 +31,8 @@ export function SidebarItem({ active, icon, children, className, ...props }: Sid
       className={cn(
         "flex items-center gap-4 px-6 py-4 rounded-xl text-lg font-semibold transition-colors",
         active
-          ? "bg-zinc-200 text-zinc-900 shadow-sm"
-          : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900",
+          ? "bg-zinc-300 text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-100"
+          : "text-zinc-700 hover:bg-zinc-700 hover:text-zinc-300",
         className
       )}
       style={{ minHeight: 56 }}

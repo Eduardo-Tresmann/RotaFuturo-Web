@@ -80,27 +80,60 @@ export function AreaTable({ areas, onEdit, onInativar, onAreaCreated, columnWidt
     <div className="w-full max-w-screen-2xl mx-auto ">
       <Table className="text-base min-w-full max-w-6xl mx-auto align-middle rounded overflow-hidden [&_th]:py-4 [&_td]:py-3 [&_th]:text-base [&_td]:text-base">
         <TableHeader>
-          <TableRow className="bg-zinc-300/70">
-            <TableHead className={columnWidths?.id ? columnWidths.id : "w-16 text-zinc-900 font-bold uppercase tracking-tight"}
-              style={{ width: columnWidths?.id || '6rem', minWidth: columnWidths?.id || '6rem', maxWidth: columnWidths?.id || '6rem', color: '#18181b' }}
+          <TableRow className="bg-zinc-300/70 dark:bg-neutral-800">
+            <TableHead
+              className={
+                columnWidths?.id
+                  ? columnWidths.id
+                  : "w-16 text-zinc-900 dark:text-zinc-100 font-bold uppercase tracking-tight"
+              }
+              style={{
+                width: columnWidths?.id || '6rem',
+                minWidth: columnWidths?.id || '6rem',
+                maxWidth: columnWidths?.id || '6rem',
+                color: undefined 
+              }}
               onClick={() => handleSort('areaId')}
             >
               # {sortKey === 'areaId' && (sortAsc ? '\u25b2' : '\u25bc')}
             </TableHead>
-            <TableHead className={columnWidths?.descricao ? columnWidths.descricao : "w-2/5 text-zinc-900 tracking-tight"}
-              style={{ width: columnWidths?.descricao || '50%', minWidth: columnWidths?.descricao || '18rem', color: '#18181b' }}
+            <TableHead
+              className={
+                columnWidths?.descricao
+                  ? columnWidths.descricao
+                  : "w-2/5 text-zinc-900 dark:text-zinc-100 tracking-tight"
+              }
+              style={{
+                width: columnWidths?.descricao || '50%',
+                minWidth: columnWidths?.descricao || '18rem',
+                color: undefined
+              }}
               onClick={() => handleSort('areaDescricao')}
             >
               Descrição {sortKey === 'areaDescricao' && (sortAsc ? '\u25b2' : '\u25bc')}
             </TableHead>
-            <TableHead className="text-zinc-900 tracking-tight"
-              style={{ width: columnWidths?.situacao || '10rem', minWidth: columnWidths?.situacao || '8rem', color: '#18181b' }}
+            <TableHead
+              className="text-zinc-900 dark:text-zinc-100 tracking-tight"
+              style={{
+                width: columnWidths?.situacao || '10rem',
+                minWidth: columnWidths?.situacao || '8rem',
+                color: undefined
+              }}
               onClick={() => handleSort('areaAtivo')}
             >
               Situação {sortKey === 'areaAtivo' && (sortAsc ? '\u25b2' : '\u25bc')}
             </TableHead>
-            <TableHead className={columnWidths?.acoes ? columnWidths.acoes : "w-28 text-zinc-900 uppercase tracking-tight"}
-              style={{ width: columnWidths?.acoes || '9rem', minWidth: columnWidths?.acoes || '7rem', color: '#18181b' }}>
+            <TableHead
+              className={
+                columnWidths?.acoes
+                  ? columnWidths.acoes
+                  : "w-28 text-zinc-900 dark:text-zinc-100 uppercase tracking-tight"
+              }
+              style={{
+                width: columnWidths?.acoes || '9rem',
+                minWidth: columnWidths?.acoes || '7rem',
+                color: undefined
+              }}>
               Ações
             </TableHead>
           </TableRow>
@@ -108,36 +141,25 @@ export function AreaTable({ areas, onEdit, onInativar, onAreaCreated, columnWidt
         <TableBody>
           {paginated.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={4} className="text-center text-zinc-400">
+              <TableCell colSpan={4} className="text-center text-zinc-400 dark:text-zinc-500">
                 Nenhuma área encontrada
               </TableCell>
             </TableRow>
           ) : (
             paginated.map((area) => (
-              <TableRow
-                key={area.areaId}
-                className={'hover:bg-zinc-50'}
-              >
-                <TableCell className={columnWidths?.id ? columnWidths.id : "w-16 border-r border-zinc-300/20"}
-                  style={{ width: columnWidths?.id || '6rem', minWidth: columnWidths?.id || '6rem', maxWidth: columnWidths?.id || '6rem' }}>
-                  {area.areaId}
-                </TableCell>
-                <TableCell className={columnWidths?.descricao ? columnWidths.descricao : "w-2/5 border-r border-zinc-300/20"}
-                  style={{ width: columnWidths?.descricao || '50%', minWidth: columnWidths?.descricao || '18rem' }}>
-                  {area.areaDescricao}
-                </TableCell>
-                <TableCell className="border-r border-zinc-300/20"
-                  style={{ width: columnWidths?.situacao || '10rem', minWidth: columnWidths?.situacao || '8rem' }}>
+              <TableRow key={area.areaId} className="dark:hover:bg-neutral-900">
+                <TableCell className="dark:text-zinc-100">{area.areaId}</TableCell>
+                <TableCell className="dark:text-zinc-100">{area.areaDescricao}</TableCell>
+                <TableCell>
                   {area.areaAtivo ? (
                     <Badge color="green" variant="solid" className="shadow-md border border-green-700/30">Ativo</Badge>
                   ) : (
                     <Badge color="red" variant="solid" className="shadow-md border border-red-700/30">Inativo</Badge>
                   )}
                 </TableCell>
-                <TableCell className={columnWidths?.acoes ? columnWidths.acoes : "w-28 flex gap-2"}
-                  style={{ width: columnWidths?.acoes || '9rem', minWidth: columnWidths?.acoes || '7rem' }}>
+                <TableCell>
                   <button
-                    className="text-zinc-600 hover:text-blue-500 p-1"
+                    className="text-zinc-600 dark:text-zinc-300 hover:text-blue-500 dark:hover:text-blue-400 p-1"
                     title="Editar"
                     onClick={() => onEdit(area)}
                   >
@@ -145,7 +167,7 @@ export function AreaTable({ areas, onEdit, onInativar, onAreaCreated, columnWidt
                   </button>
                   {area.areaAtivo ? (
                     <button
-                      className="text-red-700 hover:text-red-500 p-1"
+                      className="text-red-700 dark:text-red-400 hover:text-red-500 dark:hover:text-red-300 p-1"
                       title="Inativar"
                       onClick={async () => {
                         await areaService.inativar(area.areaId);
@@ -156,7 +178,7 @@ export function AreaTable({ areas, onEdit, onInativar, onAreaCreated, columnWidt
                     </button>
                   ) : (
                     <button
-                      className="text-green-600 hover:text-green-800 p-1"
+                      className="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 p-1"
                       title="Ativar"
                       onClick={async () => {
                         await areaService.ativar(area.areaId);

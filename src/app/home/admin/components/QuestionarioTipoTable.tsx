@@ -91,9 +91,9 @@ export function QuestionarioTipoTable({ tipos, onEdit, setTipos }: QuestionarioT
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead onClick={() => handleSort('id')}>ID</TableHead>
+            <TableHead onClick={() => handleSort('id')}>#</TableHead>
             <TableHead onClick={() => handleSort('descricao')}>Descrição</TableHead>
-            <TableHead onClick={() => handleSort('ativo')}>Ativo?</TableHead>
+            <TableHead onClick={() => handleSort('ativo')}>Situação</TableHead>
             <TableHead>Ações</TableHead>
           </TableRow>
         </TableHeader>
@@ -111,7 +111,7 @@ export function QuestionarioTipoTable({ tipos, onEdit, setTipos }: QuestionarioT
               </TableCell>
               <TableCell>
                 <button
-                  className="text-zinc-600 hover:text-blue-500 p-1"
+                  className="text-zinc-600 dark:text-zinc-200 hover:text-blue-500 p-1"
                   title="Editar"
                   onClick={() => onEdit(t)}
                 >

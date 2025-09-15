@@ -39,11 +39,12 @@ export const AdminPageContent: React.FC<AdminPageContentProps> = ({
               {tabs.map(tab => (
                 <button
                   key={tab.value}
-                  className={`px-4 py-2 rounded-t-md font-semibold border-b-2 transition-colors ${
-                    currentTab === tab.value
-                      ? 'border-blue-600 text-blue-700 bg-white'
-                      : 'border-transparent text-zinc-500 bg-zinc-100'
-                  }`}
+                  className={`px-4 py-2 rounded-t-md font-semibold border-b-2 transition-colors
+                    ${
+                      currentTab === tab.value
+                        ? 'border-blue-600 text-blue-700 bg-white dark:bg-neutral-900 dark:text-blue-400'
+                        : 'border-transparent text-zinc-500 bg-zinc-100 dark:bg-neutral-800 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-neutral-700'
+                    }`}
                   onClick={() => onTabChange && onTabChange(tab.value)}
                 >
                   {tab.label}
@@ -56,9 +57,9 @@ export const AdminPageContent: React.FC<AdminPageContentProps> = ({
           )}
         </div>
       )}
-      {(tabs || filterButton) && <div className="w-full border-b border-zinc-200" />}
+      {(tabs || filterButton) && <div className="w-full border-b border-zinc-200 dark:border-neutral-700" />}
       {filterModal}
-      <div className="relative w-full overflow-auto shadow-lg rounded bg-white">
+      <div className="relative w-full overflow-auto shadow-lg rounded">
         <div className="min-w-full">{children}</div>
       </div>
     </div>

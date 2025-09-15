@@ -1,14 +1,17 @@
 import { baseApiService } from '@/services/baseApiService';
 
 export interface TipoQuestionario {
-  id: number;
-  descricao: string;
-  ativo: boolean;
+  questId: number;
+  questDescricao: string;
+  questAtivo: boolean;
 }
 
 export const questionarioTipoService = {
   async listAll(): Promise<TipoQuestionario[]> {
     return baseApiService.request<TipoQuestionario[]>('/questionario-tipo');
+  },
+  async search(query: string): Promise<TipoQuestionario[]> {
+    return baseApiService.request<TipoQuestionario[]>(`/questionario-tipo?search=${encodeURIComponent(query)}`);
   },
   async create(data: Partial<TipoQuestionario>): Promise<TipoQuestionario> {
     return baseApiService.request<TipoQuestionario>('/questionario-tipo', {

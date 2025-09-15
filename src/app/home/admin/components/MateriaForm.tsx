@@ -38,8 +38,15 @@ export default function MateriaForm({ materia, onClose }: MateriaFormProps) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!form.matDescricao || !form.matDescricao.trim()) {
+      error({ message: 'Preencha a descrição da matéria.' });
+      return;
+    }
+    if (!form.area) {
+      error({ message: 'Selecione uma área.' });
+      return;
+    }
     try {
-      // Monta payload apenas com os ids de área e subárea
       const payload: any = {
         ...form,
         area: form.area?.areaId ?? form.area,
@@ -59,9 +66,9 @@ export default function MateriaForm({ materia, onClose }: MateriaFormProps) {
   }
 
   return (
-  <section className="w-full max-w-2xl mx-auto bg-white p-8 flex flex-col gap-8" style={{borderBottom: 'none'}}>
-      <h2 className="text-2xl font-bold text-blue-700 text-center tracking-tight mb-2 flex items-center justify-center gap-2">
-        <Layers className="w-7 h-7 text-blue-500" />
+    <section className="w-full max-w-2xl mx-auto bg-white dark:bg-neutral-900 p-8 flex flex-col gap-8 rounded-2xl" style={{borderBottom: 'none'}}>
+      <h2 className="text-2xl font-bold text-blue-700 dark:text-blue-400 text-center tracking-tight mb-2 flex items-center justify-center gap-2">
+        <Layers className="w-7 h-7 text-blue-500 dark:text-blue-400" />
         {form.matId ? 'Editar Matéria' : 'Cadastro de Matéria'}
       </h2>
       <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
@@ -69,18 +76,19 @@ export default function MateriaForm({ materia, onClose }: MateriaFormProps) {
           <TextField
             name="matDescricao"
             type="text"
-            label={<span className="font-medium text-zinc-700">Descrição</span>}
+            label={<span className="font-medium text-zinc-700 dark:text-zinc-200">Descrição</span>}
             value={form.matDescricao || ''}
             onChange={handleChange}
             required
             icon={Tag}
             iconColor="text-blue-400"
             placeholder="Digite o nome da matéria"
+            className="bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg px-4 py-2 transition-colors dark:bg-neutral-800 dark:border-neutral-600 dark:text-gray-100 dark:placeholder:text-neutral-400 pl-10"
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <AutoCompleteField
               name="area"
-              label={<span className="font-medium text-zinc-700">Área</span>}
+              label={<span className="font-medium text-zinc-700 dark:text-zinc-200">Área</span>}
               value={form.area?.areaId ?? ''}
               onChange={async (value) => {
                 const areas = await areaService.listAll();
@@ -92,10 +100,11 @@ export default function MateriaForm({ materia, onClose }: MateriaFormProps) {
                 return areas.map((a: any) => ({ value: Number(a.areaId), label: a.areaDescricao }));
               }}
               required
+              inputClassName="bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg px-4 py-2 transition-colors dark:bg-neutral-800 dark:border-neutral-600 dark:text-gray-100 dark:placeholder:text-neutral-400"
             />
             <AutoCompleteField
               name="areaSub"
-              label={<span className="font-medium text-zinc-700">Subárea</span>}
+              label={<span className="font-medium text-zinc-700 dark:text-zinc-200">Subárea</span>}
               value={form.areaSub?.areasId ?? ''}
               onChange={async (value) => {
                 const subs = await areaSubService.listAll();
@@ -107,20 +116,21 @@ export default function MateriaForm({ materia, onClose }: MateriaFormProps) {
                 return subs.map((s: any) => ({ value: Number(s.areasId), label: s.areasDescricao }));
               }}
               required
+              inputClassName="bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg px-4 py-2 transition-colors dark:bg-neutral-800 dark:border-neutral-600 dark:text-gray-100 dark:placeholder:text-neutral-400"
             />
           </div>
         </div>
         <div className="flex justify-end gap-4 mt-2">
           <button
             type="button"
-            className="px-6 py-2 rounded-xl bg-zinc-100 text-zinc-700 font-semibold border border-zinc-300 hover:bg-zinc-200 transition"
+            className="px-6 py-2 rounded-xl bg-zinc-100 text-zinc-700 font-semibold border border-zinc-300 hover:bg-zinc-200 transition dark:bg-neutral-800 dark:text-gray-100 dark:border-neutral-600 dark:hover:bg-neutral-700"
             onClick={onClose}
           >
             Cancelar
           </button>
           <button
             type="submit"
-            className="px-6 py-2 rounded-xl bg-blue-600 text-white font-bold shadow hover:bg-blue-700 transition"
+            className="px-6 py-2 rounded-xl bg-blue-600 text-white font-bold shadow hover:bg-blue-700 transition dark:bg-blue-800 dark:hover:bg-blue-700"
           >
             Salvar
           </button>

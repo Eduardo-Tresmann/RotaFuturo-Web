@@ -124,10 +124,10 @@ export function AreasAdminContent() {
                 }}
               >
                 <label className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-zinc-700">Descrição da Área</span>
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Descrição da Área</span>
                   <input
                     type="text"
-                    className="border rounded px-3 py-2"
+                    className="border rounded px-3 py-2 bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors dark:bg-neutral-800 dark:border-neutral-600 dark:text-gray-100 dark:placeholder:text-neutral-400"
                     placeholder="Buscar por descrição..."
                     value={areaFilter.descricao}
                     onChange={e => setAreaFilter(f => ({ ...f, descricao: e.target.value }))}
@@ -136,11 +136,11 @@ export function AreasAdminContent() {
                 <label className="flex items-center gap-2">
                   <input
                     type="checkbox"
-                    className="accent-blue-600"
+                    className="accent-blue-600 dark:accent-blue-500"
                     checked={areaFilter.ativo}
                     onChange={e => setAreaFilter(f => ({ ...f, ativo: e.target.checked }))}
                   />
-                  <span className="text-sm text-zinc-700">Somente áreas ativas</span>
+                  <span className="text-sm text-zinc-700 dark:text-zinc-200">Somente áreas ativas</span>
                 </label>
                 <div className="flex justify-end gap-2 mt-2">
                   <button
@@ -150,7 +150,7 @@ export function AreasAdminContent() {
                   >
                     Limpar filtros
                   </button>
-                  <button type="button" className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300" onClick={() => setShowFilters(false)}>Cancelar</button>
+                  <button type="button" className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300 dark:bg-neutral-700 dark:text-gray-100 dark:hover:bg-neutral-600" onClick={() => setShowFilters(false)}>Cancelar</button>
                   <button type="submit" className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Filtrar</button>
                 </div>
               </form>
@@ -163,20 +163,20 @@ export function AreasAdminContent() {
                 }}
               >
                 <label className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-zinc-700">Descrição da Subárea</span>
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Descrição da Subárea</span>
                   <input
                     type="text"
-                    className="border rounded px-3 py-2"
+                    className="border rounded px-3 py-2 bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors dark:bg-neutral-800 dark:border-neutral-600 dark:text-gray-100 dark:placeholder:text-neutral-400"
                     placeholder="Buscar por descrição..."
                     value={subFilter.descricao}
                     onChange={e => setSubFilter(f => ({ ...f, descricao: e.target.value }))}
                   />
                 </label>
                 <label className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-zinc-700">Área vinculada</span>
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Área vinculada</span>
                   <input
                     type="text"
-                    className="border rounded px-3 py-2"
+                    className="border rounded px-3 py-2 bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors dark:bg-neutral-800 dark:border-neutral-600 dark:text-gray-100 dark:placeholder:text-neutral-400"
                     placeholder="Buscar por área..."
                     value={subFilter.area}
                     onChange={e => setSubFilter(f => ({ ...f, area: e.target.value }))}
@@ -185,11 +185,11 @@ export function AreasAdminContent() {
                 <label className="flex items-center gap-2">
                   <input
                     type="checkbox"
-                    className="accent-green-600"
+                    className="accent-green-600 dark:accent-green-500"
                     checked={subFilter.ativo}
                     onChange={e => setSubFilter(f => ({ ...f, ativo: e.target.checked }))}
                   />
-                  <span className="text-sm text-zinc-700">Somente subáreas ativas</span>
+                  <span className="text-sm text-zinc-700 dark:text-zinc-200">Somente subáreas ativas</span>
                 </label>
                 <div className="flex justify-end gap-2 mt-2">
                   <button
@@ -199,7 +199,7 @@ export function AreasAdminContent() {
                   >
                     Limpar filtros
                   </button>
-                  <button type="button" className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300" onClick={() => setShowFilters(false)}>Cancelar</button>
+                  <button type="button" className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300 dark:bg-neutral-700 dark:text-gray-100 dark:hover:bg-neutral-600" onClick={() => setShowFilters(false)}>Cancelar</button>
                   <button type="submit" className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Filtrar</button>
                 </div>
               </form>

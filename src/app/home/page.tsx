@@ -11,6 +11,7 @@ import ProtectedRoute from '@/components/context/ProtectedRoute';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Stepper from '@/components/Stepper';
+import { Button } from '@/components/ui/button';
 import { usePessoa } from '@/hooks/usePessoa';
 import { ProfileFormStepper } from './components/ProfileFormStepper';
 import { useAuthContext } from '@/components/context/AuthContext';
@@ -23,8 +24,6 @@ export default function PaginaHome() {
   const [currentStep, setCurrentStep] = useState(0);
   const steps = ['Boas-vindas', 'Informações', 'Perfil'];
 
-  if (!authResolved) return <div>Carregando...</div>;
-
   // Exibe o stepper em fullpage se não houver pessoa vinculada
   useEffect(() => {
     if (!loading && !pessoa) {
@@ -36,30 +35,53 @@ export default function PaginaHome() {
     if (showStepper) {
       return (
         <Stepper steps={steps} currentStep={currentStep} fullpage>
-          {/* Conteúdo de cada passo */}
+          {/* Passo 1 */}
           {currentStep === 0 && (
-            <div className="text-center">
-              <p className="mb-6 text-lg">Bem-vindo! Siga os passos para completar seu cadastro.</p>
-              <button
-                className="px-6 py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
-                onClick={() => setCurrentStep(1)}
-              >
-                Próximo
-              </button>
+            <div className="w-full flex flex-col flex-1 max-w-2xl mx-auto bg-white/90 p-10 border-t border-x border-zinc-100 h-[80vh] min-h-[400px] justify-between">
+              <div className="flex-1 flex flex-col items-center justify-center">
+                <p className="mb-6 text-lg">Bem-vindo! Siga os passos para completar seu cadastro.</p>
+              </div>
+              <div className="flex justify-center gap-4 mt-8 w-full">
+                <Button
+                  className="w-36 px-8 py-3 bg-blue-600 text-white font-bold rounded shadow hover:bg-blue-700 transition text-base"
+                  onClick={() => setCurrentStep(1)}
+                >
+                  Próximo
+                </Button>
+              </div>
             </div>
           )}
+          {/* Passo 2 */}
           {currentStep === 1 && (
-            <div className="text-center">
-              <p className="mb-6 text-lg">Passo 2: (Conteúdo futuro)</p>
-              <button
-                className="px-6 py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
-                onClick={() => setCurrentStep(2)}
-              >
-                Próximo
-              </button>
+            <div className="w-full flex flex-col flex-1 max-w-2xl mx-auto bg-white/90 p-10 border-t border-x border-zinc-100 h-[80vh] min-h-[400px] justify-between">
+              <div className="flex-1 flex flex-col items-center justify-center">
+                <p className="mb-6 text-lg">Passo 2: (Conteúdo futuro)</p>
+              </div>
+              <div className="flex justify-center gap-4 mt-8 w-full">
+                <Button
+                  className="w-36 px-8 py-3 font-bold text-base bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  onClick={() => setCurrentStep(0)}
+                  type="button"
+                  variant="secondary"
+                >
+                  Voltar
+                </Button>
+                <Button
+                  className="w-36 px-8 py-3 bg-blue-600 text-white font-bold rounded shadow hover:bg-blue-700 transition text-base"
+                  onClick={() => setCurrentStep(2)}
+                >
+                  Próximo
+                </Button>
+              </div>
             </div>
           )}
-          {currentStep === 2 && <ProfileFormStepper onFinish={() => setShowStepper(false)} />}
+          {/* Passo 3 */}
+          {currentStep === 2 && (
+            <ProfileFormStepper
+              onFinish={() => setShowStepper(false)}
+              onBack={() => setCurrentStep(1)}
+            />
+          )}
         </Stepper>
       );
     }

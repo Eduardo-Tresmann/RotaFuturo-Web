@@ -14,6 +14,7 @@ interface AutoCompleteFieldProps {
   onChange: (value: string | number) => void;
   fetchOptions: (query: string) => Promise<Option[]>;
   required?: boolean;
+  inputClassName?: string; // Adicione esta linha
 }
 
 export function AutoCompleteField({
@@ -23,13 +24,12 @@ export function AutoCompleteField({
   onChange,
   fetchOptions,
   required,
+  inputClassName = '', // Adicione esta linha
 }: AutoCompleteFieldProps) {
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<Option[]>([]);
   const [showOptions, setShowOptions] = useState(false);
 
-  // Sempre que o value mudar, sincroniza o inputValue com o label correspondente,
-  // buscando a opção se necessário
   useEffect(() => {
     async function syncInputValue() {
       if (value !== undefined && value !== null) {
@@ -49,16 +49,11 @@ export function AutoCompleteField({
       }
     }
     syncInputValue();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   useEffect(() => {
     const safeValue = typeof inputValue === 'string' ? inputValue : String(inputValue ?? '');
-    if (safeValue.length > 0) {
-      fetchOptions(safeValue).then(setOptions);
-    } else {
-      setOptions([]);
-    }
+    fetchOptions(safeValue).then(setOptions);
   }, [inputValue, fetchOptions]);
 
   return (
@@ -72,11 +67,16 @@ export function AutoCompleteField({
           id={name}
           name={name}
           type="text"
-          className="w-full border rounded-xl pl-10 pr-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition text-zinc-800 placeholder:text-zinc-400"
+          className={`w-full border rounded-xl pl-10 pr-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition text-zinc-800 placeholder:text-zinc-400 ${inputClassName}`}
           value={inputValue ?? ''}
           onChange={(e) => {
             setInputValue(e.target.value ?? '');
             setShowOptions(true);
+          }}
+          onFocus={() => {
+            setShowOptions(true);
+            // Busca todas as opções ao focar
+            fetchOptions('').then(setOptions);
           }}
           autoComplete="off"
           required={required}

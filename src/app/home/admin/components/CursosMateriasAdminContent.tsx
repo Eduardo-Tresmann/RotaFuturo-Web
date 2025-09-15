@@ -97,12 +97,22 @@ export function CursosMateriasAdminContent() {
             {tab === 'cursos' ? (
               <form className="flex flex-col gap-4 py-2" onSubmit={e => { e.preventDefault(); setShowCursoFilter(false); }}>
                 <label className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-zinc-700">Descrição</span>
-                  <input type="text" className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none" placeholder="Buscar por descrição..." value={cursoFilter.descricao} onChange={e => setCursoFilter(f => ({ ...f, descricao: e.target.value }))} />
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Descrição</span>
+                  <input
+                    type="text"
+                    className="border rounded px-3 py-2 bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 outline-none transition-colors dark:bg-neutral-800 dark:border-neutral-600 dark:text-gray-100 dark:placeholder:text-neutral-400"
+                    placeholder="Buscar por descrição..."
+                    value={cursoFilter.descricao}
+                    onChange={e => setCursoFilter(f => ({ ...f, descricao: e.target.value }))}
+                  />
                 </label>
                 <label className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-zinc-700">Ativo</span>
-                  <select className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none" value={cursoFilter.ativo} onChange={e => setCursoFilter(f => ({ ...f, ativo: e.target.value }))}>
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Ativo</span>
+                  <select
+                    className="border rounded px-3 py-2 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none transition-colors dark:bg-neutral-800 dark:border-neutral-600 dark:text-gray-100"
+                    value={cursoFilter.ativo}
+                    onChange={e => setCursoFilter(f => ({ ...f, ativo: e.target.value }))}
+                  >
                     <option value="">Todos</option>
                     <option value="true">Ativo</option>
                     <option value="false">Inativo</option>
@@ -116,19 +126,40 @@ export function CursosMateriasAdminContent() {
                   >
                     Limpar filtros
                   </button>
-                  <button type="button" className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300 border border-zinc-300" onClick={() => setShowCursoFilter(false)}>Cancelar</button>
-                  <button type="submit" className="px-4 py-2 rounded bg-zinc-800 text-white hover:bg-zinc-700">Filtrar</button>
+                  <button
+                    type="button"
+                    className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300 border border-zinc-300 dark:bg-neutral-700 dark:text-gray-100 dark:border-neutral-600 dark:hover:bg-neutral-600"
+                    onClick={() => setShowCursoFilter(false)}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 rounded bg-zinc-800 text-white hover:bg-zinc-700 dark:bg-blue-600 dark:hover:bg-blue-700"
+                  >
+                    Filtrar
+                  </button>
                 </div>
               </form>
             ) : (
               <form className="flex flex-col gap-4 py-2" onSubmit={e => { e.preventDefault(); setShowMateriaFilter(false); }}>
                 <label className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-zinc-700">Descrição</span>
-                  <input type="text" className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none" placeholder="Buscar por descrição..." value={materiaFilter.descricao} onChange={e => setMateriaFilter(f => ({ ...f, descricao: e.target.value }))} />
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Descrição</span>
+                  <input
+                    type="text"
+                    className="border rounded px-3 py-2 bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 outline-none transition-colors dark:bg-neutral-800 dark:border-neutral-600 dark:text-gray-100 dark:placeholder:text-neutral-400"
+                    placeholder="Buscar por descrição..."
+                    value={materiaFilter.descricao}
+                    onChange={e => setMateriaFilter(f => ({ ...f, descricao: e.target.value }))}
+                  />
                 </label>
                 <label className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-zinc-700">Ativo</span>
-                  <select className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none" value={materiaFilter.ativo} onChange={e => setMateriaFilter(f => ({ ...f, ativo: e.target.value }))}>
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Ativo</span>
+                  <select
+                    className="border rounded px-3 py-2 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none transition-colors dark:bg-neutral-800 dark:border-neutral-600 dark:text-gray-100"
+                    value={materiaFilter.ativo}
+                    onChange={e => setMateriaFilter(f => ({ ...f, ativo: e.target.value }))}
+                  >
                     <option value="">Todos</option>
                     <option value="true">Ativo</option>
                     <option value="false">Inativo</option>
@@ -142,8 +173,19 @@ export function CursosMateriasAdminContent() {
                   >
                     Limpar filtros
                   </button>
-                  <button type="button" className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300 border border-zinc-300" onClick={() => setShowMateriaFilter(false)}>Cancelar</button>
-                  <button type="submit" className="px-4 py-2 rounded bg-zinc-800 text-white hover:bg-zinc-700">Filtrar</button>
+                  <button
+                    type="button"
+                    className="px-4 py-2 rounded bg-zinc-200 text-zinc-700 hover:bg-zinc-300 border border-zinc-300 dark:bg-neutral-700 dark:text-gray-100 dark:border-neutral-600 dark:hover:bg-neutral-600"
+                    onClick={() => setShowMateriaFilter(false)}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 rounded bg-zinc-800 text-white hover:bg-zinc-700 dark:bg-blue-600 dark:hover:bg-blue-700"
+                  >
+                    Filtrar
+                  </button>
                 </div>
               </form>
             )}

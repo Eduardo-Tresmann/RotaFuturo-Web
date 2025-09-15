@@ -26,7 +26,6 @@ export const useAuth = (): AuthContextType => {
   const carregarUsuario = useCallback(async () => {
     setLoading(true);
     try {
-      
       const token = authService.getToken();
       if (token && authService.isAuthenticated()) {
         const currentUser = await usuarioService.getCurrentUser();
@@ -36,7 +35,6 @@ export const useAuth = (): AuthContextType => {
         authService.logout();
       }
     } catch (error) {
-      console.error('Erro ao carregar usuário:', error);
       setUser(null);
       authService.logout();
     } finally {
@@ -55,9 +53,22 @@ export const useAuth = (): AuthContextType => {
       try {
         await authService.login(credentials.usuEmail, credentials.usuSenha);
         await carregarUsuario();
-        router.push('/home');
+        
+        const checkAuth = async (retries = 10) => {
+          for (let i = 0; i < retries; i++) {
+            const token = authService.getToken();
+            if (token) {
+              return true;
+            }
+            await new Promise(res => setTimeout(res, 100));
+          }
+          return false;
+        };
+        const isAuth = await checkAuth();
+        if (isAuth) {
+          router.push('/home');
+        }
       } catch (error: any) {
-        console.error('Erro no login:', error.message);
         throw error;
       } finally {
         setLoading(false);
@@ -73,7 +84,6 @@ export const useAuth = (): AuthContextType => {
         await authService.registrar(dadosUsuario.usuEmail, dadosUsuario.usuSenha);
         await login(dadosUsuario);
       } catch (error: any) {
-        console.error('Erro no registro:', error.message);
         throw error;
       } finally {
         setLoading(false);

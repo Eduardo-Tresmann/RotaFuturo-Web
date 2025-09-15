@@ -281,7 +281,7 @@ export default function AuthPage() {
               ].map((step, idx) => (
                 <React.Fragment key={step.title}>
                   <div
-                    className={`group flex flex-col items-center justify-start md:w-1/4 px-2 animate-fadeInUp ${
+                    className={`group flex flex-col items-center justify-start md:w-1/4 px-2  ${
                       activeSection === 'como-funciona' ? 'step-active' : ''
                     }`}
                     style={{ animationDelay: `${idx * 0.1}s`, minHeight: '220px' }}
@@ -317,20 +317,7 @@ export default function AuthPage() {
             </div>
           </div>
 
-          <style>{`
-              @keyframes fadeInUp {
-                from { opacity: 0; transform: translateY(40px); }
-                to { opacity: 1; transform: translateY(0); }
-              }
-              .animate-fadeInUp {
-                animation: fadeInUp 0.7s cubic-bezier(.23,1,.32,1) both;
-              }
-              .step-active .rounded-full {
-                box-shadow: 0 0 0 6px #252525ff, 0 4px 24px rgba(0, 0, 0, 0.15);
-              }
-              .group { min-height: 220px; }
-              .group .rounded-full { margin-bottom: 0; }
-            `}</style>
+         
         </div>
       </section>
 
@@ -344,7 +331,7 @@ export default function AuthPage() {
             Perguntas Frequentes
           </h2>
           <div className="space-y-6">
-            <div className="bg-zinc-100 dark:bg-zinc-900 rounded-2xl shadow-2xl 'border'  p-6 flex flex-col transition hover:scale-105">
+            <div className="bg-zinc-100 dark:bg-zinc-900 rounded-2xl shadow-2xl border  p-6 flex flex-col transition hover:scale-105">
               <span className="font-bold text-zinc-900 dark:text-zinc-50">
                 O simulador é gratuito?
               </span>

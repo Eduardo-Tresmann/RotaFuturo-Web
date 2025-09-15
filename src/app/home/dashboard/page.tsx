@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import { useAuthContext } from '@/components/context/AuthContext';
+// LoaderRF agora é global pelo layout
 import ProtectedRoute from '@/components/context/ProtectedRoute';
 import { usePessoa } from '@/hooks/usePessoa';
 
@@ -21,7 +22,7 @@ export default function PaginaDashboard() {
   const { pessoa } = usePessoa();
   const router = useRouter();
 
-  if (!authResolved) return <div>Carregando...</div>;
+  // LoaderRF agora é global pelo layout
 
   const headerNavItems = [
     { href: '/home/desafios', label: 'Desafios' },
