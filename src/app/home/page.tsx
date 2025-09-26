@@ -14,6 +14,7 @@ import Stepper from '@/components/Stepper';
 import { Button } from '@/components/ui/button';
 import { usePessoa } from '@/hooks/usePessoa';
 import { ProfileFormStepper } from './components/ProfileFormStepper';
+import { VocationalTestStepper } from '@/components/VocationalTestStepper';
 import { useAuthContext } from '@/components/context/AuthContext';
 
 export default function PaginaHome() {
@@ -22,7 +23,7 @@ export default function PaginaHome() {
   const { pessoa, loading } = usePessoa();
   const [showStepper, setShowStepper] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
-  const steps = ['Boas-vindas', 'Informações', 'Perfil'];
+  const steps = ['Teste Vocacional', 'Informações', 'Perfil'];
 
   // Exibe o stepper em fullpage se não houver pessoa vinculada
   useEffect(() => {
@@ -35,21 +36,13 @@ export default function PaginaHome() {
     if (showStepper) {
       return (
         <Stepper steps={steps} currentStep={currentStep} fullpage>
-          {/* Passo 1 */}
+          {/* Passo 1 - Teste Vocacional */}
           {currentStep === 0 && (
-            <div className="w-full flex flex-col flex-1 max-w-2xl mx-auto bg-white/90 p-10 border-t border-x border-zinc-100 h-[80vh] min-h-[400px] justify-between">
-              <div className="flex-1 flex flex-col items-center justify-center">
-                <p className="mb-6 text-lg">Bem-vindo! Siga os passos para completar seu cadastro.</p>
-              </div>
-              <div className="flex justify-center gap-4 mt-8 w-full">
-                <Button
-                  className="w-36 px-8 py-3 bg-blue-600 text-white font-bold rounded shadow hover:bg-blue-700 transition text-base"
-                  onClick={() => setCurrentStep(1)}
-                >
-                  Próximo
-                </Button>
-              </div>
-            </div>
+            <VocationalTestStepper
+              testeId={1} // ID do teste vocacional, pode ser dinâmico
+              usuarioId={pessoa?.usuId ?? 0} // Ajuste conforme contexto de usuário
+              onFinish={() => setCurrentStep(1)}
+            />
           )}
           {/* Passo 2 */}
           {currentStep === 1 && (

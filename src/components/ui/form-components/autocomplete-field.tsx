@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FormLabel } from './form-label';
 import { Search } from 'lucide-react';
 
@@ -29,16 +29,33 @@ export function AutoCompleteField({
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<Option[]>([]);
   const [showOptions, setShowOptions] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setShowOptions(false);
+      }
+    }
+    if (showOptions) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showOptions]);
 
   useEffect(() => {
     async function syncInputValue() {
       if (value !== undefined && value !== null) {
-        let selected = options.find(opt => String(opt.value) === String(value));
+        let selected = options.find((opt) => String(opt.value) === String(value));
         if (!selected && typeof fetchOptions === 'function') {
           const fetched = await fetchOptions('');
-          const found = fetched.find(opt => String(opt.value) === String(value));
+          const found = fetched.find((opt) => String(opt.value) === String(value));
           if (found) {
-            const filtered = options.filter(opt => String(opt.value) !== String(found.value));
+            const filtered = options.filter((opt) => String(opt.value) !== String(found.value));
             setOptions([found, ...filtered]);
             selected = found;
           }
@@ -57,7 +74,7 @@ export function AutoCompleteField({
   }, [inputValue, fetchOptions]);
 
   return (
-    <div className="w-full space-y-2 relative">
+    <div className="w-full space-y-2 relative" ref={containerRef}>
       <FormLabel htmlFor={name} required={required}>
         {label}
       </FormLabel>
@@ -84,7 +101,10 @@ export function AutoCompleteField({
         />
       </div>
       {showOptions && options.length > 0 && (
-        <ul className="absolute z-20 bg-white border-t border-l border-r border-zinc-200 rounded-xl shadow-lg w-full mt-2 max-h-56 overflow-auto animate-fade-in" style={{borderBottom: 'none'}}>
+        <ul
+          className="absolute z-20 bg-white border-t border-l border-r border-zinc-200 rounded-xl shadow-lg w-full mt-2 max-h-56 overflow-auto animate-fade-in"
+          style={{ borderBottom: 'none' }}
+        >
           {options.map((opt, idx) => (
             <li
               key={String(opt.value) + '-' + idx}
@@ -105,8 +125,14 @@ export function AutoCompleteField({
           animation: fadeIn 0.18s ease;
         }
         @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(8px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(8px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
       `}</style>
     </div>
