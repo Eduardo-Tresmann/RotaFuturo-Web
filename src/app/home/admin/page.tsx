@@ -20,6 +20,7 @@ import { CursosMateriasAdminContent } from './components/CursosMateriasAdminCont
 import { AreasAdminContent } from './components/AreasAdminContent';
 import { AreaSubAdminContent } from './components/AreaSubAdminContent';
 import { AdminSidebar, adminLinks } from './components/AdminSidebar';
+import { TestesAdminContent } from './components/TestesAdminContent';
 import { HeaderHome } from '@/components/HeaderHome';
 import {
   Breadcrumb,
@@ -39,6 +40,7 @@ const moduloComponents: Record<string, React.ComponentType> = {
   cursos: CursosMateriasAdminContent,
   areas: AreasAdminContent,
   areasub: AreaSubAdminContent,
+  testes: TestesAdminContent,
 };
 
 export default function AdminHome() {
