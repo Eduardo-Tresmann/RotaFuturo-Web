@@ -20,6 +20,7 @@ import { CursosMateriasAdminContent } from './components/CursosMateriasAdminCont
 import { AreasAdminContent } from './components/AreasAdminContent';
 import { AreaSubAdminContent } from './components/AreaSubAdminContent';
 import { AdminSidebar, adminLinks } from './components/AdminSidebar';
+import { MobileAdminTabs } from './components/MobileAdminTabs';
 import { TestesAdminContent } from './components/TestesAdminContent';
 import { HeaderHome } from '@/components/HeaderHome';
 import {
@@ -83,16 +84,17 @@ export default function AdminHome() {
               </Breadcrumb>
             }
           />
-          <div className="flex flex-1 flex-row gap-8 w-full">
+          <div className="flex flex-1 flex-col md:flex-row gap-0 md:gap-8 w-full">
             <AdminSidebar current={moduloSelecionado} onSelect={setModuloSelecionado} />
-            <div className="flex-1 flex flex-col gap-4 w-full py-6 px-4">
-              <div className="flex flex-col items-center ">
-                <div className="flex items-center gap-2">
-                  <Building2 className="w-8 h-8 text-blue-700 dark:text-zinc-300" />
-                  <h1 className="text-3xl font-extrabold text-zinc-800 dark:text-zinc-100 tracking-tight">
+            <div className="flex-1 flex flex-col gap-4 w-full py-4 md:py-6 px-2 md:px-4">
+              <div className="flex flex-col items-center">
+                <div className="flex items-center gap-2 mb-4">
+                  <Building2 className="w-6 h-6 md:w-8 md:h-8 text-blue-700 dark:text-zinc-300" />
+                  <h1 className="text-xl md:text-3xl font-extrabold text-zinc-800 dark:text-zinc-100 tracking-tight">
                     Administração
                   </h1>
                 </div>
+                <MobileAdminTabs current={moduloSelecionado} onSelect={setModuloSelecionado} />
               </div>
               <div className="w-full max-w-screen-2xl mx-auto">{renderModulo()}</div>
             </div>

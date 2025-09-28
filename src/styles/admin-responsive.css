@@ -1,0 +1,101 @@
+/* Estilos responsivos para tabelas e componentes administrativos */
+
+/* Tabelas responsivas */
+.responsive-table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.responsive-table {
+  min-width: 640px; /* Garante que a tabela não fique muito espremida em telas pequenas */
+  width: 100%;
+}
+
+/* Formulários responsivos */
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .admin-form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .admin-form-grid {
+    gap: 1.5rem;
+  }
+}
+
+/* Botões e actions responsivos */
+.admin-actions-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+@media (max-width: 639px) {
+  .admin-actions-flex {
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  /* Ajuste para botões em telas pequenas */
+  .admin-actions-flex button {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+/* Layout de cards para telas pequenas */
+.admin-responsive-card {
+  display: block;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.5rem;
+  background-color: white;
+}
+
+.dark .admin-responsive-card {
+  background-color: #262626;
+  border: 1px solid #404040;
+}
+
+@media (max-width: 639px) {
+  .admin-table-row-title {
+    font-weight: 600;
+    color: #4b5563;
+    margin-bottom: 0.25rem;
+  }
+
+  .dark .admin-table-row-title {
+    color: #d1d5db;
+  }
+
+  .admin-table-row-content {
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Melhorias nos modais para telas pequenas */
+@media (max-width: 639px) {
+  .admin-modal-content {
+    padding: 1rem !important;
+  }
+
+  .admin-modal-title {
+    font-size: 1.25rem !important;
+  }
+
+  .admin-modal-form {
+    gap: 0.75rem !important;
+  }
+}

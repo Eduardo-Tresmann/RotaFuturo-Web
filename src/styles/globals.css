@@ -3,6 +3,36 @@ body,
 * {
   font-family: 'Montserrat', 'sans-serif' !important;
 }
+
+/* Garantir que o body não tenha um z-index maior */
+body {
+  position: relative;
+  z-index: 1;
+}
+
+/* Estilização para o stepper fullpage */
+.fullscreen-stepper {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  min-height: 100vh !important;
+  z-index: 99999 !important;
+  background-color: white !important;
+  isolation: isolate !important;
+  overflow-y: auto !important;
+}
+
+/* Classe para o body quando o stepper fullpage está ativo */
+body.stepper-fullpage {
+  overflow: visible !important;
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+}
+
 @font-face {
   font-family: 'Montserrat';
   src: url('/fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
@@ -145,12 +175,19 @@ body,
   box-shadow: 0 0 30px rgba(102, 126, 234, 0.4);
 }
 
-
 @keyframes fade-in-out {
-  0% { opacity: 0.2; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { opacity: 0.2; }
+  0% {
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
 }
 .animate-fade-in-out {
   animation: fade-in-out 1.6s ease-in-out infinite;

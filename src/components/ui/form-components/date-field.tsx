@@ -1,11 +1,11 @@
-import * as React from "react";
-import { format, parse } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
-import { DayPicker } from "react-day-picker";
-import { CalendarDropdown } from "./calendar-dropdown";
-import "react-day-picker/dist/style.css";
+import * as React from 'react';
+import { format, parse } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { Calendar as CalendarIcon } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
+import { DayPicker } from 'react-day-picker';
+import { CalendarDropdown } from './calendar-dropdown';
+import 'react-day-picker/dist/style.css';
 
 interface DateFieldProps {
   label?: string;
@@ -36,7 +36,9 @@ export const DateField: React.FC<DateFieldProps> = ({
       selected = parse(value, 'dd/MM/yyyy', new Date());
     }
   }
-  const [inputValue, setInputValue] = React.useState(selected ? format(selected, 'dd/MM/yyyy') : '');
+  const [inputValue, setInputValue] = React.useState(
+    selected ? format(selected, 'dd/MM/yyyy') : '',
+  );
 
   return (
     <div className="w-full space-y-2">
@@ -55,12 +57,33 @@ export const DateField: React.FC<DateFieldProps> = ({
               placeholder="dd/mm/aaaa"
               className={
                 className ||
-                "flex h-12 w-full items-center rounded-xl border-2 border-zinc-200 dark:border-zinc-700 bg-white dark:bg-neutral-900 pl-10 pr-3 py-3 text-sm text-zinc-800 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:border-blue-400 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 shadow-soft hover:shadow-glow"
+                'flex h-12 w-full items-center rounded-xl border-2 border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 pl-10 pr-3 py-3 text-sm text-zinc-800 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-900 focus-visible:border-blue-400 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 shadow-soft hover:shadow-glow'
               }
               value={inputValue}
-              onChange={e => {
-                const val = e.target.value;
-                setInputValue(val);
+              onChange={(e) => {
+                let val = e.target.value;
+
+                // Remover qualquer caracter não numérico
+                const nums = val.replace(/[^0-9]/g, '');
+
+                // Formatar automaticamente como 18/04/1998
+                if (nums.length === 8) {
+                  val = `${nums.slice(0, 2)}/${nums.slice(2, 4)}/${nums.slice(4, 8)}`;
+                  setInputValue(val);
+                } else if (nums.length > 8) {
+                  // Limita a entrada a 8 dígitos
+                  val = `${nums.slice(0, 2)}/${nums.slice(2, 4)}/${nums.slice(4, 8)}`;
+                  setInputValue(val);
+                } else {
+                  // Adiciona as barras conforme digita
+                  if (nums.length > 2 && nums.length <= 4) {
+                    val = `${nums.slice(0, 2)}/${nums.slice(2)}`;
+                  } else if (nums.length > 4) {
+                    val = `${nums.slice(0, 2)}/${nums.slice(2, 4)}/${nums.slice(4)}`;
+                  }
+                  setInputValue(val);
+                }
+
                 if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
                   const parsed = parse(val, 'dd/MM/yyyy', new Date());
                   if (!isNaN(parsed.getTime())) {
@@ -73,7 +96,24 @@ export const DateField: React.FC<DateFieldProps> = ({
                   onChange(null);
                 }
               }}
-              onBlur={e => {
+              onBlur={(e) => {
+                // Tenta formatar se for uma sequência de números
+                const nums = e.target.value.replace(/[^0-9]/g, '');
+                if (nums.length === 8) {
+                  const formattedVal = `${nums.slice(0, 2)}/${nums.slice(2, 4)}/${nums.slice(
+                    4,
+                    8,
+                  )}`;
+                  setInputValue(formattedVal);
+
+                  const parsed = parse(formattedVal, 'dd/MM/yyyy', new Date());
+                  if (!isNaN(parsed.getTime())) {
+                    // Salva no formato yyyy-MM-dd
+                    onChange(format(parsed, 'yyyy-MM-dd'));
+                    return;
+                  }
+                }
+
                 // Se não for válido, limpa
                 if (!/^\d{2}\/\d{2}\/\d{4}$/.test(e.target.value)) {
                   setInputValue('');
@@ -90,13 +130,13 @@ export const DateField: React.FC<DateFieldProps> = ({
         <PopoverContent
           side="bottom"
           align="start"
-          className="min-w-[240px] max-w-[320px] p-0 bg-white dark:bg-neutral-900 rounded-xl shadow-lg border border-zinc-200 dark:border-neutral-700 z-[9999] animate-datepicker-fade-slide"
+          className="min-w-[240px] max-w-[320px] p-0 bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-zinc-200 dark:border-zinc-700 z-[9999] animate-datepicker-fade-slide"
           style={{ zIndex: 9999 }}
         >
           <DayPicker
             mode="single"
             selected={selected}
-            onSelect={date => {
+            onSelect={(date) => {
               setOpen(false);
               if (date) {
                 // Corrige para salvar no formato yyyy-MM-dd local
@@ -115,54 +155,72 @@ export const DateField: React.FC<DateFieldProps> = ({
             fromYear={1950}
             toYear={new Date().getFullYear()}
             modifiersClassNames={{
-              selected: "bg-blue-500 text-white",
-              today: "border border-blue-500",
+              selected: 'bg-blue-500 text-white dark:bg-blue-600',
+              today: 'border border-blue-500 dark:border-blue-400',
             }}
             className="p-1 text-sm"
             style={{ fontSize: '0.92rem' }}
             components={{
               Dropdown: (props) => {
                 // Defensive: handle possible undefineds from react-day-picker types
-                const options = (props.options ?? []).map(opt => ({ value: opt.value, label: opt.label }));
+                const options = (props.options ?? []).map((opt) => ({
+                  value: opt.value,
+                  label: opt.label,
+                }));
                 // react-day-picker passes onChange as (e: React.ChangeEvent<HTMLSelectElement>), but CalendarDropdown expects (value: string | number)
                 const handleChange = (val: string | number) => {
                   if (props.onChange) {
                     // Simulate a change event for react-day-picker
-                    const event = { target: { value: val } } as React.ChangeEvent<HTMLSelectElement>;
+                    const event = {
+                      target: { value: val },
+                    } as React.ChangeEvent<HTMLSelectElement>;
                     props.onChange(event);
                   }
                 };
                 return (
                   <CalendarDropdown
                     options={options}
-                    value={
-                      Array.isArray(props.value)
-                        ? (props.value[0] ?? '')
-                        : (props.value ?? '')
-                    }
+                    value={Array.isArray(props.value) ? props.value[0] ?? '' : props.value ?? ''}
                     onChange={handleChange}
                     ariaLabel={props['aria-label']}
                   />
                 );
-              }
+              },
             }}
           />
         </PopoverContent>
-      <style jsx global>{`
-        @keyframes datepicker-fade-slide {
-          from {
-            opacity: 0;
-            transform: translateY(12px) scale(0.98);
+        <style jsx global>{`
+          @keyframes datepicker-fade-slide {
+            from {
+              opacity: 0;
+              transform: translateY(12px) scale(0.98);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0) scale(1);
+            }
           }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
+          .animate-datepicker-fade-slide {
+            animation: datepicker-fade-slide 0.22s cubic-bezier(0.4, 0, 0.2, 1);
           }
-        }
-        .animate-datepicker-fade-slide {
-          animation: datepicker-fade-slide 0.22s cubic-bezier(.4,0,.2,1);
-        }
-      `}</style>
+
+          /* Estilos para o modo escuro do DayPicker */
+          .dark .rdp-day {
+            color: #e4e4e7; /* zinc-200 */
+          }
+          .dark .rdp-day_disabled {
+            color: #52525b; /* zinc-600 */
+          }
+          .dark .rdp-button:hover:not([disabled]) {
+            background-color: #3f3f46; /* zinc-700 */
+          }
+          .dark .rdp-caption_label {
+            color: #e4e4e7; /* zinc-200 */
+          }
+          .dark .rdp-head_cell {
+            color: #a1a1aa; /* zinc-400 */
+          }
+        `}</style>
       </Popover>
     </div>
   );
