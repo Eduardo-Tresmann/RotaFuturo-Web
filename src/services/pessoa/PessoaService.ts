@@ -14,6 +14,14 @@ class PessoaService {
     }
   }
 
+  async getPessoaByUsuarioId(usuarioId: number): Promise<Pessoa | null> {
+    try {
+      return await baseApiService.request<Pessoa>(`/pessoa/usuario/${usuarioId}`);
+    } catch {
+      return null;
+    }
+  }
+
   async createPessoa(pessoa: Partial<Pessoa> | FormData): Promise<Pessoa> {
     let options: RequestInit;
     if (pessoa instanceof FormData) {

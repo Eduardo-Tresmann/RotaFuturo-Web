@@ -23,10 +23,19 @@ export const testeService = {
   async listQuestoes(testeId: number): Promise<TesteQuestao[]> {
     return baseApiService.request<TesteQuestao[]>(`/teste/${testeId}/questoes`);
   },
-  async responderQuestao(vinculoId: number, resposta: number, usuarioId: number) {
+
+  async listQuestoesByArea(testeId: number, areaId: number): Promise<TesteQuestao[]> {
+    return baseApiService.request<TesteQuestao[]>(`/teste/${testeId}/questoes/area/${areaId}`);
+  },
+  async responderQuestao(questaoId: number, resposta: number, usuarioId: number) {
+    // Importante: questaoId aqui é na verdade o testeQuestaoVinculoId (ID da relação entre teste e questão)
     return baseApiService.request(`/testequestaorespondida`, {
       method: 'POST',
-      body: JSON.stringify({ tesqvId: vinculoId, tesqrResposta: resposta, usuId: usuarioId }),
+      body: JSON.stringify({
+        usuarioId: usuarioId,
+        tesqrResposta: resposta,
+        testeQuestaoVinculoId: questaoId,
+      }),
     });
   },
   async createTeste(data: Partial<Teste>) {

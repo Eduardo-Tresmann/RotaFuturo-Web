@@ -1,4 +1,5 @@
 import React from 'react';
+import { adminStyles } from '@/app/home/admin/utils/responsive-styles';
 
 interface AdminPageContentProps {
   title?: string;
@@ -28,18 +29,16 @@ export const AdminPageContent: React.FC<AdminPageContentProps> = ({
   return (
     <div className={`flex flex-col ${topGap} w-full font-montserrat ${className}`}>
       {/* Botões de ação */}
-      {actionButtons && (
-        <div className="flex gap-2 mb-4">{actionButtons}</div>
-      )}
+      {actionButtons && <div className={adminStyles.actionsContainer}>{actionButtons}</div>}
       {/* Abas e filtro */}
       {(tabs || filterButton) && (
-        <div className="flex items-end justify-between mb-0 w-full">
+        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-0 w-full gap-3 sm:gap-0">
           {tabs && (
-            <div className="flex gap-2">
-              {tabs.map(tab => (
+            <div className="flex gap-1 sm:gap-2 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
+              {tabs.map((tab) => (
                 <button
                   key={tab.value}
-                  className={`px-4 py-2 rounded-t-md font-semibold border-b-2 transition-colors
+                  className={`px-3 sm:px-4 py-1 sm:py-2 rounded-t-md font-semibold border-b-2 transition-colors text-sm sm:text-base whitespace-nowrap
                     ${
                       currentTab === tab.value
                         ? 'border-blue-600 text-blue-700 bg-white dark:bg-neutral-900 dark:text-blue-400'
@@ -53,14 +52,20 @@ export const AdminPageContent: React.FC<AdminPageContentProps> = ({
             </div>
           )}
           {filterButton && (
-            <div className="relative flex items-center">{filterButton}</div>
+            <div className="relative flex items-center w-full sm:w-auto mt-2 sm:mt-0">
+              {filterButton}
+            </div>
           )}
         </div>
       )}
-      {(tabs || filterButton) && <div className="w-full border-b border-zinc-200 dark:border-neutral-700" />}
+      {(tabs || filterButton) && (
+        <div className="w-full border-b border-zinc-200 dark:border-neutral-700" />
+      )}
       {filterModal}
-      <div className="relative w-full overflow-auto shadow-lg rounded">
-        <div className="min-w-full">{children}</div>
+      <div className={`relative w-full shadow-lg rounded ${adminStyles.tableContainer}`}>
+        <div className="min-w-full bg-white dark:bg-neutral-900 p-2 sm:p-4 rounded-lg">
+          {children}
+        </div>
       </div>
     </div>
   );

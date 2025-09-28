@@ -13,4 +13,5 @@ export interface Pessoa {
   pesNivel: number;
   pesXp: number;
   usuId: number;
+  areaId?: number;
 }
