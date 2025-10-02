@@ -1,0 +1,29 @@
+/* /* Global cursor style */
+body * {
+  cursor: default !important;
+}
+
+/* Disable text cursor */
+.disable-selection,
+.disable-selection * {
+  cursor: default !important;
+}
+
+/* Override for clickable elements */
+.disable-selection button,
+.disable-selection a,
+.disable-selection [role='button'],
+.disable-selection .clickable {
+  cursor: pointer !important;
+}
+
+/* For range slider elements */
+.disable-selection input[type='range'],
+.disable-selection input[type='range']::-webkit-slider-thumb {
+  cursor: grab !important;
+}
+
+.disable-selection input[type='range']:active,
+.disable-selection input[type='range']:active::-webkit-slider-thumb {
+  cursor: grabbing !important;
+}

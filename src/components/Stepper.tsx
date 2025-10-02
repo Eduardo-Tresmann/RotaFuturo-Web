@@ -11,19 +11,15 @@ import {
   BookOpen,
   UserCircle,
 } from 'lucide-react';
-
 interface StepperProps {
-  steps: string[]; // Array de títulos dos passos
-  currentStep: number; // Índice do passo atual (0-based)
-  maxVisitedStep?: number; // Índice máximo já visitado (para permitir navegação)
-  onStepClick?: (step: number) => void; // Handler para clicar em um passo
+  steps: string[]; 
+  currentStep: number; 
+  maxVisitedStep?: number; 
+  onStepClick?: (step: number) => void; 
   fullpage?: boolean;
   children?: React.ReactNode;
 }
-
-// Função para determinar o ícone baseado no índice e título do passo
 const getStepIcon = (index: number, label: string) => {
-  // Mapeamento por palavra-chave no título
   if (label.toLowerCase().includes('teste')) return <PenLine className="w-4 h-4 sm:w-5 sm:h-5" />;
   if (label.toLowerCase().includes('área')) return <Layers className="w-4 h-4 sm:w-5 sm:h-5" />;
   if (label.toLowerCase().includes('especialidade'))
@@ -34,8 +30,6 @@ const getStepIcon = (index: number, label: string) => {
     return <ClipboardCheck className="w-4 h-4 sm:w-5 sm:h-5" />;
   if (label.toLowerCase().includes('perfil'))
     return <UserCircle className="w-4 h-4 sm:w-5 sm:h-5" />;
-
-  // Fallback baseado no índice se não encontrar palavra-chave
   switch (index) {
     case 0:
       return <PenLine className="w-4 h-4 sm:w-5 sm:h-5" />;
@@ -53,8 +47,6 @@ const getStepIcon = (index: number, label: string) => {
       return <Circle className="w-4 h-4 sm:w-5 sm:h-5" />;
   }
 };
-
-// Componente para o status do passo
 const StepStatus = ({
   completed,
   active,
@@ -71,7 +63,6 @@ const StepStatus = ({
       </div>
     );
   }
-
   if (active) {
     return (
       <div className="rounded-full bg-blue-600 p-1 sm:p-1.5 text-white shadow-lg ring-4 ring-blue-200 dark:bg-blue-700 dark:ring-blue-500/30 transition-all duration-300 ease-in-out">
@@ -79,14 +70,12 @@ const StepStatus = ({
       </div>
     );
   }
-
   return (
     <div className="rounded-full bg-gray-200 p-1 sm:p-1.5 text-gray-500 dark:bg-gray-700 dark:text-gray-300 transition-all duration-300 ease-in-out">
       {children}
     </div>
   );
 };
-
 const Stepper: React.FC<StepperProps> = ({
   steps,
   currentStep,
@@ -95,32 +84,25 @@ const Stepper: React.FC<StepperProps> = ({
   fullpage = false,
   children,
 }) => {
-  // Não desabilitar mais o scroll do body para permitir rolagem quando necessário
   useEffect(() => {
     if (fullpage) {
-      // Apenas adicionar classe ao body para estilos específicos, mas permitir scroll
       document.body.classList.add('stepper-fullpage');
-
-      // Remover a classe quando o componente for desmontado
       return () => {
         document.body.classList.remove('stepper-fullpage');
       };
     }
   }, [fullpage]);
-
   const handleStepClick = (stepIndex: number) => {
-    // Apenas permitir navegação para passos já visitados
     if (onStepClick && stepIndex <= maxVisitedStep) {
       onStepClick(stepIndex);
     }
   };
-
   const content = (
     <div className="flex flex-col items-center gap-2 sm:gap-4 md:gap-6 w-full pt-4 sm:pt-6 md:pt-8 bg-white dark:bg-zinc-900">
-      {/* Timeline container */}
+      {}
       <div className="w-full max-w-3xl mx-auto pb-6 px-4 sm:px-6">
         <div className="relative">
-          {/* Passos */}
+          {}
           <div className="relative flex justify-between w-full">
             {steps.map((label, idx) => {
               const isCompleted = idx < currentStep;
@@ -128,7 +110,6 @@ const Stepper: React.FC<StepperProps> = ({
               const isVisitedStep = idx <= maxVisitedStep;
               const isClickable = isVisitedStep && !!onStepClick;
               const stepIcon = getStepIcon(idx, label);
-
               return (
                 <div key={idx} className="flex flex-col items-center">
                   <div
@@ -140,7 +121,6 @@ const Stepper: React.FC<StepperProps> = ({
                     <StepStatus completed={isCompleted} active={isActive}>
                       {stepIcon}
                     </StepStatus>
-
                     <span
                       className={`mt-2 text-[12px] bg-transparent sm:text-sm font-medium text-center w-18 sm:w-20 line-clamp-2 text-wrap ${
                         isActive
@@ -157,15 +137,13 @@ const Stepper: React.FC<StepperProps> = ({
               );
             })}
           </div>
-
-          {/* Barra de progresso abaixo dos passos */}
+          {}
           <div className="relative h-4 mt-6">
-            {/* Linha de conexão principal */}
+            {}
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="h-1 w-full bg-gray-200 dark:bg-gray-700 rounded-full"></div>
             </div>
-
-            {/* Linha de progresso */}
+            {}
             <div
               className="absolute inset-0 flex items-center justify-start"
               style={{
@@ -178,15 +156,10 @@ const Stepper: React.FC<StepperProps> = ({
           </div>
         </div>
       </div>
-
       <div className="w-full px-1 sm:px-0">{children}</div>
     </div>
   );
-
   if (!fullpage) return content;
-
-  // Para fullpage, usamos um portal para renderizar o stepper no nível raiz do DOM
-  // Removido a altura fixa para permitir scroll quando necessário
   const fullscreenStepper = (
     <div className="fullscreen-stepper">
       <div
@@ -197,13 +170,9 @@ const Stepper: React.FC<StepperProps> = ({
       </div>
     </div>
   );
-
-  // Verifica se estamos no navegador
   if (typeof window !== 'undefined') {
     return createPortal(fullscreenStepper, document.body);
   }
-
   return fullscreenStepper;
 };
-
 export default Stepper;

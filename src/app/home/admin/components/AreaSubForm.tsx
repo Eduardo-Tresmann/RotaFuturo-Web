@@ -7,17 +7,14 @@ import { areaService } from '@/services/area/AreaService';
 import { AreaSub } from '../../../../types/areasub';
 import { FormNotification } from '../../../../components/ui/form-components/form-notification';
 import { areaSubService } from '@/services/areasub/AreaSubService';
-
 const initialState: Partial<AreaSub> = {
   areasDescricao: '',
   areaId: undefined,
 };
-
 type AreaSubFormProps = {
   subarea?: AreaSub | null;
   onCreated?: () => void;
 };
-
 export default function AreaSubForm({ subarea, onCreated }: AreaSubFormProps) {
   const [form, setForm] = useState<Partial<AreaSub>>(
     subarea
@@ -29,7 +26,6 @@ export default function AreaSubForm({ subarea, onCreated }: AreaSubFormProps) {
       : { areasDescricao: '', areaId: undefined }
   );
   const [areaOptions, setAreaOptions] = useState<{ value: number; label: string }[]>([]);
-
   useEffect(() => {
     async function fetchInitialArea() {
       if (form.areaId) {
@@ -43,12 +39,10 @@ export default function AreaSubForm({ subarea, onCreated }: AreaSubFormProps) {
     fetchInitialArea();
   }, [form.areaId]);
   const { error, success } = FormNotification;
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.areasDescricao || !form.areasDescricao.trim()) {
@@ -76,7 +70,6 @@ export default function AreaSubForm({ subarea, onCreated }: AreaSubFormProps) {
       error({ message: err?.message || 'Erro ao salvar sub área' });
     }
   }
-
   return (
     <section className="w-full max-w-md mx-auto bg-white dark:bg-neutral-900 rounded-2xl p-6 flex flex-col gap-6">
       <h2 className="text-lg font-semibold text-zinc-800 dark:text-white text-center">Cadastro de SubÁrea</h2>
@@ -125,4 +118,3 @@ export default function AreaSubForm({ subarea, onCreated }: AreaSubFormProps) {
     </section>
   );
 }
-

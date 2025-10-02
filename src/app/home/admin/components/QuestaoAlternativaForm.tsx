@@ -4,7 +4,6 @@ import { AutoCompleteField } from '../../../../components/ui/form-components/aut
 import { questaoService } from '@/services/questao/QuestaoService';
 import { FormNotification } from '../../../../components/ui/form-components/form-notification';
 import { questaoAlternativaService } from '@/services/questao/QuestaoAlternativaService';
-
 export interface QuestaoAlternativa {
   quesaId?: number;
   quesaDescricao: string;
@@ -12,9 +11,7 @@ export interface QuestaoAlternativa {
   questaoId?: number;
   questao?: { questaoId: number };
 }
-
 export default function QuestaoAlternativaForm({ onSuccess, data }: { onSuccess?: () => void, data?: Partial<QuestaoAlternativa> }) {
-  // Inicializa o form corretamente a partir de data
   const initialForm: Partial<QuestaoAlternativa> = data
     ? {
         ...data,
@@ -26,12 +23,10 @@ export default function QuestaoAlternativaForm({ onSuccess, data }: { onSuccess?
     : { quesaDescricao: '', quesaCorreta: false, questaoId: 0 };
   const [form, setForm] = useState<Partial<QuestaoAlternativa>>(initialForm);
   const { error, success } = FormNotification;
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.questaoId) {
@@ -39,7 +34,6 @@ export default function QuestaoAlternativaForm({ onSuccess, data }: { onSuccess?
       return;
     }
     try {
-      // Monta o payload esperado pelo backend
       const payload = {
         quesaDescricao: form.quesaDescricao,
         quesaCorreta: form.quesaCorreta ? 1 : 0,
@@ -59,7 +53,6 @@ export default function QuestaoAlternativaForm({ onSuccess, data }: { onSuccess?
       error({ message: err?.message || 'Erro ao salvar Alternativa' });
     }
   }
-
   return (
     <form className="flex flex-col gap-6 bg-white dark:bg-neutral-900 p-8 rounded-2xl max-w-lg mx-auto shadow-soft" onSubmit={handleSubmit}>
       <h2 className="text-2xl font-bold text-blue-700 dark:text-blue-300 mb-2 text-center">

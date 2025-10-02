@@ -1,11 +1,9 @@
 import { baseApiService } from '@/services/baseApiService';
-
 export interface NivelQuestao {
   quesnId?: number;
   quesnDescricao: string;
   quesnAtivo?: boolean;
 }
-
 export const questaoNivelService = {
   async listAll(): Promise<NivelQuestao[]> {
     return baseApiService.request<NivelQuestao[]>('/questao-nivel');

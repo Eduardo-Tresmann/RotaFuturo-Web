@@ -15,7 +15,6 @@ import { AreaSub } from '@/types/areasub';
 import { areaService } from '@/services/area/AreaService';
 import { Area } from '@/types/area';
 import { AdminPageContent } from '@/components/admin/AdminPageContent';
-
 export function AreasAdminContent() {
   const [areas, setAreas] = useState<Area[]>([]);
   const [areaSubs, setAreaSubs] = useState<AreaSub[]>([]);
@@ -24,10 +23,8 @@ export function AreasAdminContent() {
   const [tab, setTab] = useState<'areas' | 'subareas'>('areas');
   const [editingSubarea, setEditingSubarea] = useState<AreaSub | null>(null);
   const [editingArea, setEditingArea] = useState<Area | null>(null);
-  // Filtros locais
   const [areaFilter, setAreaFilter] = useState({ descricao: '', ativo: false });
   const [subFilter, setSubFilter] = useState({ descricao: '', area: '', ativo: false });
-
   async function refreshAreas() {
     try {
       const data = await areaService.listAll();
@@ -44,12 +41,10 @@ export function AreasAdminContent() {
       setAreaSubs([]);
     }
   }
-
   async function handleEditSubarea(sub: AreaSub) {
     setEditingSubarea(sub);
     setModal('editSubarea');
   }
-
   async function handleInativarSubarea(sub: AreaSub) {
     if (sub.areasAtivo) {
       await areaSubService.inativar(sub.areasId);
@@ -62,7 +57,6 @@ export function AreasAdminContent() {
     setEditingArea(area);
     setModal('editArea');
   }
-
   useEffect(() => { refreshAreas(); refreshAreaSubs(); }, []);
   return (
     <AdminPageContent
@@ -270,7 +264,6 @@ export function AreasAdminContent() {
           areaSubs={areaSubs.filter(s => {
             const descMatch = (s.areasDescricao || '').toLowerCase().includes((subFilter.descricao || '').toLowerCase());
             const ativoMatch = !subFilter.ativo || s.areasAtivo;
-            // Busca área vinculada pelo nome
             let areaMatch = true;
             if (subFilter.area) {
               const areaObj = areas.find(a => a.areaId === s.areaId);

@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Eye, EyeOff } from 'lucide-react';
 import { forwardRef, useState } from 'react';
 import { LucideIcon } from 'lucide-react';
-
 interface PasswordFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   error?: string;
   label?: React.ReactNode;
@@ -13,14 +12,12 @@ interface PasswordFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputEle
   icon?: LucideIcon;
   iconColor?: string;
 }
-
 export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
   (
     { className, error, label, required, icon: Icon, iconColor = 'text-zinc-400', ...props },
     ref,
   ) => {
     const [showPassword, setShowPassword] = useState(false);
-
     return (
       <div className="w-full space-y-2">
         {label && (
@@ -67,5 +64,4 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
     );
   },
 );
-
 PasswordField.displayName = 'PasswordField';

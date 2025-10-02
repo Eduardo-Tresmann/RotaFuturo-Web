@@ -1,14 +1,12 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { forwardRef } from "react";
-
 interface FormButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
   size?: "default" | "sm" | "lg" | "icon";
   loading?: boolean;
   children: React.ReactNode;
 }
-
 export const FormButton = forwardRef<HTMLButtonElement, FormButtonProps>(
   ({ className, variant = "default", size = "default", loading, children, disabled, ...props }, ref) => {
     return (
@@ -35,5 +33,4 @@ export const FormButton = forwardRef<HTMLButtonElement, FormButtonProps>(
     );
   }
 );
-
 FormButton.displayName = "FormButton";

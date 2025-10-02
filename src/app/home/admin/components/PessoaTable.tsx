@@ -13,20 +13,17 @@ import {
 import { Badge } from '@/components/ui/Badge';
 import { Pessoa } from '@/types/pessoa';
 import { Pagination } from '@/components/ui/pagination';
-
 interface PessoaTableProps {
   pessoas: Pessoa[];
   usuarios?: { usuId: number; usuEmail: string }[];
   onEdit: (pessoa: Pessoa) => void;
   onInativar: (pessoa: Pessoa) => void;
 }
-
 export function PessoaTable({ pessoas, usuarios = [], onEdit, onInativar }: PessoaTableProps) {
   const [sortKey, setSortKey] = useState<'pesId' | 'pesNome' | 'pesApelido' | 'pesNivel'>('pesId');
   const [sortAsc, setSortAsc] = useState(true);
   const [page, setPage] = useState(1);
   const pageSize = 10;
-
   const sorted = useMemo(() => {
     let data = [...pessoas];
     data.sort((a, b) => {
@@ -42,14 +39,11 @@ export function PessoaTable({ pessoas, usuarios = [], onEdit, onInativar }: Pess
     });
     return data;
   }, [pessoas, sortKey, sortAsc]);
-
   const paginated = useMemo(() => {
     const start = (page - 1) * pageSize;
     return sorted.slice(start, start + pageSize);
   }, [sorted, page]);
-
   const totalPages = Math.ceil(sorted.length / pageSize);
-
   function handleSort(key: 'pesId' | 'pesNome' | 'pesApelido' | 'pesNivel') {
     if (sortKey === key) setSortAsc((asc) => !asc);
     else {
@@ -57,7 +51,6 @@ export function PessoaTable({ pessoas, usuarios = [], onEdit, onInativar }: Pess
       setSortAsc(true);
     }
   }
-
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
       <Table >
@@ -114,7 +107,6 @@ export function PessoaTable({ pessoas, usuarios = [], onEdit, onInativar }: Pess
                   >
                     <Pencil size={18} />
                   </button>
-                 
                 </TableCell>
               </TableRow>
             ))

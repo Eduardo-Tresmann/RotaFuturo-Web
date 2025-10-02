@@ -8,12 +8,10 @@ import { FormNotification } from '../../../../components/ui/form-components/form
 import { cursoService } from '@/services/curso/CursoService';
 import { areaService } from '@/services/area/AreaService';
 import { areaSubService } from '@/services/areasub/AreaSubService';
-
 interface CursoFormProps {
   curso?: Curso;
   onClose?: () => void;
 }
-
 export default function CursoForm({ curso, onClose }: CursoFormProps) {
   const initialState: Partial<Curso> = {
     curDescricao: '',
@@ -23,7 +21,6 @@ export default function CursoForm({ curso, onClose }: CursoFormProps) {
   };
   const [form, setForm] = useState<Partial<Curso>>(initialState);
   const { error, success } = FormNotification;
-
   React.useEffect(() => {
     if (curso) {
       setForm({ ...curso });
@@ -31,7 +28,6 @@ export default function CursoForm({ curso, onClose }: CursoFormProps) {
       setForm(initialState);
     }
   }, [curso]);
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({
@@ -39,7 +35,6 @@ export default function CursoForm({ curso, onClose }: CursoFormProps) {
       [name]: type === 'checkbox' ? checked : value
     }));
   }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.curDescricao || !form.curDescricao.trim()) {
@@ -63,7 +58,6 @@ export default function CursoForm({ curso, onClose }: CursoFormProps) {
       error({ message: err?.message || 'Erro ao salvar curso.' });
     }
   }
-
   return (
     <section className="w-full max-w-2xl mx-auto bg-white dark:bg-neutral-900 p-8 flex flex-col gap-8 rounded-2xl">
       <h2 className="text-2xl font-bold text-blue-700 dark:text-blue-400 text-center tracking-tight mb-2 flex items-center justify-center gap-2">
@@ -143,4 +137,3 @@ export default function CursoForm({ curso, onClose }: CursoFormProps) {
     </section>
   );
 }
-

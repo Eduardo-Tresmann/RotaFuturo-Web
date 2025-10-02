@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { FormLabel } from "./form-label";
-
 interface FormCheckboxProps {
   id?: string;
   checked?: boolean;
@@ -10,7 +9,6 @@ interface FormCheckboxProps {
   required?: boolean;
   className?: string;
 }
-
 export function FormCheckbox({ 
   id, 
   checked, 

@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { baseApiService } from './baseApiService';
-
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-
 export const arquivoService = {
   async uploadFotoPerfil(file: File, usuId: number) {
     const formData = new FormData();

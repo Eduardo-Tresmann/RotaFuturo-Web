@@ -1,13 +1,11 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
-
 interface ModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   title?: string
   children: React.ReactNode
 }
-
 export function Modal({ open, onOpenChange, title, children }: ModalProps) {
   if (!open) return null;
   return (

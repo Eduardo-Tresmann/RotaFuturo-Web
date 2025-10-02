@@ -8,13 +8,11 @@ import { pessoaService } from '@/services/pessoa/PessoaService';
 import { FormNotification } from '@/components/ui/form-components/form-notification';
 import { AutoCompleteField } from '@/components/ui/form-components/autocomplete-field';
 import { usuarioService } from '@/services/usuario/UsuarioService';
-
 interface PessoaFormProps {
   pessoa?: Pessoa;
   onClose?: () => void;
   onSaved?: () => void;
 }
-
 const initialState: Partial<Pessoa> = {
   pesNome: '',
   pesApelido: '',
@@ -28,11 +26,9 @@ const initialState: Partial<Pessoa> = {
   pesImagemcurriculo: '',
   usuId: undefined,
 };
-
 export default function PessoaForm({ pessoa, onClose, onSaved }: PessoaFormProps) {
   const [form, setForm] = useState<Partial<Pessoa>>(initialState);
   const { error, success } = FormNotification;
-
   useEffect(() => {
     if (pessoa) {
       setForm({ ...pessoa });
@@ -40,15 +36,10 @@ export default function PessoaForm({ pessoa, onClose, onSaved }: PessoaFormProps
       setForm(initialState);
     }
   }, [pessoa]);
-
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   }
-
-
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
@@ -65,7 +56,6 @@ export default function PessoaForm({ pessoa, onClose, onSaved }: PessoaFormProps
       error({ message: err?.message || 'Erro ao salvar pessoa.' });
     }
   }
-
   return (
     <section className="w-full max-w-4xl mx-auto bg-white dark:bg-neutral-900 rounded-2xl p-6 flex flex-col gap-6 shadow-soft">
       <h2 className="text-lg font-semibold text-zinc-800 dark:text-blue-300 text-center">{form.pesId ? 'Editar Pessoa' : 'Cadastro de Pessoa'}</h2>
@@ -79,7 +69,6 @@ export default function PessoaForm({ pessoa, onClose, onSaved }: PessoaFormProps
             required
             icon={User}
             iconColor="text-blue-500"
-            // Remova o px-4 e use pl-10 para alinhar o texto após o ícone
             className="bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 rounded-lg pl-10 py-2 transition-colors dark:bg-neutral-900 dark:border-neutral-700 dark:text-gray-100 dark:placeholder:text-neutral-400"
           />
           <TextField

@@ -12,13 +12,11 @@ import {
   TableCaption,
 } from '@/components/ui/table';
 import { Questionario } from '@/types/questionario';
-
 interface QuestionarioTableProps {
   questionarios: Questionario[];
   onEdit: (questionario: Questionario) => void;
   onInativar: (questionario: Questionario) => void;
 }
-
 export function QuestionarioTable({ questionarios, onEdit, onInativar }: QuestionarioTableProps) {
   const [search, setSearch] = useState<string>('');
   const [showFilters, setShowFilters] = useState(false);
@@ -30,7 +28,6 @@ export function QuestionarioTable({ questionarios, onEdit, onInativar }: Questio
   const [sortAsc, setSortAsc] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const pageSize = 10;
-
   const filtered = useMemo(() => {
     let data = questionarios.filter((q: Questionario) => {
       const matchSearch =
@@ -56,14 +53,11 @@ export function QuestionarioTable({ questionarios, onEdit, onInativar }: Questio
     });
     return data;
   }, [questionarios, search, sortKey, sortAsc, filterId, filterDescricao, filterAtivo]);
-
   const paginated = useMemo(() => {
     const start = (page - 1) * pageSize;
     return filtered.slice(start, start + pageSize);
   }, [filtered, page]);
-
   const totalPages = Math.ceil(filtered.length / pageSize);
-
   function handleSort(key: SortKey) {
     if (sortKey === key) setSortAsc((asc) => !asc);
     else {
@@ -71,7 +65,6 @@ export function QuestionarioTable({ questionarios, onEdit, onInativar }: Questio
       setSortAsc(true);
     }
   }
-
   return (
     <div>
       {showFilters && (
@@ -202,7 +195,7 @@ export function QuestionarioTable({ questionarios, onEdit, onInativar }: Questio
         <TableFooter className="bg-transparent">
           <TableRow>
             <TableCell colSpan={5} className="text-center">
-              {/* paginação ou info */}
+              {}
             </TableCell>
           </TableRow>
         </TableFooter>

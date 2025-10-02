@@ -3,18 +3,15 @@ import { AutoCompleteField } from '@/components/ui/form-components/autocomplete-
 import { areaService } from '@/services/area/AreaService';
 import { areaSubService } from '@/services/areasub/AreaSubService';
 import { Teste } from '@/services/teste/TesteService';
-
 interface TesteFormProps {
   initial?: Partial<Teste>;
   onSave: (data: Partial<Teste>) => void;
   onCancel: () => void;
 }
-
 export default function TesteForm({ initial = {}, onSave, onCancel }: TesteFormProps) {
   const [descricao, setDescricao] = useState(initial.tesDescricao || '');
   const [area, setArea] = useState(initial.areaId || '');
   const [areaSub, setAreaSub] = useState(initial.areaSubId || '');
-
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     onSave({
@@ -23,7 +20,6 @@ export default function TesteForm({ initial = {}, onSave, onCancel }: TesteFormP
       areaSubId: areaSub ? Number(areaSub) : undefined,
     });
   }
-
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
       <label className="font-medium">Descrição do Teste</label>

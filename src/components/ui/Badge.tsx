@@ -1,11 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
-
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   color?: 'green' | 'red' | 'gray' | 'blue' | 'yellow';
   variant?: 'solid' | 'outline' | 'soft';
 }
-
 export function Badge({
   color = 'gray',
   variant = 'soft',

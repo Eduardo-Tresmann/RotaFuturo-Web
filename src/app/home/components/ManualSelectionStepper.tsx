@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
 import { Area } from '@/types/area';
 import { AreaSub } from '@/types/areasub';
@@ -10,20 +9,17 @@ import { Button } from '@/components/ui/button';
 import { FormNotification } from '@/components/ui/form-components/form-notification';
 import { ChevronLeft, GraduationCap, CheckCircle2 } from 'lucide-react';
 import AreaSelectionAccordion from './AreaSelectionAccordion';
-
+import { stateService } from '@/services/stateService';
 interface ManualSelectionStepperProps {
   usuarioId: number;
   onBack: () => void;
   onNext: () => void;
-  // Opcional: Área pré-selecionada do teste anterior
   preselectedAreaId?: number;
 }
-
 interface UserAreaSelection {
   areaId: number;
   subareaId?: number;
 }
-
 export const ManualSelectionStepper: React.FC<ManualSelectionStepperProps> = ({
   usuarioId,
   onBack,
@@ -37,21 +33,14 @@ export const ManualSelectionStepper: React.FC<ManualSelectionStepperProps> = ({
   const [selectedSubareaId, setSelectedSubareaId] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [existingSelection, setExistingSelection] = useState<UserAreaSelection | null>(null);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // Buscar todas as áreas disponíveis
         const allAreas = await areaService.listAll();
         setAreas(allAreas);
-
-        // Buscar todas as subáreas
         const allSubareas = await areaSubService.listAll();
         setSubareas(allSubareas);
-
-        // Buscar seleção atual do usuário (poderia ser implementado no backend)
-        // Como não temos um endpoint específico, usamos o valor pré-selecionado se existir
         if (preselectedAreaId) {
           setExistingSelection({
             areaId: preselectedAreaId,
@@ -67,53 +56,33 @@ export const ManualSelectionStepper: React.FC<ManualSelectionStepperProps> = ({
         setLoading(false);
       }
     };
-
     fetchData();
   }, [preselectedAreaId]);
-
   const handleSelectArea = (areaId: number) => {
     setSelectedAreaId(areaId);
-    // Reset subárea ao trocar a área
     setSelectedSubareaId(null);
   };
-
   const handleSelectSubarea = (subareaId: number) => {
     setSelectedSubareaId(subareaId);
   };
-
-  // Função para pular esta etapa
   const handleSkip = () => {
     FormNotification.info({
       message: 'Você optou por manter a escolha feita pelo teste automático.',
     });
     onNext();
   };
-
   const handleSavePreference = async () => {
     if (!selectedAreaId || !selectedSubareaId) {
       FormNotification.warning({ message: 'Selecione uma área e uma subárea para continuar.' });
       return;
     }
-
     try {
       setSubmitting(true);
-      // Salvar a preferência do usuário - área
       await usuarioAreaService.vincularUsuarioArea(usuarioId, selectedAreaId);
-
-      // NOTA: Endpoint para vincular subárea ainda não existe no backend
-      // Por enquanto, apenas salvamos a área principal e exibimos sucesso
-      // TODO: Implementar quando o endpoint estiver disponível
-      // await usuarioAreaService.vincularUsuarioSubarea(usuarioId, selectedSubareaId);
-
-      // Armazenar a subárea localmente para mostrar na interface
-      localStorage.setItem(
-        `selected_subarea_${usuarioId}`,
-        JSON.stringify({
-          subareaId: selectedSubareaId,
-          areaId: selectedAreaId,
-        }),
-      );
-
+      stateService.set(`selected_subarea_${usuarioId}`, {
+        subareaId: selectedSubareaId,
+        areaId: selectedAreaId,
+      });
       FormNotification.success({ message: 'Especialidade selecionada com sucesso!' });
       onNext();
     } catch (error) {
@@ -123,7 +92,6 @@ export const ManualSelectionStepper: React.FC<ManualSelectionStepperProps> = ({
       setSubmitting(false);
     }
   };
-
   if (loading) {
     return (
       <div className="w-full flex flex-col min-h-[50vh] sm:min-h-[60vh]">
@@ -142,10 +110,9 @@ export const ManualSelectionStepper: React.FC<ManualSelectionStepperProps> = ({
       </div>
     );
   }
-
   return (
     <div className="w-full max-w-3xl mx-auto flex flex-col">
-      {/* Cabeçalho */}
+      {}
       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-800 dark:to-indigo-800 py-4 sm:py-6 md:py-8 px-3 sm:px-4 rounded-t-xl text-center">
         <div className="max-w-md mx-auto">
           <div className="bg-white/10 rounded-full w-16 sm:w-20 h-16 sm:h-20 flex items-center justify-center mx-auto mb-3 sm:mb-4">
@@ -159,8 +126,7 @@ export const ManualSelectionStepper: React.FC<ManualSelectionStepperProps> = ({
           </p>
         </div>
       </div>
-
-      {/* Conteúdo */}
+      {}
       <div className="bg-white dark:bg-zinc-800 p-6 rounded-b-xl shadow-sm">
         {existingSelection && (
           <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 border border-blue-100 dark:border-blue-800/50">
@@ -174,7 +140,6 @@ export const ManualSelectionStepper: React.FC<ManualSelectionStepperProps> = ({
               O teste automático já selecionou uma área para você. Você pode manter essa escolha ou
               selecionar outra manualmente.
             </p>
-
             <div className="mt-2 sm:mt-3 text-xs sm:text-sm space-y-1">
               <p className="break-words dark:text-gray-300">
                 <span className="font-medium">Área:</span>{' '}
@@ -191,11 +156,9 @@ export const ManualSelectionStepper: React.FC<ManualSelectionStepperProps> = ({
             </div>
           </div>
         )}
-
         <p className="text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 text-center text-xs sm:text-sm">
           Explore as diferentes áreas disponíveis e escolha a que mais se alinha com seus objetivos.
         </p>
-
         <div className="mt-4">
           <AreaSelectionAccordion
             areas={areas}
@@ -206,12 +169,11 @@ export const ManualSelectionStepper: React.FC<ManualSelectionStepperProps> = ({
             selectedSubareaId={selectedSubareaId || undefined}
           />
         </div>
-
-        {/* Rodapé */}
+        {}
         <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-          {/* Layout responsivo para botões */}
+          {}
           <div className="flex flex-col sm:flex-row sm:justify-between space-y-3 sm:space-y-0">
-            {/* Botão Voltar - sempre visível */}
+            {}
             <Button
               variant="outline"
               className="flex items-center justify-center"
@@ -221,10 +183,9 @@ export const ManualSelectionStepper: React.FC<ManualSelectionStepperProps> = ({
               <ChevronLeft className="mr-2 h-4 w-4" />
               Voltar
             </Button>
-
-            {/* Container flexível para os botões de ação */}
+            {}
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-              {/* Botão Manter escolha - condicional */}
+              {}
               {existingSelection && (
                 <Button
                   variant="ghost"
@@ -236,8 +197,7 @@ export const ManualSelectionStepper: React.FC<ManualSelectionStepperProps> = ({
                   Manter escolha automática
                 </Button>
               )}
-
-              {/* Botão Confirmar - sempre visível */}
+              {}
               <Button
                 onClick={handleSavePreference}
                 disabled={submitting || !selectedAreaId || !selectedSubareaId}
@@ -252,5 +212,4 @@ export const ManualSelectionStepper: React.FC<ManualSelectionStepperProps> = ({
     </div>
   );
 };
-
 export default ManualSelectionStepper;

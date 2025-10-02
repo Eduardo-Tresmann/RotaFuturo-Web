@@ -1,11 +1,9 @@
 import React from 'react';
-
 interface FileInputProps {
   onChange: (file: File | null) => void;
   label?: string;
   accept?: string;
 }
-
 export const FileInput: React.FC<FileInputProps> = ({ onChange, label, accept }) => {
   return (
     <div className="w-full space-y-2">

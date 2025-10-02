@@ -1,11 +1,9 @@
 import { baseApiService } from '@/services/baseApiService';
-
 export interface TipoQuestao {
   quetId?: number;
   quetDescricao: string;
   quetAtivo?: boolean;
 }
-
 export const questaoTipoService = {
   async listAll(): Promise<TipoQuestao[]> {
     return baseApiService.request<TipoQuestao[]>('/questao-tipo');

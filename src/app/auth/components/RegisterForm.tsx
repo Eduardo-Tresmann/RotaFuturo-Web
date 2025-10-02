@@ -17,11 +17,9 @@ import { PasswordField } from '@/components/ui/form-components/password-field';
 import { FormButton } from '@/components/ui/form-components/form-button';
 import { FormNotification } from '@/components/ui/form-components/form-notification';
 import { baseApiService } from '@/services/baseApiService';
-
 interface RegisterFormProps {
   onBack: () => void;
 }
-
 export function RegisterForm({ onBack }: RegisterFormProps) {
   const { registrar, loading } = useAuth();
   const router = useRouter();
@@ -36,9 +34,7 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
     confirmPassword: '',
   });
   const [checkingEmail, setCheckingEmail] = useState(false);
-
   const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
   useEffect(() => {
     const validateEmail = async () => {
       const email = formData.email.trim();
@@ -46,12 +42,10 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
         setErrors((prev) => ({ ...prev, email: '' }));
         return;
       }
-
       if (!isValidEmail(email)) {
         setErrors((prev) => ({ ...prev, email: 'Formato de email inválido' }));
         return;
       }
-
       setCheckingEmail(true);
       try {
         const response = await baseApiService.request<{ exists: boolean }>(
@@ -78,14 +72,11 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
       }
       setCheckingEmail(false);
     };
-
     const timeout = setTimeout(validateEmail, 500);
     return () => clearTimeout(timeout);
   }, [formData.email]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!formData.email || !formData.password || !formData.confirmPassword) {
       FormNotification.error({
         message: 'Preencha todos os campos para continuar.',
@@ -152,7 +143,6 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
       }
     }
   };
-
   return (
     <div className="w-full">
       <div className="flex items-center gap-3 mb-8">
@@ -168,7 +158,6 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
           Criar conta
         </h2>
       </div>
-
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-2">
           <FormLabel htmlFor="email" required>
@@ -187,7 +176,6 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
             className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border-zinc-200 dark:border-zinc-700 focus:border-zinc-400 dark:focus:border-zinc-500 focus:ring-2 focus:ring-zinc-100 dark:focus:ring-zinc-800 placeholder:text-zinc-400 dark:placeholder:text-zinc-400 text-zinc-900 dark:text-zinc-100 transition-all duration-200"
           />
         </div>
-
         <div className="space-y-2">
           <PasswordField
             id="password"
@@ -202,7 +190,6 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
             className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border-zinc-200 dark:border-zinc-700 focus:border-zinc-400 dark:focus:border-zinc-500 focus:ring-2 focus:ring-zinc-100 dark:focus:ring-zinc-800 placeholder:text-zinc-400 dark:placeholder:text-zinc-400 text-zinc-900 dark:text-zinc-100 transition-all duration-200"
           />
         </div>
-
         <div className="space-y-2">
           <PasswordField
             id="confirmPassword"
@@ -217,7 +204,6 @@ export function RegisterForm({ onBack }: RegisterFormProps) {
             className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border-zinc-200 dark:border-zinc-700 focus:border-zinc-400 dark:focus:border-zinc-500 focus:ring-2 focus:ring-zinc-100 dark:focus:ring-zinc-800 placeholder:text-zinc-400 dark:placeholder:text-zinc-400 text-zinc-900 dark:text-zinc-100 transition-all duration-200"
           />
         </div>
-
         <FormButton
           type="submit"
           size="lg"

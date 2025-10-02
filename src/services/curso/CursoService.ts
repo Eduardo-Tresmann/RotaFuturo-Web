@@ -1,6 +1,5 @@
 import { Curso } from '@/types/curso';
 import { baseApiService } from '@/services/baseApiService';
-
 export const cursoService = {
   async listAll(): Promise<Curso[]> {
     return baseApiService.request<Curso[]>('/curso');

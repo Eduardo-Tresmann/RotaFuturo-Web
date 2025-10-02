@@ -13,7 +13,6 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
   } from '@/components/ui/breadcrumb';
   import ProtectedRoute from '@/components/context/ProtectedRoute';
   import { useAuthContext } from '@/components/context/AuthContext';
-  // LoaderRF agora é global pelo layout
 const desafios = [
   {
     id: 1,
@@ -48,11 +47,8 @@ const desafios = [
     nivel: 'Avançado',
   },
 ];
-
-
 export default function DesafiosPage() {
   const { authResolved } = useAuthContext();
-  // LoaderRF agora é global pelo layout
   return (
     <ProtectedRoute>
       <HeaderHome

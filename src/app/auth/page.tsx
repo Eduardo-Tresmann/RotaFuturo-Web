@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -8,16 +7,13 @@ import { RegisterForm } from '@/app/auth/components/RegisterForm';
 import { useAuth } from '@/hooks/useAuth';
 import { ChevronLeft, ChevronRight, Award, BarChart2, Activity, Eye } from 'lucide-react';
 import { Header } from '@/components/Header';
-
 type ViewType = 'home' | 'login' | 'register';
-
 interface Slide {
   id: number;
   title: string;
   content: string;
   icon?: React.ReactNode;
 }
-
 const slides: Slide[] = [
   {
     id: 1,
@@ -48,29 +44,23 @@ const slides: Slide[] = [
       'Depoimentos reais, dados do mercado e experiências de profissionais para aproximar você da realidade das carreiras.',
   },
 ];
-
 export default function Home() {
   const { logout } = useAuth();
   const router = useRouter();
   const [currentView, setCurrentView] = useState<ViewType>('home');
   const [currentSlide, setCurrentSlide] = useState(0);
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
-
     return () => clearInterval(interval);
   }, []);
-
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
-
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
-
   const slideRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = slideRef.current;
@@ -92,20 +82,16 @@ export default function Home() {
       el.removeEventListener('touchend', handleTouchEnd);
     };
   }, [nextSlide, prevSlide]);
-
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
   };
-
   const handleBack = () => {
     setCurrentView('home');
   };
-
   const handleLogout = () => {
     logout();
     router.push('/');
   };
-
   const renderRightContent = () => {
     if (currentView === 'login') {
       return (
@@ -152,7 +138,6 @@ export default function Home() {
       </div>
     );
   };
-
   return (
     <>
       <Header
@@ -179,21 +164,18 @@ export default function Home() {
                 {slides[currentSlide].content}
               </p>
             </div>
-
             <button
               onClick={prevSlide}
               className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 dark:bg-zinc-800/80 hover:bg-white dark:hover:bg-zinc-700 p-2 rounded-full shadow-lg transition-all duration-200 hover:scale-110 hidden md:block"
             >
               <ChevronLeft className="w-6 h-6 text-zinc-600 dark:text-zinc-200" />
             </button>
-
             <button
               onClick={nextSlide}
               className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 dark:bg-zinc-800/80 hover:bg-white dark:hover:bg-zinc-700 p-2 rounded-full shadow-lg transition-all duration-200 hover:scale-110 hidden md:block"
             >
               <ChevronRight className="w-6 h-6 text-zinc-600 dark:text-zinc-200" />
             </button>
-
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
               {slides.map((_, index) => (
                 <button
@@ -208,7 +190,6 @@ export default function Home() {
               ))}
             </div>
           </div>
-
           <div className="w-full md:w-2/5 bg-transparent dark:bg-zinc-900/80 p-4 md:p-8 flex items-center justify-center transition-all duration-300 min-h-[320px] md:min-h-[260px]">
             <div className="w-full h-full">{renderRightContent()}</div>
           </div>

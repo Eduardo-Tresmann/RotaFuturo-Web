@@ -1,10 +1,8 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
-
 export interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
 }
-
 export function Sidebar({ className, children, ...props }: SidebarProps) {
   return (
     <aside
@@ -18,13 +16,11 @@ export function Sidebar({ className, children, ...props }: SidebarProps) {
     </aside>
   )
 }
-
 export interface SidebarItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   active?: boolean
   icon?: React.ReactNode
   children: React.ReactNode
 }
-
 export function SidebarItem({ active, icon, children, className, ...props }: SidebarItemProps) {
   return (
     <button

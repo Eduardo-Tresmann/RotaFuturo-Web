@@ -6,12 +6,10 @@ import { Usuario } from '../../../../types/usuario';
 import { usuarioService } from '@/services/usuario/UsuarioService';
 import { authService } from '@/services/auth/AuthService';
 import { FormNotification } from '@/components/ui/form-components/form-notification';
-
 interface UsuarioFormProps {
   usuario?: Usuario;
   onClose?: () => void;
 }
-
 const initialState: Partial<Usuario> = {
   usuEmail: '',
   usuSenha: '',
@@ -19,20 +17,16 @@ const initialState: Partial<Usuario> = {
   usuAtivo: true,
   usuTrocaSenha: false,
 };
-
 export default function UsuarioForm({ usuario, onClose }: UsuarioFormProps) {
   const [form, setForm] = useState<Partial<Usuario>>(initialState);
   const { error, success } = FormNotification;
-
   useEffect(() => {
     if (usuario) {
-      // Preenche os dados, mas deixa a senha sempre vazia
       setForm({ ...usuario, usuSenha: '' });
     } else {
       setForm(initialState);
     }
   }, [usuario]);
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({
@@ -40,12 +34,10 @@ export default function UsuarioForm({ usuario, onClose }: UsuarioFormProps) {
       [name]: type === 'checkbox' ? checked : value,
     }));
   }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
       if (form.usuId) {
-        // Só envia a senha se o usuário digitou uma nova
         const payload = { ...form };
         if (!payload.usuSenha) {
           delete payload.usuSenha;
@@ -53,7 +45,6 @@ export default function UsuarioForm({ usuario, onClose }: UsuarioFormProps) {
         await usuarioService.updateUser(form.usuId, payload);
         success({ message: 'Usuário atualizado com sucesso!' });
       } else {
-        // Usar o mesmo fluxo de registro do authService (usado em /auth)
         if (!form.usuEmail || !form.usuSenha) {
           error({ message: 'Preencha email e senha.' });
           return;
@@ -66,7 +57,6 @@ export default function UsuarioForm({ usuario, onClose }: UsuarioFormProps) {
       error({ message: err?.message || 'Erro ao salvar usuário.' });
     }
   }
-
   return (
     <section className="w-full max-w-md mx-auto bg-white dark:bg-neutral-900 rounded-2xl p-6 flex flex-col gap-6 shadow-soft">
       <h2 className="text-lg font-semibold text-zinc-800 dark:text-blue-300 text-center">{form.usuId ? 'Editar Usuário' : 'Cadastro de Usuário'}</h2>

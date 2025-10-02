@@ -1,7 +1,6 @@
 'use client';
 import React, { useState } from 'react';
 import { LoaderRF } from '@/components/ui/LoaderRF';
-
 import {
   Users,
   Layers,
@@ -14,6 +13,7 @@ import {
 } from 'lucide-react';
 import { AdminModalView } from '@/app/home/admin/components/AdminModalView';
 import ProtectedRoute from '@/components/context/ProtectedRoute';
+import AdminRoute from '@/components/context/AdminRoute';
 import { UsuariosAdminContent } from './components/UsuariosAdminContent';
 import { QuestionariosAdminContent } from './components/QuestionariosAdminContent';
 import { CursosMateriasAdminContent } from './components/CursosMateriasAdminContent';
@@ -33,8 +33,8 @@ import {
 } from '@/components/ui/breadcrumb';
 import Link from 'next/link';
 import { useAuthContext } from '@/components/context/AuthContext';
-import { useTheme } from '@/components/context/ThemeContext'; // Adiciona o contexto de tema
-
+import { useTheme } from '@/components/context/ThemeContext'; 
+import { GrupoAcessoAdminContent } from './components/GrupoAcessoAdminContent';
 const moduloComponents: Record<string, React.ComponentType> = {
   usuarios: UsuariosAdminContent,
   questionarios: QuestionariosAdminContent,
@@ -42,15 +42,14 @@ const moduloComponents: Record<string, React.ComponentType> = {
   areas: AreasAdminContent,
   areasub: AreaSubAdminContent,
   testes: TestesAdminContent,
+  grupoacesso: GrupoAcessoAdminContent,
 };
-
 export default function AdminHome() {
   const { authResolved } = useAuthContext();
-  const { theme } = useTheme(); // Usa o tema atual
+  const { theme } = useTheme(); 
   const [moduloSelecionado, setModuloSelecionado] = useState<keyof typeof moduloComponents | ''>(
     'questoes',
   );
-
   function renderModulo() {
     if (moduloSelecionado && moduloComponents[moduloSelecionado]) {
       const Component = moduloComponents[moduloSelecionado];
@@ -58,10 +57,9 @@ export default function AdminHome() {
     }
     return null;
   }
-
   return (
     <>
-      <ProtectedRoute>
+      <AdminRoute>
         <div
           className={`flex flex-col min-h-screen font-montserrat bg-gradient-to-br from-zinc-50 to-blue-50
             ${theme === 'dark' ? 'dark bg-gradient-to-br from-zinc-900 to-zinc-800' : ''}
@@ -100,7 +98,7 @@ export default function AdminHome() {
             </div>
           </div>
         </div>
-      </ProtectedRoute>
+      </AdminRoute>
     </>
   );
 }

@@ -1,11 +1,11 @@
-
 import '@/styles/globals.css';
+import '@/styles/disable-selection.css';
+import '@/styles/no-select.css';
 import { ThemeProvider } from '@/components/context/ThemeContext';
 import type { Metadata } from 'next';
 import { Toaster } from 'sonner';
 import ClientProviders from '@/components/context/ClientProviders';
 import ClientOnlyLoader from '@/components/ui/ClientOnlyLoader';
-
 export const metadata: Metadata = {
   title: 'RotaFuturo',
   description: 'Simulador de Carreira para o Ensino Médio!',
@@ -18,12 +18,9 @@ export const metadata: Metadata = {
     apple: [{ url: '/favicon/apple-touch-icon.png', sizes: '180x180' }],
   },
 };
-
-
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className="select-none">
       <body className="antialiased text-zinc-900 dark:bg-zinc-900 dark:text-zinc-50">
         <ClientProviders>
           <ClientOnlyLoader />

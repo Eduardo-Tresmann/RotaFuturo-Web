@@ -1,5 +1,4 @@
 import React from 'react';
-
 export function LoaderRF({ className = '', style = {} }) {
   return (
     <div
@@ -15,4 +14,3 @@ export function LoaderRF({ className = '', style = {} }) {
     </div>
   );
 }
-

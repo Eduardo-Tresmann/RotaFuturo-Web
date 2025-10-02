@@ -10,6 +10,21 @@ body {
   z-index: 1;
 }
 
+/* Corrigir a visibilidade dos inputs de arquivo em diferentes níveis de zoom */
+input[type='file'] {
+  position: relative !important;
+  z-index: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  appearance: auto !important;
+  display: block !important;
+}
+
+/* Garantir que os datepickers apareçam sobre todos os outros elementos */
+[data-radix-popper-content-wrapper] {
+  z-index: 99999 !important;
+}
+
 /* Estilização para o stepper fullpage */
 .fullscreen-stepper {
   position: fixed !important;

@@ -2,20 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Filter } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AdminPageContent } from '@/components/admin/AdminPageContent';
-
 import { UsuariosTable } from '@/app/home/admin/components/UsuariosTable';
 import { usuarioService } from '@/services/usuario/UsuarioService';
 import { Usuario } from '@/types/usuario';
 import UsuarioForm from '@/app/home/admin/components/UsuarioForm';
-
 import { Pessoa } from '@/types/pessoa';
 import { pessoaService } from '@/services/pessoa/PessoaService';
 import { PessoaTable } from './PessoaTable';
 import PessoaForm from './PessoaForm';
-
 export function UsuariosAdminContent() {
   const [tab, setTab] = useState<'usuarios' | 'pessoas'>('usuarios');
-  // Usuários
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   async function refreshUsuarios() {
     const data = await usuarioService.listAll();
@@ -25,13 +21,11 @@ export function UsuariosAdminContent() {
   const [modal, setModal] = useState<'criar' | 'editar' | null>(null);
   const [editing, setEditing] = useState<Usuario | null>(null);
   const [userFilter, setUserFilter] = useState({ email: '', ativo: false, validado: false });
-  // Pessoas
   const [pessoas, setPessoas] = useState<Pessoa[]>([]);
   const [showPessoaFilters, setShowPessoaFilters] = useState(false);
   const [pessoaFilter, setPessoaFilter] = useState({ nome: '', apelido: '', nivel: '', ativo: false });
   const [pessoaModal, setPessoaModal] = useState<'criar' | 'editar' | null>(null);
   const [editingPessoa, setEditingPessoa] = useState<Pessoa | null>(null);
-
   useEffect(() => {
     refreshUsuarios();
     pessoaService
@@ -39,12 +33,10 @@ export function UsuariosAdminContent() {
       .then(setPessoas)
       .catch(() => setPessoas([]));
   }, []);
-
   function handleEdit(usuario: Usuario) {
     setEditing(usuario);
     setModal('editar');
   }
-
   async function handleInativar(usuario: Usuario) {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -60,8 +52,6 @@ export function UsuariosAdminContent() {
       }
     }
   }
-
-  // Estrutura visual com abas
   return (
     <AdminPageContent
       actionButtons={[
@@ -260,7 +250,7 @@ export function UsuariosAdminContent() {
           })}
           usuarios={usuarios.map(u => ({ usuId: u.usuId, usuEmail: u.usuEmail }))}
           onEdit={pessoa => { setEditingPessoa(pessoa); setPessoaModal('editar'); }}
-          onInativar={() => { /* TODO: inativar pessoa */ }}
+          onInativar={() => {  }}
         />
       )}
     </AdminPageContent>

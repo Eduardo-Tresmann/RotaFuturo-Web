@@ -15,15 +15,11 @@ import {
 } from 'lucide-react';
 import { usuarioAreaService } from '@/services/usuarioarea/UsuarioAreaService';
 import { baseApiService } from '@/services/baseApiService';
-
-// Interface para resultados do teste de subárea
 export interface SubareaTestResult {
   areaId: number;
   areaDescricao: string;
   pontuacao: number;
 }
-
-// Serviço para obter resultados do teste de subárea
 class SubareaTestService {
   async getTesteResults(
     testeId: number,
@@ -31,13 +27,9 @@ class SubareaTestService {
     areaId: number,
   ): Promise<SubareaTestResult[]> {
     try {
-      // Endpoint para obter os resultados do teste de subárea
-      // Utilizando o baseApiService para manter a consistência com outros serviços
       const endpoint = `/teste/${testeId}/resultado/${usuarioId}/area/${areaId}`;
       console.log('Chamando endpoint:', endpoint);
-
       const results = await baseApiService.request<SubareaTestResult[]>(endpoint);
-
       console.log('Resultados recebidos da API:', results);
       return results;
     } catch (error) {
@@ -47,15 +39,13 @@ class SubareaTestService {
   }
 }
 const subareaTestService = new SubareaTestService();
-
 interface SubareaTestResultStepperProps {
   testeId: number;
   usuarioId: number;
-  areaId: number; // ID da área principal selecionada
+  areaId: number; 
   onBack: () => void;
   onNext: () => void;
 }
-
 export const SubareaTestResultStepper: React.FC<SubareaTestResultStepperProps> = ({
   testeId,
   usuarioId,
@@ -69,60 +59,40 @@ export const SubareaTestResultStepper: React.FC<SubareaTestResultStepperProps> =
   const [matchedSubarea, setMatchedSubarea] = useState<AreaSub | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-
-        // Verificar se já temos resultados armazenados no localStorage
         const storedResultsKey = `subarea_results_${testeId}_${usuarioId}_${areaId}`;
         const storedResultsData = localStorage.getItem(storedResultsKey);
         const storedMatchedSubareaKey = `subarea_matchedSubarea_${testeId}_${usuarioId}_${areaId}`;
         const storedMatchedSubareaData = localStorage.getItem(storedMatchedSubareaKey);
-
-        // Buscar todas as subáreas disponíveis para a área selecionada (sempre necessário)
         const allSubareas = await areaSubService.listAll();
         const filteredSubareas = allSubareas.filter((sub) => sub.areaId === areaId);
         setSubareas(filteredSubareas);
-
-        // Se já temos resultados armazenados, usá-los
         if (storedResultsData && storedMatchedSubareaData) {
           console.log('Usando resultados armazenados do localStorage');
           const parsedResults = JSON.parse(storedResultsData);
           setResults(parsedResults);
-
           const parsedMatchedSubareaId = JSON.parse(storedMatchedSubareaData);
           const matchedSubareaData =
             filteredSubareas.find((sub) => sub.areasId === parsedMatchedSubareaId) || null;
           setMatchedSubarea(matchedSubareaData);
-
           setLoading(false);
           return;
         }
-
         try {
-          // 2. Buscar os resultados do teste de subárea
           console.log(
             `Buscando resultados para teste de subárea ID: ${testeId}, usuário ID: ${usuarioId}, área ID: ${areaId}`,
           );
-
-          // Buscar resultados reais da API
           const testeResults = await subareaTestService.getTesteResults(testeId, usuarioId, areaId);
-
-          // Verificar se há resultados válidos
           if (testeResults && testeResults.length > 0) {
-            // Ordenar por pontuação (do maior para o menor)
             testeResults.sort((a, b) => b.pontuacao - a.pontuacao);
             setResults(testeResults);
-
-            // A subárea com maior pontuação é a mais compatível
             const bestMatch = testeResults[0];
             const matchedSubareaData =
               filteredSubareas.find((sub) => sub.areasId === bestMatch.areaId) || null;
             setMatchedSubarea(matchedSubareaData);
-
-            // Armazenar no localStorage para uso futuro
             localStorage.setItem(storedResultsKey, JSON.stringify(testeResults));
             if (matchedSubareaData) {
               localStorage.setItem(
@@ -131,13 +101,10 @@ export const SubareaTestResultStepper: React.FC<SubareaTestResultStepperProps> =
               );
             }
           } else {
-            // Se não retornar resultados, notificar ao usuário
             FormNotification.warning({
               message:
                 'Não foram encontrados resultados para o teste. Verifique se você respondeu todas as questões.',
             });
-
-            // Defina resultados vazios
             setResults([]);
             setMatchedSubarea(null);
           }
@@ -147,42 +114,26 @@ export const SubareaTestResultStepper: React.FC<SubareaTestResultStepperProps> =
             message:
               'Não foi possível carregar seus resultados. Por favor, tente novamente mais tarde.',
           });
-
-          // Em caso de erro, deixamos os resultados vazios em vez de criar vazios com pontuação zero
           setResults([]);
           setMatchedSubarea(null);
         }
-
         setLoading(false);
       } catch (error) {
         FormNotification.error({ message: 'Erro ao buscar resultados do teste de subárea' });
         setLoading(false);
       }
     };
-
     fetchData();
   }, [testeId, usuarioId, areaId]);
-
   const handleSavePreference = async () => {
     try {
       setSubmitting(true);
-
       if (!matchedSubarea) {
         FormNotification.warning({ message: 'Nenhuma especialidade foi selecionada.' });
         return;
       }
-
-      // Vincular usuário à subárea escolhida
       if (usuarioId) {
-        // Salvar área principal
         await usuarioAreaService.vincularUsuarioArea(usuarioId, areaId);
-
-        // NOTA: Endpoint para vincular subárea ainda não existe no backend
-        // Por enquanto, apenas salvamos a área principal e armazenamos a subárea localmente
-        // TODO: Implementar quando o endpoint estiver disponível
-        // await usuarioAreaService.vincularUsuarioSubarea(usuarioId, matchedSubarea.areasId);
-
-        // Armazenar a subárea localmente para mostrar na interface
         localStorage.setItem(
           `selected_subarea_${usuarioId}`,
           JSON.stringify({
@@ -190,7 +141,6 @@ export const SubareaTestResultStepper: React.FC<SubareaTestResultStepperProps> =
             areaId: areaId,
           }),
         );
-
         FormNotification.success({ message: 'Especialidade salva com sucesso!' });
         onNext();
       }
@@ -204,7 +154,7 @@ export const SubareaTestResultStepper: React.FC<SubareaTestResultStepperProps> =
   if (loading) {
     return (
       <div className="w-full flex flex-col min-h-[50vh] sm:min-h-[60vh]">
-        {/* Conteúdo central */}
+        {}
         <div className="flex-grow flex items-center justify-center p-4 sm:p-6">
           <div className="animate-pulse flex flex-col items-center">
             <div className="h-24 w-24 sm:h-32 sm:w-32 bg-blue-200 dark:bg-blue-800/50 rounded-full mb-3 sm:mb-4 flex items-center justify-center">
@@ -220,10 +170,9 @@ export const SubareaTestResultStepper: React.FC<SubareaTestResultStepperProps> =
       </div>
     );
   }
-
   return (
     <div className="w-full max-w-3xl mx-auto flex flex-col px-2 sm:px-0">
-      {/* Cabeçalho */}
+      {}
       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-800 dark:to-indigo-800 py-4 sm:py-6 md:py-8 px-3 sm:px-4 rounded-t-xl text-center">
         <div className="max-w-md mx-auto">
           <div className="bg-white/10 rounded-full w-16 sm:w-20 h-16 sm:h-20 flex items-center justify-center mx-auto mb-3 sm:mb-4">
@@ -237,9 +186,9 @@ export const SubareaTestResultStepper: React.FC<SubareaTestResultStepperProps> =
           </p>
         </div>
       </div>{' '}
-      {/* Conteúdo principal */}
+      {}
       <div className="bg-white dark:bg-zinc-800 shadow-lg rounded-b-xl overflow-hidden">
-        {/* Área de resultado principal */}
+        {}
         {results.length === 0 ? (
           <div className="p-6 md:p-8 bg-gradient-to-br from-yellow-50 to-white dark:from-yellow-900/20 dark:to-zinc-800">
             <div className="text-center">
@@ -267,15 +216,13 @@ export const SubareaTestResultStepper: React.FC<SubareaTestResultStepperProps> =
                 </h3>
               </div>
             </div>
-
             <p className="text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 text-sm sm:text-base">
               Esta especialidade foi identificada com base nas suas respostas e representa a área
               específica que melhor se alinha com seus interesses e aptidões.
             </p>
           </div>
         )}
-
-        {/* Lista de resultados */}
+        {}
         {results.length > 0 && (
           <div className="px-4 sm:px-6 py-5 sm:py-6 border-t border-gray-200 dark:border-gray-700">
             <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 text-gray-700 dark:text-gray-300">
@@ -329,8 +276,7 @@ export const SubareaTestResultStepper: React.FC<SubareaTestResultStepperProps> =
             </div>
           </div>
         )}
-
-        {/* Alerta informativo sobre a seleção manual no próximo passo */}
+        {}
         <div className="mt-8 px-6 py-4 border border-dashed border-blue-300 dark:border-blue-800 rounded-lg bg-blue-50 dark:bg-blue-900/20 mx-6">
           <div className="flex items-center text-blue-600 dark:text-blue-400 justify-center">
             <PenTool className="mr-2 h-4 w-4" />
@@ -339,8 +285,7 @@ export const SubareaTestResultStepper: React.FC<SubareaTestResultStepperProps> =
             </p>
           </div>
         </div>
-
-        {/* Botões */}
+        {}
         <div className="px-4 sm:px-6 py-4 sm:py-6 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row gap-3 sm:justify-between">
           <Button
             variant="outline"

@@ -1,9 +1,6 @@
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-
-// Toast personalizado com estilos do projeto
 export const CustomToast = {
-  // Toast de sucesso
   success: (message: string, options?: any) => {
     return toast.success(message, {
       duration: 4000,
@@ -18,8 +15,6 @@ export const CustomToast = {
       ...options,
     });
   },
-
-  // Toast de erro
   error: (message: string, options?: any) => {
     return toast.error(message, {
       duration: 6000,
@@ -34,8 +29,6 @@ export const CustomToast = {
       ...options,
     });
   },
-
-  // Toast de aviso
   warning: (message: string, options?: any) => {
     return toast.warning(message, {
       duration: 5000,
@@ -50,8 +43,6 @@ export const CustomToast = {
       ...options,
     });
   },
-
-  // Toast de informação
   info: (message: string, options?: any) => {
     return toast.info(message, {
       duration: 4000,
@@ -66,8 +57,6 @@ export const CustomToast = {
       ...options,
     });
   },
-
-  // Toast customizado
   custom: (message: string, options?: any) => {
     return toast(message, {
       duration: 4000,
@@ -83,8 +72,6 @@ export const CustomToast = {
     });
   },
 };
-
-// Hook para usar o toast personalizado
 export const useCustomToast = () => {
   return CustomToast;
 };

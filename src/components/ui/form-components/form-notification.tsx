@@ -1,7 +1,6 @@
 import { toast } from 'sonner';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
 export interface FormNotificationProps {
   message: string;
   type?: 'success' | 'error' | 'warning' | 'info';
@@ -20,9 +19,7 @@ export interface FormNotificationProps {
     onClick: () => void;
   };
 }
-
 export const FormNotification = {
-  // Notificação de sucesso
   success: ({
     message,
     icon,
@@ -32,7 +29,6 @@ export const FormNotification = {
     action,
   }: Omit<FormNotificationProps, 'type'>) => {
     const Icon = icon;
-
     return toast.success(message, {
       duration,
       position,
@@ -46,8 +42,6 @@ export const FormNotification = {
         : undefined,
     });
   },
-
-  // Notificação de erro
   error: ({
     message,
     icon,
@@ -57,7 +51,6 @@ export const FormNotification = {
     action,
   }: Omit<FormNotificationProps, 'type'>) => {
     const Icon = icon;
-
     return toast.error(message, {
       duration,
       position,
@@ -71,8 +64,6 @@ export const FormNotification = {
         : undefined,
     });
   },
-
-  // Notificação de aviso
   warning: ({
     message,
     icon,
@@ -82,7 +73,6 @@ export const FormNotification = {
     action,
   }: Omit<FormNotificationProps, 'type'>) => {
     const Icon = icon;
-
     return toast.warning(message, {
       duration,
       position,
@@ -99,8 +89,6 @@ export const FormNotification = {
         : undefined,
     });
   },
-
-  // Notificação de informação
   info: ({
     message,
     icon,
@@ -110,7 +98,6 @@ export const FormNotification = {
     action,
   }: Omit<FormNotificationProps, 'type'>) => {
     const Icon = icon;
-
     return toast.info(message, {
       duration,
       position,
@@ -124,8 +111,6 @@ export const FormNotification = {
         : undefined,
     });
   },
-
-  // Notificação customizada
   custom: ({
     message,
     icon,
@@ -135,7 +120,6 @@ export const FormNotification = {
     action,
   }: Omit<FormNotificationProps, 'type'>) => {
     const Icon = icon;
-
     return toast(message, {
       duration,
       position,
@@ -149,30 +133,21 @@ export const FormNotification = {
         : undefined,
     });
   },
-
-  // Dismiss todas as notificações
   dismiss: () => toast.dismiss(),
-
-  // Dismiss notificação específica
   dismissById: (id: string | number) => toast.dismiss(id),
 };
-
-// Hook personalizado para facilitar o uso
 export const useFormNotification = () => {
   return FormNotification;
 };
-
-// Componente de exemplo de uso
 export const NotificationExample = () => {
   const handleSuccess = () => {
     FormNotification.success({
       message: 'Operação realizada com sucesso!',
-      icon: undefined, // Pode ser qualquer ícone do Lucide
+      icon: undefined, 
       duration: 3000,
       position: 'top-right',
     });
   };
-
   const handleError = () => {
     FormNotification.error({
       message: 'Ocorreu um erro na operação',
@@ -181,7 +156,6 @@ export const NotificationExample = () => {
       position: 'top-center',
     });
   };
-
   return (
     <div className="space-y-2">
       <button onClick={handleSuccess}>Mostrar Sucesso</button>

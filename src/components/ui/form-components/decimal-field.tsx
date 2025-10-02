@@ -2,7 +2,6 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { FormLabel } from "./form-label";
 import { forwardRef } from "react";
-
 interface DecimalFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   error?: string;
   label?: string;
@@ -12,7 +11,6 @@ interface DecimalFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   step?: number;
   precision?: number;
 }
-
 export const DecimalField = forwardRef<HTMLInputElement, DecimalFieldProps>(
   ({ className, error, label, required, min, max, step = 0.01, precision = 2, ...props }, ref) => {
     return (
@@ -41,5 +39,4 @@ export const DecimalField = forwardRef<HTMLInputElement, DecimalFieldProps>(
     );
   }
 );
-
 DecimalField.displayName = "DecimalField";

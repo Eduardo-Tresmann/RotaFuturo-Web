@@ -1,6 +1,5 @@
 import React from 'react';
 import { adminStyles } from '@/app/home/admin/utils/responsive-styles';
-
 interface AdminPageContentProps {
   title?: string;
   actionButtons?: React.ReactNode;
@@ -13,7 +12,6 @@ interface AdminPageContentProps {
   className?: string;
   topGap?: string;
 }
-
 export const AdminPageContent: React.FC<AdminPageContentProps> = ({
   title,
   actionButtons,
@@ -28,9 +26,9 @@ export const AdminPageContent: React.FC<AdminPageContentProps> = ({
 }) => {
   return (
     <div className={`flex flex-col ${topGap} w-full font-montserrat ${className}`}>
-      {/* Botões de ação */}
+      {}
       {actionButtons && <div className={adminStyles.actionsContainer}>{actionButtons}</div>}
-      {/* Abas e filtro */}
+      {}
       {(tabs || filterButton) && (
         <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-0 w-full gap-3 sm:gap-0">
           {tabs && (

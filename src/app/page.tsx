@@ -1,5 +1,4 @@
 'use client';
-
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { User, Award, BarChart2, Activity, Eye, Accessibility } from 'lucide-react';
@@ -18,7 +17,6 @@ export default function AuthPage() {
   ];
   const [activeSection, setActiveSection] = useState('inicio');
   const sectionRefs = useRef(sections.map(() => React.createRef<HTMLDivElement>()));
-
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
@@ -33,16 +31,13 @@ export default function AuthPage() {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   const handleNavClick = (id: string) => {
     const ref = sectionRefs.current[sections.findIndex((s) => s.id === id)];
     if (ref?.current) {
       ref.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
   const [headerTransparent, setHeaderTransparent] = useState(true);
-
   useEffect(() => {
     const onScroll = () => {
       setHeaderTransparent(window.scrollY < 40);
@@ -50,7 +45,6 @@ export default function AuthPage() {
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
   return (
     <main className="w-full bg-zinc-50 dark:bg-zinc-900">
       <Header
@@ -63,7 +57,6 @@ export default function AuthPage() {
             : 'bg-zinc-900/80 backdrop-blur shadow'
         }`}
       />
-
       <section
         id="inicio"
         ref={sectionRefs.current[0]}
@@ -125,7 +118,6 @@ export default function AuthPage() {
             Acessar Simulador
           </Button>
         </Link>
-
         <style>{`
         @keyframes float {
           0% { transform: translateY(0); }
@@ -135,7 +127,6 @@ export default function AuthPage() {
         .animate-float { animation: float 4s ease-in-out infinite; }
       `}</style>
       </section>
-
       <section
         id="caracteristicas"
         ref={sectionRefs.current[1]}
@@ -200,7 +191,6 @@ export default function AuthPage() {
           </div>
         </div>
       </section>
-
       <section
         id="depoimentos"
         ref={sectionRefs.current[2]}
@@ -241,7 +231,6 @@ export default function AuthPage() {
           </div>
         </div>
       </section>
-
       <section
         id="como-funciona"
         ref={sectionRefs.current[3]}
@@ -316,11 +305,8 @@ export default function AuthPage() {
               ))}
             </div>
           </div>
-
-         
         </div>
       </section>
-
       <section
         id="faq"
         ref={sectionRefs.current[4]}
@@ -359,7 +345,6 @@ export default function AuthPage() {
           </div>
         </div>
       </section>
-
       <section
         id="parceiros"
         ref={sectionRefs.current[5]}
@@ -385,7 +370,6 @@ export default function AuthPage() {
           </div>
         </div>
       </section>
-
       <section
         id="blog"
         ref={sectionRefs.current[6]}
@@ -430,7 +414,6 @@ export default function AuthPage() {
                 </div>
               </div>
             </div>
-
             <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-2xl border border-zinc-200 dark:border-zinc-800 p-0 flex flex-col transition hover:scale-[1.03] hover:shadow-2xl overflow-hidden min-h-[340px]">
               <div className="bg-zinc-900 dark:bg-zinc-100 px-6 py-3">
                 <span className="font-bold text-base md:text-lg text-white dark:text-zinc-900 tracking-wide uppercase">
@@ -465,7 +448,6 @@ export default function AuthPage() {
                 </div>
               </div>
             </div>
-
             <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-2xl border border-zinc-200 dark:border-zinc-800 p-0 flex flex-col transition hover:scale-[1.03] hover:shadow-2xl overflow-hidden min-h-[340px]">
               <div className="bg-zinc-900 dark:bg-zinc-100 px-6 py-3">
                 <span className="font-bold text-base md:text-lg text-white dark:text-zinc-900 tracking-wide uppercase">
@@ -503,7 +485,6 @@ export default function AuthPage() {
           </div>
         </div>
       </section>
-
       <footer className="w-full py-8 text-center text-zinc-500 text-sm">
         <div className="flex flex-col items-center justify-center gap-2">
           <span className="font-semibold text-zinc-700 dark:text-zinc-300 tracking-wide">
@@ -514,7 +495,7 @@ export default function AuthPage() {
           </span>
           <div className="flex gap-4 mt-2">
             <a
-              href="https://www.instagram.com/rotafuturo"
+              href="https://www.instagram.com/rotafuturooficial/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"

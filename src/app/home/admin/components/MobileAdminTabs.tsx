@@ -1,12 +1,10 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { adminLinks } from './AdminSidebar';
-
 interface MobileAdminTabsProps {
   current?: string;
   onSelect?: (key: string) => void;
 }
-
 export function MobileAdminTabs({ current, onSelect }: MobileAdminTabsProps) {
   return (
     <div className="md:hidden w-full overflow-x-auto pb-2 px-2 sticky top-12 bg-gray-50 dark:bg-neutral-950 z-10 pt-2 border-b border-gray-200 dark:border-neutral-800">

@@ -11,26 +11,21 @@ import {
   TableCaption,
 } from '@/components/ui/table';
 import { Materia } from '@/types/materia';
-
 interface MateriaTableProps {
   materias: Materia[];
   onEdit: (materia: Materia) => void;
   onRefresh?: () => void;
 }
-
 import { Badge } from '@/components/ui/Badge';
 import { Pagination } from '@/components/ui/pagination';
 import { materiaService } from '@/services/materia/MateriaService';
 import { FormNotification } from '@/components/ui/form-components/form-notification';
-
 export function MateriaTable({ materias, onEdit, onRefresh }: MateriaTableProps) {
-  // Ordenação
   type SortKey = 'matId' | 'matDescricao' | 'matAtivo';
   const [sortKey, setSortKey] = useState<SortKey>('matId');
   const [sortAsc, setSortAsc] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const pageSize = 10;
-
   const sorted = useMemo(() => {
     let data = [...materias];
     data = data.sort((a, b) => {
@@ -46,14 +41,11 @@ export function MateriaTable({ materias, onEdit, onRefresh }: MateriaTableProps)
     });
     return data;
   }, [materias, sortKey, sortAsc]);
-
   const paginated = useMemo(() => {
     const start = (page - 1) * pageSize;
     return sorted.slice(start, start + pageSize);
   }, [sorted, page]);
-
   const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize));
-
   function handleSort(key: SortKey) {
     if (sortKey === key) setSortAsc((asc) => !asc);
     else {
@@ -61,7 +53,6 @@ export function MateriaTable({ materias, onEdit, onRefresh }: MateriaTableProps)
       setSortAsc(true);
     }
   }
-
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
       <Table>

@@ -1,0 +1,31 @@
+/* Add global selection prevention to root element */
+@layer base {
+  html {
+    @apply select-none;
+  }
+
+  /* Exceptions for areas that should allow selection */
+  .allow-select {
+    @apply select-text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+
+  /* For text inputs */
+  input[type='text'],
+  input[type='email'],
+  input[type='password'],
+  input[type='search'],
+  input[type='number'],
+  input[type='tel'],
+  input[type='url'],
+  textarea {
+    @apply select-text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+}

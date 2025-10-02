@@ -8,7 +8,6 @@ import TesteQuestaoForm from './TesteQuestaoForm';
 import { Filter } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { testeService, Teste, TesteQuestao } from '@/services/teste/TesteService';
-
 type TabKey = 'testes' | 'questoes' | 'vinculos';
 interface ModalState {
   tipo: string;
@@ -20,7 +19,6 @@ interface Filtros {
   questoes: { descricao: string };
   vinculos: {};
 }
-
 export function TestesAdminContent() {
   const [tab, setTab] = useState<TabKey>('testes');
   const [testes, setTestes] = useState<Teste[]>([]);
@@ -36,22 +34,18 @@ export function TestesAdminContent() {
   const [showFiltro, setShowFiltro] = useState(false);
   const [modal, setModal] = useState<ModalState | null>(null);
   const [selectedTesteId, setSelectedTesteId] = useState<number | null>(null);
-
   async function refreshTestes() {
     setTestes(await testeService.listTestes());
   }
   async function refreshQuestoes() {
-    // Busca todos os testes e concatena todas as questões
     const testes = await testeService.listTestes();
     const questoesArrays = await Promise.all(testes.map((t) => testeService.listQuestoes(t.tesId)));
     setQuestoes(questoesArrays.flat());
   }
-
   useEffect(() => {
     refreshTestes();
     refreshQuestoes();
   }, []);
-
   async function handleSaveTeste(data: Partial<Teste>) {
     try {
       if (data.tesId) {
@@ -89,7 +83,6 @@ export function TestesAdminContent() {
       FormNotification.error({ message: err?.message || 'Erro ao salvar questão!' });
     }
   }
-
   return (
     <AdminPageContent
       actionButtons={[

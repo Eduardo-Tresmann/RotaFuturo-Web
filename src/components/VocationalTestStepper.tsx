@@ -40,18 +40,17 @@ const legend = [
     emoji: '😄',
   },
 ];
-
 interface VocationalTestStepperProps {
   testeId: number;
   usuarioId: number;
   onFinish: () => void;
 }
-
 export const VocationalTestStepper: React.FC<VocationalTestStepperProps> = ({
   testeId,
   usuarioId,
   onFinish,
 }) => {
+  // Text selection is now handled globally
   const [questions, setQuestions] = useState<TesteQuestao[]>([]);
   const [answers, setAnswers] = useState<{ [key: number]: number }>({});
   const [loading, setLoading] = useState(true);
@@ -59,9 +58,8 @@ export const VocationalTestStepper: React.FC<VocationalTestStepperProps> = ({
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
-
-  // Use um estado para contar quantas respostas foram dadas para o progresso
   const answeredCount = Object.keys(answers).length;
+  useEffect(() => {}, []);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -76,25 +74,15 @@ export const VocationalTestStepper: React.FC<VocationalTestStepperProps> = ({
         setLoading(false);
       }
     };
-
     fetchQuestions();
   }, [testeId]);
-
-  // Progresso do teste (0 a 100%)
   const progress = questions.length > 0 ? (answeredCount / questions.length) * 100 : 0;
-
-  // Questão atual
   const currentQuestion = questions[currentQuestionIndex];
-
-  // Manipular seleção de resposta (apenas atualiza estado local)
   const handleAnswer = (questionId: number, value: number) => {
     setAnswers((prev) => ({ ...prev, [questionId]: value }));
   };
-
-  // Funçao central para salvar e navegar
   const handleNext = async () => {
     if (!currentQuestion) return;
-
     const currentAnswer = answers[currentQuestion.tesqId];
     if (!currentAnswer) {
       FormNotification.warning({
@@ -102,17 +90,12 @@ export const VocationalTestStepper: React.FC<VocationalTestStepperProps> = ({
       });
       return;
     }
-
     setSubmitting(true);
     try {
       await testeService.responderQuestao(currentQuestion.tesqId, currentAnswer, usuarioId);
-
-      // Checa se é a última questão
       if (currentQuestionIndex < questions.length - 1) {
-        // Se não for a última, avança para a próxima
         setCurrentQuestionIndex((prev) => prev + 1);
       } else {
-        // Se for a última, marca o teste como completo
         setIsComplete(true);
       }
     } catch (error) {
@@ -124,7 +107,6 @@ export const VocationalTestStepper: React.FC<VocationalTestStepperProps> = ({
       setSubmitting(false);
     }
   };
-
   if (loading) {
     return (
       <div className="w-full max-w-2xl mx-auto bg-white/90 dark:bg-zinc-900/90 p-5 sm:p-8 border-t border-x border-zinc-100 dark:border-zinc-800 min-h-[350px] flex flex-col items-center justify-center">
@@ -139,8 +121,6 @@ export const VocationalTestStepper: React.FC<VocationalTestStepperProps> = ({
       </div>
     );
   }
-
-  // Verificar se há questões disponíveis
   if (questions.length === 0) {
     return (
       <div className="w-full max-w-2xl mx-auto bg-white/90 dark:bg-zinc-900/90 p-5 sm:p-8 border-t border-x border-zinc-100 dark:border-zinc-800 min-h-[350px] flex flex-col items-center justify-center text-center">
@@ -178,13 +158,11 @@ export const VocationalTestStepper: React.FC<VocationalTestStepperProps> = ({
       </div>
     );
   }
-
   return (
     <div className="w-full max-w-2xl mx-auto bg-white dark:bg-zinc-900 p-3 sm:p-6 md:p-8 border-t border-x border-zinc-100 dark:border-zinc-800 min-h-[350px] flex flex-col gap-3 sm:gap-5 md:gap-6 shadow-md">
       <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-1 sm:mb-2 dark:text-gray-100">
         Teste Vocacional
       </h2>
-
       {showIntro ? (
         <div className="flex flex-col items-center justify-center flex-grow py-3 sm:py-5">
           <div className="bg-blue-50 dark:bg-blue-950/40 rounded-lg p-4 sm:p-6 border border-blue-100 dark:border-blue-900 mb-6 text-center sm:text-left">
@@ -222,19 +200,16 @@ export const VocationalTestStepper: React.FC<VocationalTestStepperProps> = ({
           <p className="mb-2 sm:mb-4 text-sm sm:text-base">
             Para cada afirmação, marque a opção que melhor representa sua opinião:
           </p>
-
-          {/* Barra de progresso */}
+          {}
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 sm:h-2.5 mb-1 sm:mb-2">
             <div
               className="bg-blue-600 dark:bg-blue-500 h-2 sm:h-2.5 rounded-full transition-all duration-500"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
-
           <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-1 sm:mb-3">
             Questão {currentQuestionIndex + 1} de {questions.length} ({Math.round(progress)}%)
           </div>
-
           {isComplete ? (
             <div className="flex-1 flex flex-col items-center justify-center py-8">
               <div className="mb-6 text-center">
@@ -272,7 +247,7 @@ export const VocationalTestStepper: React.FC<VocationalTestStepperProps> = ({
             </div>
           ) : currentQuestion ? (
             <div className="flex-1 flex flex-col">
-              {/* Questão atual */}
+              {}
               <div className="mb-8">
                 <div className="p-3 sm:p-4 md:p-5 bg-blue-50 dark:bg-blue-950/40 rounded-lg border border-blue-100 dark:border-blue-900 mb-4 sm:mb-6 md:mb-8">
                   <h3 className="font-semibold text-base sm:text-lg md:text-xl mb-1 dark:text-gray-100">
@@ -282,8 +257,7 @@ export const VocationalTestStepper: React.FC<VocationalTestStepperProps> = ({
                     {currentQuestion.tesqDescricao}
                   </p>
                 </div>
-
-                {/* Slider com emojis */}
+                {}
                 <div className="mb-4 sm:mb-6 md:mb-8">
                   <div className="flex justify-between gap-1 sm:gap-2 mb-2">
                     {legend.map((l) => (
@@ -301,15 +275,17 @@ export const VocationalTestStepper: React.FC<VocationalTestStepperProps> = ({
                               ? 'ring-2 ring-offset-2 ring-blue-300 dark:ring-blue-500 dark:ring-offset-zinc-900'
                               : ''
                           } 
-                          ${submitting ? 'opacity-70' : 'hover:scale-110 cursor-pointer'}`}
+                          ${submitting ? 'opacity-70' : 'hover:scale-110 cursor-pointer'}
+                          select-none user-select-none`}
                           onClick={() =>
                             !submitting && handleAnswer(currentQuestion.tesqId, l.value)
                           }
+                          onMouseDown={(e) => e.preventDefault()}
                         >
                           {l.emoji}
                         </div>
                         <span
-                          className={`text-xs sm:text-sm font-medium mt-1 sm:mt-2 text-center ${
+                          className={`text-xs sm:text-sm font-medium mt-1 sm:mt-2 text-center select-none user-select-none ${
                             answers[currentQuestion.tesqId] === l.value
                               ? l.textColor
                               : 'text-gray-500'
@@ -320,34 +296,38 @@ export const VocationalTestStepper: React.FC<VocationalTestStepperProps> = ({
                       </div>
                     ))}
                   </div>
-
-                  {/* Barra colorida */}
-                  <div className="relative h-1.5 sm:h-2 mt-4 sm:mt-6 mb-2 sm:mb-4">
-                    <div className="absolute inset-0 flex">
-                      <div className="w-1/5 bg-red-500 rounded-l-full"></div>
-                      <div className="w-1/5 bg-orange-400"></div>
-                      <div className="w-1/5 bg-yellow-300"></div>
-                      <div className="w-1/5 bg-green-400"></div>
-                      <div className="w-1/5 bg-green-700 rounded-r-full"></div>
+                  {}
+                  <div
+                    className="relative h-1.5 sm:h-2 mt-4 sm:mt-6 mb-2 sm:mb-4 select-none user-select-none"
+                    onMouseDown={(e) => e.preventDefault()}
+                  >
+                    <div
+                      className="absolute inset-0 flex select-none user-select-none"
+                      onMouseDown={(e) => e.preventDefault()}
+                    >
+                      <div className="w-1/5 bg-red-500 rounded-l-full select-none user-select-none"></div>
+                      <div className="w-1/5 bg-orange-400 select-none user-select-none"></div>
+                      <div className="w-1/5 bg-yellow-300 select-none user-select-none"></div>
+                      <div className="w-1/5 bg-green-400 select-none user-select-none"></div>
+                      <div className="w-1/5 bg-green-700 rounded-r-full select-none user-select-none"></div>
                     </div>
-
-                    {/* Marcador */}
+                    {}
                     {answers[currentQuestion.tesqId] && (
                       <div
-                        className="absolute top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 bg-white border-2 border-blue-600 rounded-full shadow-lg transform -translate-x-1/2 transition-all duration-300"
+                        className="absolute top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 bg-white border-2 border-blue-600 rounded-full shadow-lg transform -translate-x-1/2 transition-all duration-300 select-none user-select-none"
                         style={{ left: `${((answers[currentQuestion.tesqId] - 1) / 4) * 100}%` }}
+                        onMouseDown={(e) => e.preventDefault()}
                       ></div>
                     )}
                   </div>
-
-                  {/* Descrição da opção selecionada */}
+                  {}
                 </div>
-
-                {/* Botão para próxima questão - container com altura fixa */}
-                <div className="flex justify-center mt-2 sm:mt-4 md:mt-6 h-12 sm:h-14 relative">
+                {}
+                <div className="flex justify-center mt-2 sm:mt-4 md:mt-6 h-12 sm:h-14 relative select-none user-select-none">
                   <Button
-                    className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white text-sm sm:text-base font-medium rounded-lg shadow hover:bg-blue-700 transition w-full sm:w-auto"
+                    className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white text-sm sm:text-base font-medium rounded-lg shadow hover:bg-blue-700 transition w-full sm:w-auto select-none user-select-none"
                     onClick={handleNext}
+                    onMouseDown={(e) => e.preventDefault()}
                     disabled={submitting || !answers[currentQuestion.tesqId]}
                   >
                     {submitting

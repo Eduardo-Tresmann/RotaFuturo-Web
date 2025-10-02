@@ -1,12 +1,7 @@
 import { Area } from '@/types/area';
 import { baseApiService } from '@/services/baseApiService';
-
-// Função de adaptação para compatibilidade com mudanças na API
 function adaptArea(area: any): Area {
   if (!area) return area;
-
-  // Garantir compatibilidade com o código existente que usa os campos antigos
-  // E garantir que campos com valores null ou undefined tenham valores padrão
   return {
     ...area,
     id: area.id || area.areaId || 0,
@@ -14,7 +9,6 @@ function adaptArea(area: any): Area {
     descricao: area.descricao || area.areaDescricao || '',
     dataCadastro: area.dataCadastro || area.areaDatacadastro || '',
     horaCadastro: area.horaCadastro || area.areaHoracadastro || '',
-    // Campos de compatibilidade
     areaId: area.id || area.areaId || 0,
     areaDescricao: area.descricao || area.areaDescricao || '',
     areaAtivo: area.ativo === undefined ? true : area.ativo,
@@ -22,8 +16,6 @@ function adaptArea(area: any): Area {
     areaHoracadastro: area.horaCadastro || area.areaHoracadastro || '',
   };
 }
-
-// Este arquivo é um wrapper/adaptador para resolver problemas de case-sensitivity em imports
 export const areaService = {
   async listAll(): Promise<Area[]> {
     try {
@@ -31,7 +23,6 @@ export const areaService = {
       return areas.map(adaptArea);
     } catch (error) {
       console.error('Erro ao buscar áreas, usando dados mock:', error);
-      // Dados mock para quando a API falhar
       const mockAreas = [
         {
           id: 1,

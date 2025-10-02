@@ -8,12 +8,10 @@ import { FormNotification } from '../../../../components/ui/form-components/form
 import { materiaService } from '@/services/materia/MateriaService';
 import { areaService } from '@/services/area/AreaService';
 import { areaSubService } from '@/services/areasub/AreaSubService';
-
 interface MateriaFormProps {
   materia?: Materia;
   onClose?: () => void;
 }
-
 export default function MateriaForm({ materia, onClose }: MateriaFormProps) {
   const initialState: Partial<Materia> = {
     matDescricao: '',
@@ -22,7 +20,6 @@ export default function MateriaForm({ materia, onClose }: MateriaFormProps) {
   };
   const [form, setForm] = useState<Partial<Materia>>(initialState);
   const { error, success } = FormNotification;
-
   React.useEffect(() => {
     if (materia) {
       setForm({ ...materia });
@@ -30,12 +27,10 @@ export default function MateriaForm({ materia, onClose }: MateriaFormProps) {
       setForm(initialState);
     }
   }, [materia]);
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.matDescricao || !form.matDescricao.trim()) {
@@ -64,7 +59,6 @@ export default function MateriaForm({ materia, onClose }: MateriaFormProps) {
       error({ message: err?.message || 'Erro ao salvar matéria.' });
     }
   }
-
   return (
     <section className="w-full max-w-2xl mx-auto bg-white dark:bg-neutral-900 p-8 flex flex-col gap-8 rounded-2xl" style={{borderBottom: 'none'}}>
       <h2 className="text-2xl font-bold text-blue-700 dark:text-blue-400 text-center tracking-tight mb-2 flex items-center justify-center gap-2">

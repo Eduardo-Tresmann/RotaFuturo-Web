@@ -1,6 +1,4 @@
 import React, { useState, useMemo } from 'react';
-
-
 import { Questao } from '@/types/questao';
 import { Pencil, Ban, CheckCircle } from 'lucide-react';
 import {
@@ -12,18 +10,15 @@ import {
   TableCell
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/Badge';
-
 interface QuestaoTableProps {
   questoes: Questao[];
   onEdit: (questao: Questao) => void;
   onInativar: (questao: Questao) => void;
 }
-
 export function QuestaoTable({ questoes, onEdit, onInativar }: QuestaoTableProps) {
   const [showForm, setShowForm] = useState<'none' | 'questao' | 'tipo'>('none');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTipoOpen, setModalTipoOpen] = useState(false);
-
   React.useEffect(() => {
     const handleAbrirModalQuestao = () => {
       setModalOpen(true);
@@ -40,18 +35,15 @@ export function QuestaoTable({ questoes, onEdit, onInativar }: QuestaoTableProps
       window.removeEventListener('abrirModalQuestaoTipo', handleAbrirModalQuestaoTipo);
     };
   }, []);
-
   const [search, setSearch] = useState<string>('');
   const [showFilters, setShowFilters] = useState(false);
   const [filterId, setFilterId] = useState('');
   const [filterAtivo, setFilterAtivo] = useState('');
-
   type SortKey = 'questaoId' | 'questaoCodigo' | 'questaoDescricao' | 'questaoAtivo';
   const [sortKey, setSortKey] = useState<SortKey>('questaoId');
   const [sortAsc, setSortAsc] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const pageSize = 10;
-
   const filtered = useMemo(() => {
     let data = questoes.filter((q: Questao) => {
       const matchSearch = String(q.questaoId).includes(search);
@@ -59,7 +51,6 @@ export function QuestaoTable({ questoes, onEdit, onInativar }: QuestaoTableProps
       const matchAtivo = filterAtivo ? String(q.questaoAtivo) === filterAtivo : true;
       return matchSearch && matchId && matchAtivo;
     });
-
     data = [...data].sort((a, b) => {
       const valA: string =
         a[sortKey] !== null && a[sortKey] !== undefined ? String(a[sortKey]).toLowerCase() : '';
@@ -69,17 +60,13 @@ export function QuestaoTable({ questoes, onEdit, onInativar }: QuestaoTableProps
       if (valA > valB) return sortAsc ? 1 : -1;
       return 0;
     });
-
     return data;
   }, [questoes, search, sortKey, sortAsc, filterId, filterAtivo]);
-
   const paginated = useMemo(() => {
     const start = (page - 1) * pageSize;
     return filtered.slice(start, start + pageSize);
   }, [filtered, page]);
-
   const totalPages = Math.ceil(filtered.length / pageSize);
-
   function handleSort(key: SortKey) {
     if (sortKey === key) setSortAsc((asc) => !asc);
     else {
@@ -87,7 +74,6 @@ export function QuestaoTable({ questoes, onEdit, onInativar }: QuestaoTableProps
       setSortAsc(true);
     }
   }
-
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
       <Table>
@@ -162,7 +148,6 @@ export function QuestaoTable({ questoes, onEdit, onInativar }: QuestaoTableProps
             ))
           )}
         </TableBody>
-       
         {totalPages > 1 && (
           <tfoot className="bg-transparent">
             <tr>

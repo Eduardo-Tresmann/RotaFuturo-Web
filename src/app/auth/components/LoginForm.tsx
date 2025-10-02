@@ -1,29 +1,24 @@
-// components/LoginForm.tsx (ou o caminho do seu arquivo de formulário)
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, User, Mail, Shield, AlertCircle, CheckCircle, AtSign } from 'lucide-react';
-import { useAuthContext } from '@/components/context/AuthContext'; // <--- Usar useAuthContext
+import { useAuthContext } from '@/components/context/AuthContext'; 
 import { FormLabel } from '@/components/ui/form-components/form-label';
 import { EmailField } from '@/components/ui/form-components/email-field';
 import { PasswordField } from '@/components/ui/form-components/password-field';
 import { FormButton } from '@/components/ui/form-components/form-button';
 import { FormNotification } from '@/components/ui/form-components/form-notification';
-
 interface LoginFormProps {
   onBack: () => void;
 }
-
 export function LoginForm({ onBack }: LoginFormProps) {
   const { login, loading } = useAuthContext();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
-
   const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!formData.email || !formData.password) {
       FormNotification.error({
         message: 'Preencha todos os campos para continuar.',
@@ -64,7 +59,6 @@ export function LoginForm({ onBack }: LoginFormProps) {
       });
     } catch (error: any) {
       let errorMsg = error?.message || 'Email ou senha incorretos. Verifique suas credenciais.';
-      // Se vier erro HTTP, mostra status
       if (errorMsg.includes('HTTP error!')) {
         errorMsg = 'Erro de autenticação: usuário ou senha inválidos.';
       }
@@ -76,7 +70,6 @@ export function LoginForm({ onBack }: LoginFormProps) {
       });
     }
   };
-
   return (
     <div className="w-full">
       <div className="flex items-center gap-3 mb-8">
@@ -92,7 +85,6 @@ export function LoginForm({ onBack }: LoginFormProps) {
           Bem-vindo de volta
         </h2>
       </div>
-
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-2">
           <FormLabel htmlFor="email" required>
@@ -110,7 +102,6 @@ export function LoginForm({ onBack }: LoginFormProps) {
             className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border-zinc-200 dark:border-zinc-700 focus:border-zinc-400 dark:focus:border-zinc-500 focus:ring-2 focus:ring-zinc-100 dark:focus:ring-zinc-800 placeholder:text-zinc-400 dark:placeholder:text-zinc-400 text-zinc-900 dark:text-zinc-100 transition-all duration-200"
           />
         </div>
-
         <div className="space-y-2">
           <PasswordField
             id="password"
@@ -125,7 +116,6 @@ export function LoginForm({ onBack }: LoginFormProps) {
             className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border-zinc-200 dark:border-zinc-700 focus:border-zinc-400 dark:focus:border-zinc-500 focus:ring-2 focus:ring-zinc-100 dark:focus:ring-zinc-800 placeholder:text-zinc-400 dark:placeholder:text-zinc-400 text-zinc-900 dark:text-zinc-100 transition-all duration-200"
           />
         </div>
-
         <FormButton
           type="submit"
           size="lg"

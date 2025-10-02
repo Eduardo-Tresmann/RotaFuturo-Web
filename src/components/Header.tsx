@@ -13,16 +13,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
 interface NavItem {
   href: string;
   label: string;
 }
-
 interface NavbarProps {
   items: NavItem[];
 }
-
 interface DropdownMenuItemType {
   label?: string;
   onClick?: () => void;
@@ -31,13 +28,11 @@ interface DropdownMenuItemType {
   isLabel?: boolean;
   icon?: React.ReactNode;
 }
-
 interface DadosPerfilUsuario {
   name: string;
   avatarUrl?: string;
   email?: string;
 }
-
 export interface HeaderProps {
   className?: string;
   exibirNavbar?: boolean;
@@ -49,7 +44,6 @@ export interface HeaderProps {
   profileMenuItems?: DropdownMenuItemType[];
   extra?: React.ReactNode;
 }
-
 export function Navbar({ items }: NavbarProps) {
   return (
     <nav className="hidden md:flex flex-grow justify-center">
@@ -68,7 +62,6 @@ export function Navbar({ items }: NavbarProps) {
     </nav>
   );
 }
-
 function BarraPesquisa() {
   return (
     <div className="relative">
@@ -94,14 +87,11 @@ function BarraPesquisa() {
     </div>
   );
 }
-
 interface PerfilDropdownProps extends DadosPerfilUsuario {
   menuItems: DropdownMenuItemType[];
 }
-
 function PerfilDropdown({ name, email, avatarUrl, menuItems }: PerfilDropdownProps) {
-  const defaultAvatar = 'https://via.placeholder.com/32';
-
+  const defaultAvatar = 'https://via.placeholder.com/40';
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -124,10 +114,14 @@ function PerfilDropdown({ name, email, avatarUrl, menuItems }: PerfilDropdownPro
         forceMount
       >
         <div className="flex flex-col items-center py-3 px-3 bg-zinc-900/80">
-          <p className="text-base font-bold text-zinc-100 text-center break-words max-w-full">{name || 'Usuário'}</p>
-          {email && <p className="text-xs text-zinc-400 text-center break-words max-w-full">{email}</p>}
+          <p className="text-base font-bold text-zinc-100 text-center break-words max-w-full">
+            {name || 'Usuário'}
+          </p>
+          {email && (
+            <p className="text-xs text-zinc-400 text-center break-words max-w-full">{email}</p>
+          )}
         </div>
-  <DropdownMenuSeparator className="my-0" />
+        <DropdownMenuSeparator className="my-0" />
         <div className="py-1">
           {menuItems.map((item, index) => {
             if (item.isSeparator) {
@@ -159,7 +153,6 @@ function PerfilDropdown({ name, email, avatarUrl, menuItems }: PerfilDropdownPro
     </DropdownMenu>
   );
 }
-
 export function Header({
   exibirNavbar = false,
   navItems = [],
@@ -173,12 +166,17 @@ export function Header({
 }: HeaderProps) {
   return (
     <header
-      className={`w-full shadow-sm font-light transition-colors duration-300 ${className ?? ''} bg-zinc-900 text-zinc-100 border-b border-zinc-800`}
+      className={`w-full shadow-sm font-light transition-colors duration-300 ${
+        className ?? ''
+      } bg-zinc-900 text-zinc-100 border-b border-zinc-800`}
       style={{ backgroundColor: '#18181b', color: '#f4f4f5', borderBottom: '1px solid #27272a' }}
     >
       <div className="w-full px-3 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-2 relative">
-          <Link href={perfilUsuario && perfilUsuario.name !== 'Usuário' ? '/home' : '/'} className="flex items-center">
+          <Link
+            href={perfilUsuario && perfilUsuario.name !== 'Usuário' ? '/home' : '/'}
+            className="flex items-center"
+          >
             <Imagem
               src="/imagens/rf.svg"
               alt="rf logo"
@@ -189,7 +187,6 @@ export function Header({
           </Link>
           {extra && <div className="ml-4">{extra}</div>}
         </div>
-
         {exibirNavbar && (
           <nav className="hidden md:flex flex-grow justify-center">
             <ul className="flex space-x-0">
@@ -209,7 +206,6 @@ export function Header({
             </ul>
           </nav>
         )}
-
         <div className="flex items-center space-x-4">
           {exibirBarraPesquisa && <BarraPesquisa />}
           <ThemeSwitch />
@@ -217,7 +213,7 @@ export function Header({
             <PerfilDropdown
               name={perfilUsuario.name || 'Usuário'}
               email={perfilUsuario.email || ''}
-              avatarUrl={perfilUsuario.avatarUrl || 'https://via.placeholder.com/48'}
+              avatarUrl={perfilUsuario.avatarUrl || 'https://via.placeholder.com/40'}
               menuItems={profileMenuItems}
             />
           )}
