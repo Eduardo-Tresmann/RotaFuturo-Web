@@ -1,6 +1,4 @@
 import { FormNotification } from '@/components/ui/form-components/form-notification';
-
-
 import React, { useState, useEffect } from 'react';
 import { AdminPageContent } from '@/components/admin/AdminPageContent';
 import { QuestionarioTable } from './QuestionarioTable';
@@ -17,17 +15,12 @@ import { questionarioTipoService } from '@/services/questionario/QuestionarioTip
 import { questaoTipoService } from '@/services/questao/QuestaoTipoService';
 import { questaoNivelService } from '@/services/questao/QuestaoNivelService';
 import { questaoAlternativaService } from '@/services/questao/QuestaoAlternativaService';
-
 import QuestaoTipoForm from './QuestaoTipoForm';
 import QuestaoNivelForm from './QuestaoNivelForm';
 import QuestaoAlternativaForm from './QuestaoAlternativaForm';
 import QuestionarioTipoForm from './QuestionarioTipoForm';
 import QuestaoForm from './QuestaoForm';
 import QuestionarioForm from './QuestionarioForm';
-
-
-
-
 type TabKey = 'questionarios' | 'questoes' | 'tiposQuestionario' | 'tiposQuestao' | 'niveisQuestao' | 'alternativas';
 interface ModalState { tipo: string; data?: any };
 interface Filtros {
@@ -39,7 +32,6 @@ interface Filtros {
   niveisQuestao: { descricao: string; ativo: string };
   alternativas: { descricao: string; correta: string };
 }
-
 export function QuestionariosAdminContent() {
   const [tab, setTab] = useState<TabKey>('questionarios');
   const [questionarios, setQuestionarios] = useState<any[]>([]);
@@ -58,8 +50,6 @@ export function QuestionariosAdminContent() {
   });
   const [showFiltro, setShowFiltro] = useState(false);
   const [modal, setModal] = useState<ModalState | null>(null);
-
-  // Funções para atualizar cada lista
   async function refreshQuestionarios() {
     setQuestionarios(await questionarioService.listAll());
   }
@@ -88,7 +78,6 @@ export function QuestionariosAdminContent() {
   }
   async function refreshNiveisQuestao() { setNiveisQuestao(await questaoNivelService.listAll()); }
   async function refreshAlternativas() { setAlternativas(await questaoAlternativaService.listAll()); }
-
   useEffect(() => {
     refreshQuestionarios();
     refreshQuestoes();
@@ -97,7 +86,6 @@ export function QuestionariosAdminContent() {
     refreshNiveisQuestao();
     refreshAlternativas();
   }, []);
-
   return (
     <AdminPageContent
       actionButtons={[
@@ -134,7 +122,7 @@ export function QuestionariosAdminContent() {
             <DialogHeader>
               <DialogTitle className="dark:text-zinc-100">Filtro</DialogTitle>
             </DialogHeader>
-            {/* Filtros dinâmicos por aba */}
+            {}
             <form
               className="flex flex-col gap-4 py-2"
               onSubmit={e => { e.preventDefault(); setShowFiltro(false); }}
@@ -279,7 +267,6 @@ export function QuestionariosAdminContent() {
             const { success, error } = FormNotification;
             try {
               const novoStatus = !nivel.quesnAtivo;
-              // Sempre envie a descrição junto com o status
               await questaoNivelService.update(nivel.quesnId, { quesnDescricao: nivel.quesnDescricao, quesnAtivo: novoStatus });
               setNiveisQuestao(prev => prev.map(n => n.quesnId === nivel.quesnId ? { ...n, quesnAtivo: novoStatus } : n));
               success({ message: `Nível ${novoStatus ? 'ativado' : 'inativado'} com sucesso!` });
@@ -296,7 +283,7 @@ export function QuestionariosAdminContent() {
           onInativar={a => setModal({ tipo: 'inativar-alternativa', data: a })}
         />
       )}
-      {/* Modal de cadastro/edição e confirmação */}
+      {}
       <Dialog open={!!modal} onOpenChange={v => !v && setModal(null)}>
         <DialogContent aria-describedby={undefined}>
           <DialogHeader>
@@ -334,7 +321,6 @@ export function QuestionariosAdminContent() {
           </div>
         </DialogContent>
       </Dialog>
-
     </AdminPageContent>
   );
 }

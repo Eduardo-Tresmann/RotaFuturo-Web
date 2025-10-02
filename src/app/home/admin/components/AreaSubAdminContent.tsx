@@ -3,7 +3,6 @@ import AreaSubForm from '@/app/home/admin/components/AreaSubForm';
 import { AreaSubTable } from '@/app/home/admin/components/AreaSubTable';
 import { areaSubService } from '@/services/areasub/AreaSubService';
 import { AreaSub } from '@/types/areasub';
-
 export function AreaSubAdminContent() {
   const [areasub, setAreaSub] = useState<AreaSub[]>([]);
   useEffect(() => {

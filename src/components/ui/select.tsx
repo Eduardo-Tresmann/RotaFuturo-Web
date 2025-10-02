@@ -1,11 +1,9 @@
 import * as React from "react";
 import { Check, ChevronDown } from "lucide-react";
-
 export interface SelectOption {
   value: string | number;
   label: string;
 }
-
 interface SelectProps {
   options: SelectOption[];
   value: string | number;
@@ -13,12 +11,10 @@ interface SelectProps {
   className?: string;
   ariaLabel?: string;
 }
-
 export const Select: React.FC<SelectProps> = ({ options, value, onChange, className = "", ariaLabel }) => {
   const [open, setOpen] = React.useState(false);
   const selected = options.find(opt => opt.value === value);
   const ref = React.useRef<HTMLDivElement>(null);
-
   React.useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -28,7 +24,6 @@ export const Select: React.FC<SelectProps> = ({ options, value, onChange, classN
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
   return (
     <div ref={ref} className={`relative w-full ${className}`}> 
       <button

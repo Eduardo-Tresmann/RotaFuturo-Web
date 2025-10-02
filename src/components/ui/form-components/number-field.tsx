@@ -3,7 +3,6 @@ import { Input } from '@/components/ui/input';
 import { FormLabel } from './form-label';
 import { forwardRef } from 'react';
 import { LucideIcon } from 'lucide-react';
-
 interface NumberFieldProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   error?: string;
@@ -15,7 +14,6 @@ interface NumberFieldProps
   icon?: LucideIcon;
   iconColor?: string;
 }
-
 export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
   (
     {
@@ -68,5 +66,4 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
     );
   }
 );
-
 NumberField.displayName = 'NumberField';

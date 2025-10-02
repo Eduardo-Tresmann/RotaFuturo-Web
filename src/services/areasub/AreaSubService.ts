@@ -1,6 +1,5 @@
 import { AreaSub } from '@/types/areasub';
 import { baseApiService } from '@/services/baseApiService';
-
 export const areaSubService = {
   async search(query: string): Promise<AreaSub[]> {
     return baseApiService.request<AreaSub[]>(`/areasub?search=${encodeURIComponent(query)}`);

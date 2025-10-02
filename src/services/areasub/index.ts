@@ -1,12 +1,7 @@
 import { AreaSub } from '@/types/areasub';
 import { baseApiService } from '@/services/baseApiService';
-
-// Função de adaptação para compatibilidade com mudanças na API
 function adaptAreaSub(areaSub: any): AreaSub {
   if (!areaSub) return areaSub;
-
-  // Garantir compatibilidade com o código existente que usa os campos antigos
-  // E garantir que campos com valores null ou undefined tenham valores padrão
   return {
     ...areaSub,
     id: areaSub.id || areaSub.areasId || 0,
@@ -15,15 +10,12 @@ function adaptAreaSub(areaSub: any): AreaSub {
     areasDescricao: areaSub.areasDescricao || '',
     dataCadastro: areaSub.dataCadastro || areaSub.areasDatacadastro || '',
     horaCadastro: areaSub.horaCadastro || areaSub.areasHoracadastro || '',
-    // Campos de compatibilidade
     areasId: areaSub.id || areaSub.areasId || 0,
     areasAtivo: areaSub.ativo === undefined ? true : areaSub.ativo,
     areasDatacadastro: areaSub.dataCadastro || areaSub.areasDatacadastro || '',
     areasHoracadastro: areaSub.horaCadastro || areaSub.areasHoracadastro || '',
   };
 }
-
-// Este arquivo é um wrapper/adaptador para resolver problemas de case-sensitivity em imports
 export const areaSubService = {
   async search(query: string): Promise<AreaSub[]> {
     const results = await baseApiService.request<any[]>(
@@ -37,7 +29,6 @@ export const areaSubService = {
       return results.map(adaptAreaSub);
     } catch (error) {
       console.error('Erro ao buscar subáreas, usando dados mock:', error);
-      // Dados mock para quando a API falhar
       const mockAreaSubs = [
         {
           id: 1,
@@ -99,7 +90,6 @@ export const areaSubService = {
       return mockAreaSubs.map(adaptAreaSub);
     }
   },
-
   async create(data: Partial<AreaSub>): Promise<AreaSub> {
     const response = await baseApiService.request<any>('/areasub', {
       method: 'POST',

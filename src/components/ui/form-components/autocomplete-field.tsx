@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FormLabel } from './form-label';
 import { Search } from 'lucide-react';
-
 interface Option {
   value: string | number;
   label: string;
 }
-
 interface AutoCompleteFieldProps {
   name: string;
   label: React.ReactNode;
@@ -14,9 +12,8 @@ interface AutoCompleteFieldProps {
   onChange: (value: string | number) => void;
   fetchOptions: (query: string) => Promise<Option[]>;
   required?: boolean;
-  inputClassName?: string; // Adicione esta linha
+  inputClassName?: string; 
 }
-
 export function AutoCompleteField({
   name,
   label,
@@ -24,13 +21,12 @@ export function AutoCompleteField({
   onChange,
   fetchOptions,
   required,
-  inputClassName = '', // Adicione esta linha
+  inputClassName = '', 
 }: AutoCompleteFieldProps) {
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<Option[]>([]);
   const [showOptions, setShowOptions] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
@@ -46,7 +42,6 @@ export function AutoCompleteField({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [showOptions]);
-
   useEffect(() => {
     async function syncInputValue() {
       if (value !== undefined && value !== null) {
@@ -67,12 +62,10 @@ export function AutoCompleteField({
     }
     syncInputValue();
   }, [value]);
-
   useEffect(() => {
     const safeValue = typeof inputValue === 'string' ? inputValue : String(inputValue ?? '');
     fetchOptions(safeValue).then(setOptions);
   }, [inputValue, fetchOptions]);
-
   return (
     <div className="w-full space-y-2 relative" ref={containerRef}>
       <FormLabel htmlFor={name} required={required}>
@@ -92,7 +85,6 @@ export function AutoCompleteField({
           }}
           onFocus={() => {
             setShowOptions(true);
-            // Busca todas as opções ao focar
             fetchOptions('').then(setOptions);
           }}
           autoComplete="off"

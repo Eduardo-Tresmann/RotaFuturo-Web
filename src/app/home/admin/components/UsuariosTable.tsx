@@ -13,13 +13,11 @@ import {
 } from '@/components/ui/table';
 import { Usuario } from '@/types/usuario';
 import { Pagination } from '@/components/ui/pagination';
-
 interface UsuariosTableProps {
   usuarios: Usuario[];
   onEdit: (usuario: Usuario) => void;
   onInativar: (usuario: Usuario) => void;
 }
-
 import { usuarioService } from '@/services/usuario/UsuarioService';
 import { FormNotification } from '@/components/ui/form-components/form-notification';
 export function UsuariosTable({ usuarios, onEdit, onInativar, onRefresh }: UsuariosTableProps & { onRefresh?: () => void }) {
@@ -29,21 +27,15 @@ export function UsuariosTable({ usuarios, onEdit, onInativar, onRefresh }: Usuar
   const [filterEmail, setFilterEmail] = useState('');
   const [filterAtivo, setFilterAtivo] = useState('');
   const [filterValidado, setFilterValidado] = useState('');
-  // Ordenação
   type SortKey = 'usuId' | 'usuEmail' | 'usuAtivo' | 'usuEmailValidado';
   const [sortKey, setSortKey] = useState<SortKey>('usuId');
   const [sortAsc, setSortAsc] = useState<boolean>(true);
-  // Paginação
   const [page, setPage] = useState<number>(1);
   const pageSize = 10;
-
-  // Filtro e ordenação
   const filtered = useMemo(() => {
     let data = usuarios.filter((u: Usuario) => {
-      // Busca simples
       const matchSearch =
         (u.usuEmail || '').toLowerCase().includes((search || '').toLowerCase()) || String(u.usuId).includes(search);
-      // Filtros avançados
       const matchId = filterId ? String(u.usuId) === filterId : true;
       const matchEmail = filterEmail
         ? (u.usuEmail || '').toLowerCase().includes((filterEmail || '').toLowerCase())
@@ -55,26 +47,21 @@ export function UsuariosTable({ usuarios, onEdit, onInativar, onRefresh }: Usuar
     data = [...data].sort((a, b) => {
       let valA: string | number | boolean = a[sortKey];
       let valB: string | number | boolean = b[sortKey];
-
       if (typeof valA === 'string' && typeof valB === 'string') {
         valA = valA.toLowerCase();
         valB = valB.toLowerCase();
       }
-
       if (valA < valB) return sortAsc ? -1 : 1;
       if (valA > valB) return sortAsc ? 1 : -1;
       return 0;
     });
     return data;
   }, [usuarios, search, sortKey, sortAsc, filterId, filterEmail, filterAtivo, filterValidado]);
-
   const paginated = useMemo(() => {
     const start = (page - 1) * pageSize;
     return filtered.slice(start, start + pageSize);
   }, [filtered, page]);
-
   const totalPages = Math.ceil(filtered.length / pageSize);
-
   function handleSort(key: SortKey) {
     if (sortKey === key) setSortAsc((asc) => !asc);
     else {
@@ -82,7 +69,6 @@ export function UsuariosTable({ usuarios, onEdit, onInativar, onRefresh }: Usuar
       setSortAsc(true);
     }
   }
-
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
       <Table >

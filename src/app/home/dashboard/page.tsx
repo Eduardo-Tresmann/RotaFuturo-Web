@@ -1,5 +1,4 @@
 'use client';
-
 import { HeaderHome } from '@/components/HeaderHome';
 import {
   Breadcrumb,
@@ -11,25 +10,18 @@ import { Button } from '@/components/ui/button';
 import { LogOut, Settings, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-
 import { useAuthContext } from '@/components/context/AuthContext';
-// LoaderRF agora é global pelo layout
 import ProtectedRoute from '@/components/context/ProtectedRoute';
 import { usePessoa } from '@/hooks/usePessoa';
-
 export default function PaginaDashboard() {
   const { usuario, logout, authResolved } = useAuthContext();
   const { pessoa } = usePessoa();
   const router = useRouter();
-
-  // LoaderRF agora é global pelo layout
-
   const headerNavItems = [
     { href: '/home/desafios', label: 'Desafios' },
     { href: '/menu2', label: 'menu2' },
     { href: '/menu3', label: 'menu3' },
   ];
-
   const usuarioProfileData = {
     name:
       pessoa?.pesNome && pessoa?.pesNome.trim() !== ''
@@ -39,9 +31,8 @@ export default function PaginaDashboard() {
     avatarUrl:
       pessoa?.pesImagemperfil && pessoa?.pesImagemperfil.trim() !== ''
         ? `${process.env.NEXT_PUBLIC_API_URL}${pessoa.pesImagemperfil}`
-        : 'https://via.placeholder.com/48',
+        : 'https://via.placeholder.com/40',
   };
-
   const ProfileMenuItems = [
     { label: 'Minha Conta', isLabel: true },
     {
@@ -61,7 +52,6 @@ export default function PaginaDashboard() {
       icon: <LogOut className="mr-2 h-4 w-4" />,
     },
   ];
-
   return (
     <ProtectedRoute>
       <HeaderHome
@@ -96,7 +86,6 @@ export default function PaginaDashboard() {
                 <LogOut className="w-4 h-4" /> Sair
               </Button>
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100">
                 <h3 className="text-lg font-semibold text-blue-900 mb-2">Informações do Usuário</h3>
@@ -115,7 +104,6 @@ export default function PaginaDashboard() {
                   </p>
                 </div>
               </div>
-
               <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-100">
                 <h3 className="text-lg font-semibold text-green-900 mb-2">Status da Conta</h3>
                 <div className="space-y-2 text-sm text-green-800">

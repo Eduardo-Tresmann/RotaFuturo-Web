@@ -1,12 +1,10 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
-
 interface PaginationProps {
   page: number
   totalPages: number
   onPageChange: (page: number) => void
 }
-
 export function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
   if (totalPages <= 1) return null;
   return (

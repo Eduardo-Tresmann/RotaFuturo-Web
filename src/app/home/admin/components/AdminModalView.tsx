@@ -1,12 +1,10 @@
 import React from 'react';
-
 interface AdminModalViewProps {
   open: boolean;
   onClose: () => void;
   children: React.ReactNode;
   title?: string;
 }
-
 export const AdminModalView: React.FC<AdminModalViewProps> = ({
   open,
   onClose,

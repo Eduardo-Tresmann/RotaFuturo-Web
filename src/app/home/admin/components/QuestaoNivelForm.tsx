@@ -2,20 +2,15 @@ import React, { useState } from 'react';
 import { TextField } from '../../../../components/ui/form-components/text-field';
 import { FormNotification } from '../../../../components/ui/form-components/form-notification';
 import { questaoNivelService, NivelQuestao } from '@/services/questao/QuestaoNivelService';
-
-
 export default function QuestaoNivelForm({ onSuccess, data }: { onSuccess?: () => void, data?: Partial<NivelQuestao> }) {
   const [form, setForm] = useState<Partial<NivelQuestao>>(data ?? { quesnDescricao: '' });
-
   React.useEffect(() => {
     if (data) setForm(data);
   }, [data]);
   const { error, success } = FormNotification;
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm((prev) => ({ ...prev, quesnDescricao: e.target.value }));
   }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
@@ -32,7 +27,6 @@ export default function QuestaoNivelForm({ onSuccess, data }: { onSuccess?: () =
       error({ message: err?.message || 'Erro ao salvar Nível de Questão' });
     }
   }
-
   return (
     <form className="flex flex-col gap-6 bg-white dark:bg-neutral-900 p-8 rounded-2xl max-w-lg mx-auto shadow-soft" onSubmit={handleSubmit}>
       <h2 className="text-2xl font-bold text-blue-700 dark:text-blue-300 mb-2 text-center">

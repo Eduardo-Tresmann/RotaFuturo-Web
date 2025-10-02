@@ -11,7 +11,6 @@ import { questaoNivelService, NivelQuestao } from '@/services/questao/QuestaoNiv
 import { areaService } from '@/services/area/AreaService';
 import { areaSubService } from '@/services/areasub/AreaSubService';
 import { FormLabel } from '../../../../components/ui/form-components/form-label';
-
 export default function QuestaoForm({ onSuccess, data }: { onSuccess?: () => void, data?: Partial<Questao> }) {
   const [form, setForm] = useState<Partial<Questao>>({
     questaoCodigo: data?.questaoCodigo || '',
@@ -23,7 +22,6 @@ export default function QuestaoForm({ onSuccess, data }: { onSuccess?: () => voi
     areaSub: data?.areaSub,
     questaoId: data?.questaoId,
   });
-
   useEffect(() => {
     if (data) {
       setForm({
@@ -39,16 +37,13 @@ export default function QuestaoForm({ onSuccess, data }: { onSuccess?: () => voi
     }
   }, [data]);
   const { error, success } = FormNotification;
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      // Monta o payload correto para o backend
       const payload = {
         questaoCodigo: form.questaoCodigo,
         questaoDescricao: form.questaoDescricao,
@@ -57,7 +52,6 @@ export default function QuestaoForm({ onSuccess, data }: { onSuccess?: () => voi
         questaoNivel: form.questaoNivel || undefined,
         area: form.area ? { areaId: form.area } : undefined,
         areaSub: form.areaSub ? { areasId: form.areaSub } : undefined,
-        // Garante que questaoAtivo seja enviado ao editar
         ...(form.questaoId && data ? {
           questaoDatacadastro: data.questaoDatacadastro,
           questaoHoracadastro: data.questaoHoracadastro,
@@ -86,7 +80,6 @@ export default function QuestaoForm({ onSuccess, data }: { onSuccess?: () => voi
       error({ message: err?.message || 'Erro ao salvar questão' });
     }
   }
-
   return (
     <div className="bg-white dark:bg-neutral-900 rounded-2xl shadow-soft p-8 mx-auto">
       <h2 className="text-2xl font-bold text-blue-700 dark:text-blue-300 mb-8 text-center">Cadastro de Questão</h2>

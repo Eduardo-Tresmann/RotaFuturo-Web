@@ -1,11 +1,9 @@
 import { baseApiService } from '@/services/baseApiService';
-
 export interface TesteResult {
   areaId: number;
   areaDescricao: string;
   pontuacao: number;
 }
-
 class VocationalTestService {
   async getTesteResults(testeId: number, usuarioId: number): Promise<TesteResult[]> {
     try {
@@ -17,9 +15,8 @@ class VocationalTestService {
       return results;
     } catch (error) {
       console.error('Erro ao buscar resultados do teste:', error);
-      throw error; // Propagar erro para tratamento no componente
+      throw error; 
     }
   }
 }
-
 export const vocationalTestService = new VocationalTestService();

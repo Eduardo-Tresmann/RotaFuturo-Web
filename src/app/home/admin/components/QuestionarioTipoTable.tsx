@@ -12,22 +12,18 @@ import {
   TableHead,
   TableCell,
 } from '@/components/ui/table';
-
 interface QuestionarioTipo {
   id: number;
   descricao: string;
   ativo: boolean;
 }
-
 interface QuestionarioTipoTableProps {
   tipos: QuestionarioTipo[];
   onEdit: (tipo: QuestionarioTipo) => void;
   setTipos?: (tipos: QuestionarioTipo[]) => void;
 }
-
 export function QuestionarioTipoTable({ tipos, onEdit, setTipos }: QuestionarioTipoTableProps) {
   const { success, error } = FormNotification;
-
   async function handleToggleAtivo(tipo: QuestionarioTipo) {
     try {
       if (typeof tipo.id !== 'number' || isNaN(tipo.id)) {
@@ -35,7 +31,6 @@ export function QuestionarioTipoTable({ tipos, onEdit, setTipos }: QuestionarioT
         return;
       }
       const novoStatus = !tipo.ativo;
-      // Always send the current description and new status
       const payload = {
         questDescricao: tipo.descricao,
         questAtivo: novoStatus
@@ -54,7 +49,6 @@ export function QuestionarioTipoTable({ tipos, onEdit, setTipos }: QuestionarioT
   const [sortAsc, setSortAsc] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const pageSize = 10;
-
   const sorted = useMemo(() => {
     let data = [...tipos];
     data = data.sort((a, b) => {
@@ -70,14 +64,11 @@ export function QuestionarioTipoTable({ tipos, onEdit, setTipos }: QuestionarioT
     });
     return data;
   }, [tipos, sortKey, sortAsc]);
-
   const paginated = useMemo(() => {
     const start = (page - 1) * pageSize;
     return sorted.slice(start, start + pageSize);
   }, [sorted, page]);
-
   const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize));
-
   function handleSort(key: SortKey) {
     if (sortKey === key) setSortAsc((asc) => !asc);
     else {
@@ -85,7 +76,6 @@ export function QuestionarioTipoTable({ tipos, onEdit, setTipos }: QuestionarioT
       setSortAsc(true);
     }
   }
-
   return (
     <div>
       <Table>

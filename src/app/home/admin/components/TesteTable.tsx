@@ -9,13 +9,11 @@ import {
   TableCell,
 } from '@/components/ui/table';
 import { Teste } from '@/services/teste/TesteService';
-
 interface TesteTableProps {
   testes: Teste[];
   onEdit: (teste: Teste) => void;
   onInativar: (teste: Teste) => void;
 }
-
 export function TesteTable({ testes, onEdit }: TesteTableProps) {
   const [search, setSearch] = useState('');
   const filtered = useMemo(() => {
@@ -25,7 +23,6 @@ export function TesteTable({ testes, onEdit }: TesteTableProps) {
         String(t.tesId).includes(search),
     );
   }, [testes, search]);
-
   return (
     <div>
       <Table>

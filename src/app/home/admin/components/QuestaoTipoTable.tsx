@@ -10,29 +10,24 @@ import {
   TableHead,
   TableCell,
 } from '@/components/ui/table';
-
 interface TipoQuestao {
   id: number;
   descricao: string;
   ativo: boolean;
 }
-
 import { questaoTipoService } from '@/services/questao/QuestaoTipoService';
 import { FormNotification } from '../../../../components/ui/form-components/form-notification';
-
 interface QuestaoTipoTableProps {
   tipos: TipoQuestao[];
   onEdit: (tipo: TipoQuestao) => void;
   setTipos?: (tipos: TipoQuestao[]) => void;
 }
-
 export function QuestaoTipoTable({ tipos, onEdit, setTipos }: QuestaoTipoTableProps) {
   type SortKey = 'id' | 'descricao' | 'ativo';
   const [sortKey, setSortKey] = useState<SortKey>('id');
   const [sortAsc, setSortAsc] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const pageSize = 10;
-
   const sorted = useMemo(() => {
     let data = [...tipos];
     data = data.sort((a, b) => {
@@ -48,20 +43,15 @@ export function QuestaoTipoTable({ tipos, onEdit, setTipos }: QuestaoTipoTablePr
     });
     return data;
   }, [tipos, sortKey, sortAsc]);
-
   const paginated = useMemo(() => {
     const start = (page - 1) * pageSize;
     return sorted.slice(start, start + pageSize);
   }, [sorted, page]);
-
   const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize));
-
   const { success, error } = FormNotification;
-
   async function handleToggleAtivo(tipo: TipoQuestao) {
     try {
       const novoStatus = !tipo.ativo;
-      // Always send the current description and new status
       await questaoTipoService.update(tipo.id, { quetDescricao: tipo.descricao, quetAtivo: novoStatus });
       if (setTipos) {
         setTipos(tipos.map(t => t.id === tipo.id ? { ...t, ativo: novoStatus } : t));
@@ -71,7 +61,6 @@ export function QuestaoTipoTable({ tipos, onEdit, setTipos }: QuestaoTipoTablePr
       error({ message: err?.message || 'Erro ao atualizar tipo!' });
     }
   }
-
   function handleSort(key: SortKey) {
     if (sortKey === key) setSortAsc((asc) => !asc);
     else {
@@ -79,7 +68,6 @@ export function QuestaoTipoTable({ tipos, onEdit, setTipos }: QuestaoTipoTablePr
       setSortAsc(true);
     }
   }
-
   return (
     <div>
       <Table>

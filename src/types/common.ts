@@ -4,7 +4,6 @@ export interface ApiResponse<T> {
   message?: string;
   error?: string;
 }
-
 export interface FormField {
   name: string;
   label: string;
@@ -17,7 +16,6 @@ export interface FormField {
     pattern?: string;
   };
 }
-
 export interface NavItem {
   title: string;
   href: string;

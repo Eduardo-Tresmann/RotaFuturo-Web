@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState } from 'react';
 import {
   Accordion,
@@ -22,8 +21,6 @@ import {
 } from 'lucide-react';
 import { AreaSub } from '@/types/areasub';
 import { Area } from '@/types/area';
-
-// Mapeamento de ícones para áreas
 const areaIcons: Record<string, React.ReactNode> = {
   Agronomia: <BookOpen className="w-5 h-5 mr-2 dark:text-gray-300" />,
   Biomedicina: <Zap className="w-5 h-5 mr-2 dark:text-gray-300" />,
@@ -33,16 +30,11 @@ const areaIcons: Record<string, React.ReactNode> = {
   'Análise e Desenvolvimento de Sistemas': (
     <BarChart4 className="w-5 h-5 mr-2 dark:text-gray-300" />
   ),
-  // Adicione mais mapeamentos conforme necessário
   default: <GraduationCap className="w-5 h-5 mr-2 dark:text-gray-300" />,
 };
-
-// Obter ícone para uma área
 const getAreaIcon = (areaName: string) => {
   return areaIcons[areaName] || areaIcons['default'];
 };
-
-// Descrições resumidas das áreas
 const areaDescriptions: Record<string, string> = {
   Agronomia:
     'O curso de Agronomia forma profissionais que unem ciência, tecnologia e inovação para garantir que o mundo tenha alimentos de qualidade, produzidos de forma sustentável e responsável.',
@@ -92,12 +84,9 @@ const areaDescriptions: Record<string, string> = {
     'O curso de Psicologia forma profissionais que ajudam pessoas a lidarem com emoções, comportamentos e relações, promovendo equilíbrio e bem-estar.',
   default: 'Explore mais sobre esta área e descubra oportunidades profissionais interessantes.',
 };
-
-// Obter descrição para uma área
 const getAreaDescription = (areaName: string) => {
   return areaDescriptions[areaName] || areaDescriptions['default'];
 };
-
 interface AreaSelectionAccordionProps {
   areas: Area[];
   subareas: AreaSub[];
@@ -106,7 +95,6 @@ interface AreaSelectionAccordionProps {
   selectedAreaId?: number;
   selectedSubareaId?: number;
 }
-
 const AreaSelectionAccordion: React.FC<AreaSelectionAccordionProps> = ({
   areas,
   subareas,
@@ -116,23 +104,18 @@ const AreaSelectionAccordion: React.FC<AreaSelectionAccordionProps> = ({
   selectedSubareaId,
 }) => {
   const [expandedArea, setExpandedArea] = useState<string | null>(null);
-
-  // Filtrar subáreas pela área selecionada
   const getSubareasByAreaId = (areaId: number) => {
     return subareas.filter((subarea) => subarea.areaId === areaId);
   };
-
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-center mb-4 dark:text-white">
         Escolha sua Área de Interesse
       </h2>
-
       <p className="text-center mb-6 text-muted-foreground dark:text-gray-400">
         Caso não esteja satisfeito com os resultados automáticos, você pode escolher manualmente uma
         área e subárea de seu interesse.
       </p>
-
       <Accordion
         type="single"
         collapsible
@@ -174,7 +157,6 @@ const AreaSelectionAccordion: React.FC<AreaSelectionAccordionProps> = ({
                 <p className="text-xs sm:text-sm text-muted-foreground dark:text-gray-400">
                   {getAreaDescription(area.areaDescricao)}
                 </p>
-
                 <h4 className="font-medium mt-3 sm:mt-4 text-sm sm:text-base dark:text-gray-200">
                   Subáreas disponíveis:
                 </h4>
@@ -203,7 +185,6 @@ const AreaSelectionAccordion: React.FC<AreaSelectionAccordionProps> = ({
                     </Card>
                   ))}
                 </div>
-
                 <div className="pt-1 sm:pt-2">
                   <Button
                     onClick={() => onSelectArea(area.areaId)}
@@ -226,5 +207,4 @@ const AreaSelectionAccordion: React.FC<AreaSelectionAccordionProps> = ({
     </div>
   );
 };
-
 export default AreaSelectionAccordion;

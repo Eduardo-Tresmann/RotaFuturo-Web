@@ -15,13 +15,11 @@ import { areaService } from '@/services/area/AreaService';
 import { areaSubService } from '@/services/areasub/AreaSubService';
 import { useEffect, useState as useReactState } from 'react';
 import { Badge } from '@/components/ui/Badge';
-
 interface AreaSubTableProps {
   areaSubs: AreaSub[];
   onEdit: (areaSub: AreaSub) => void;
   onInativar: (areaSub: AreaSub) => void;
 }
-
 export function AreaSubTable({ areaSubs, onEdit, onInativar }: AreaSubTableProps) {
   const [search, setSearch] = useState('');
   type SortKey = 'areasId' | 'areasDescricao' | 'areasAtivo' | 'areaDescricao';
@@ -30,7 +28,6 @@ export function AreaSubTable({ areaSubs, onEdit, onInativar }: AreaSubTableProps
   const [page, setPage] = useState<number>(1);
   const pageSize = 10;
   const [areaMap, setAreaMap] = useReactState<Record<number, string>>({});
-
   useEffect(() => {
     async function fetchAreas() {
       const areas = await areaService.listAll();
@@ -40,7 +37,6 @@ export function AreaSubTable({ areaSubs, onEdit, onInativar }: AreaSubTableProps
     }
     fetchAreas();
   }, []);
-
   const filtered = useMemo(() => {
     let data = areaSubs.filter((a: AreaSub) => {
       const desc = a.areasDescricao || '';
@@ -69,14 +65,11 @@ export function AreaSubTable({ areaSubs, onEdit, onInativar }: AreaSubTableProps
     });
     return data;
   }, [areaSubs, search, sortKey, sortAsc, areaMap]);
-
   const paginated = useMemo(() => {
     const start = (page - 1) * pageSize;
     return filtered.slice(start, start + pageSize);
   }, [filtered, page]);
-
   const totalPages = Math.ceil(filtered.length / pageSize);
-
   function handleSort(key: SortKey) {
     if (sortKey === key) setSortAsc((asc) => !asc);
     else {
@@ -84,7 +77,6 @@ export function AreaSubTable({ areaSubs, onEdit, onInativar }: AreaSubTableProps
       setSortAsc(true);
     }
   }
-
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
       <Table className="text-base min-w-full max-w-6xl mx-auto align-middle rounded overflow-hidden [&_th]:py-4 [&_td]:py-3 [&_th]:text-base [&_td]:text-base">

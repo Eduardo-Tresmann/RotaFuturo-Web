@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/table';
 import { Area } from '@/types/area';
 import { areaService } from '@/services/area/AreaService';
-
 interface AreaTableProps {
   areas: Area[];
   onEdit: (area: Area) => void;
@@ -28,7 +27,6 @@ interface AreaTableProps {
     [key: string]: string | undefined;
   };
 }
-
 export function AreaTable({ areas, onEdit, onInativar, onAreaCreated, columnWidths }: AreaTableProps) {
   const [search, setSearch] = useState<string>('');
   const [selected, setSelected] = useState<number[]>([]);
@@ -37,8 +35,6 @@ export function AreaTable({ areas, onEdit, onInativar, onAreaCreated, columnWidt
   const [sortAsc, setSortAsc] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const pageSize = 10;
-  // Modal e edição agora são controlados externamente
-
   const filtered = useMemo(() => {
     let data = areas.filter((a: Area) => {
       const desc = a.areaDescricao || '';
@@ -60,14 +56,11 @@ export function AreaTable({ areas, onEdit, onInativar, onAreaCreated, columnWidt
     });
     return data;
   }, [areas, search, sortKey, sortAsc]);
-
   const paginated = useMemo(() => {
     const start = (page - 1) * pageSize;
     return filtered.slice(start, start + pageSize);
   }, [filtered, page]);
-
   const totalPages = Math.ceil(filtered.length / pageSize);
-
   function handleSort(key: SortKey) {
     if (sortKey === key) setSortAsc((asc) => !asc);
     else {
@@ -75,7 +68,6 @@ export function AreaTable({ areas, onEdit, onInativar, onAreaCreated, columnWidt
       setSortAsc(true);
     }
   }
-
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
       <Table className="text-base min-w-full max-w-6xl mx-auto align-middle rounded overflow-hidden [&_th]:py-4 [&_td]:py-3 [&_th]:text-base [&_td]:text-base">

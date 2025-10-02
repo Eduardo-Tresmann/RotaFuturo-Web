@@ -10,17 +10,14 @@ export interface Usuario {
   usuSenhaAntiga1?: string;
   usuSenhaAntiga2?: string;
 }
-
 export interface UsuarioCriacaoDTO {
   usuEmail: string;
   usuSenha: string;
 }
-
 export interface LoginRequest {
   usuEmail: string;
   usuSenha: string;
 }
-
 export interface LoginResponse {
   token: string;
   message?: string;

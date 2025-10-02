@@ -7,7 +7,6 @@ import { FormNotification } from '../../../../components/ui/form-components/form
 import { questionarioService } from '@/services/questionario/QuestionarioService';
 import { areaService } from '@/services/area/AreaService';
 import { areaSubService } from '@/services/areasub/AreaSubService';
-
 const initialState: Partial<Questionario> = {
   quesDescricao: '',
   quesPeso: 0,
@@ -15,20 +14,16 @@ const initialState: Partial<Questionario> = {
   area: 0,
   areaSub: 0,
 };
-
 interface QuestionarioFormProps {
   onSuccess?: () => void;
   data?: Partial<Questionario>;
 }
-
 export default function QuestionarioForm({ onSuccess, data }: QuestionarioFormProps) {
-  // Normaliza para sempre usar o objeto do backend (questId, questDescricao)
   function normalizeTipo(tipo: any) {
     if (!tipo) return undefined;
     if (tipo.questId && tipo.questDescricao) return tipo;
     return undefined;
   }
-
   const [form, setForm] = useState<Partial<Questionario>>({
     ...data,
     questionarioTipo: normalizeTipo(data?.questionarioTipo),
@@ -38,7 +33,6 @@ export default function QuestionarioForm({ onSuccess, data }: QuestionarioFormPr
     areaSub: data?.areaSub,
   });
   const { error, success } = FormNotification;
-
   React.useEffect(() => {
     if (data) {
       setForm({
@@ -47,16 +41,13 @@ export default function QuestionarioForm({ onSuccess, data }: QuestionarioFormPr
       });
     }
   }, [data]);
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      // Monta o payload conforme o backend espera
       const payload: any = {
         quesDescricao: form.quesDescricao,
         quesPeso: Number(form.quesPeso),
@@ -80,7 +71,6 @@ export default function QuestionarioForm({ onSuccess, data }: QuestionarioFormPr
       error({ message: err?.message || 'Erro ao salvar questionário' });
     }
   }
-
   return (
     <div className="bg-white dark:bg-neutral-900 rounded-2xl shadow-soft p-8 max-w-3xl mx-auto">
       <h2 className="text-2xl font-bold text-blue-700 dark:text-blue-300 mb-8 text-center">
@@ -115,7 +105,6 @@ export default function QuestionarioForm({ onSuccess, data }: QuestionarioFormPr
             label={<span className="font-medium text-zinc-700 dark:text-zinc-200">Tipo de Questionário</span>}
             value={form.questionarioTipo?.questId || ''}
             onChange={async (value) => {
-              // Busca o objeto completo ao selecionar
               const tipos = await import('@/services/questionario/QuestionarioTipoService').then(m => m.questionarioTipoService.listAll());
               const tipoObj = tipos.find(t => t.questId === value);
               setForm((prev) => ({ ...prev, questionarioTipo: tipoObj }));

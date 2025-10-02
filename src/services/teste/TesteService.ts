@@ -1,12 +1,10 @@
 import { baseApiService } from '@/services/baseApiService';
-
 export interface Teste {
   tesId: number;
   tesDescricao: string;
   areaId?: number;
   areaSubId?: number;
 }
-
 export interface TesteQuestao {
   tesqId: number;
   tesqDescricao: string;
@@ -15,7 +13,6 @@ export interface TesteQuestao {
   testeId?: number;
   testeDescricao?: string;
 }
-
 export const testeService = {
   async listTestes(): Promise<Teste[]> {
     return baseApiService.request<Teste[]>('/teste');
@@ -23,12 +20,10 @@ export const testeService = {
   async listQuestoes(testeId: number): Promise<TesteQuestao[]> {
     return baseApiService.request<TesteQuestao[]>(`/teste/${testeId}/questoes`);
   },
-
   async listQuestoesByArea(testeId: number, areaId: number): Promise<TesteQuestao[]> {
     return baseApiService.request<TesteQuestao[]>(`/teste/${testeId}/questoes/area/${areaId}`);
   },
   async responderQuestao(questaoId: number, resposta: number, usuarioId: number) {
-    // Importante: questaoId aqui é na verdade o testeQuestaoVinculoId (ID da relação entre teste e questão)
     return baseApiService.request(`/testequestaorespondida`, {
       method: 'POST',
       body: JSON.stringify({

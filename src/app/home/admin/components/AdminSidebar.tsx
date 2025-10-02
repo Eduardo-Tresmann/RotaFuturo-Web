@@ -1,18 +1,16 @@
 import React from 'react';
-import { Users, FileText, BookOpen, Layers, ListChecks, UserCog } from 'lucide-react';
+import { Users, FileText, BookOpen, Layers, ListChecks, UserCog, Shield } from 'lucide-react';
 import { Sidebar, SidebarItem } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
-
 import { HelpCircle } from 'lucide-react';
-
 export const adminLinks = [
   { key: 'areas', label: 'Áreas', icon: <UserCog className="w-5 h-5" /> },
   { key: 'cursos', label: 'Cursos', icon: <ListChecks className="w-5 h-5" /> },
   { key: 'questionarios', label: 'Questionários', icon: <BookOpen className="w-5 h-5" /> },
   { key: 'testes', label: 'Testes', icon: <HelpCircle className="w-5 h-5" /> },
   { key: 'usuarios', label: 'Usuários', icon: <Users className="w-5 h-5" /> },
+  { key: 'grupoacesso', label: 'Grupos de Acesso', icon: <Shield className="w-5 h-5" /> },
 ];
-
 export function AdminSidebar({
   current,
   onSelect,

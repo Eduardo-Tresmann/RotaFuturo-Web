@@ -10,20 +10,16 @@ import {
   TableCell,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/Badge';
-
-
 interface NivelQuestao {
   quesnId: number;
   quesnDescricao: string;
   quesnAtivo?: boolean;
 }
-
 export interface QuestaoNivelTableProps {
   niveis: NivelQuestao[];
   onEdit: (nivel: NivelQuestao) => void;
   onInativar: (nivel: NivelQuestao) => void;
 }
-
 export function QuestaoNivelTable({ niveis, onEdit, onInativar }: QuestaoNivelTableProps) {
   const [search, setSearch] = useState('');
   type SortKey = 'quesnId' | 'quesnDescricao' | 'quesnAtivo';
@@ -31,7 +27,6 @@ export function QuestaoNivelTable({ niveis, onEdit, onInativar }: QuestaoNivelTa
   const [sortAsc, setSortAsc] = useState(true);
   const [page, setPage] = useState(1);
   const pageSize = 10;
-
   const filtered = useMemo(() => {
     let data = niveis.filter((n) => {
       const desc = n.quesnDescricao || '';
@@ -53,14 +48,11 @@ export function QuestaoNivelTable({ niveis, onEdit, onInativar }: QuestaoNivelTa
     });
     return data;
   }, [niveis, search, sortKey, sortAsc]);
-
   const paginated = useMemo(() => {
     const start = (page - 1) * pageSize;
     return filtered.slice(start, start + pageSize);
   }, [filtered, page]);
-
   const totalPages = Math.ceil(filtered.length / pageSize);
-
   function handleSort(key: SortKey) {
     if (sortKey === key) setSortAsc((asc) => !asc);
     else {
@@ -68,10 +60,8 @@ export function QuestaoNivelTable({ niveis, onEdit, onInativar }: QuestaoNivelTa
       setSortAsc(true);
     }
   }
-
   return (
     <div className="w-full max-w-screen-2xl mx-auto ">
-      
       <Table >
         <TableHeader>
           <TableRow>

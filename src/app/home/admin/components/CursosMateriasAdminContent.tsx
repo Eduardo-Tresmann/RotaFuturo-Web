@@ -10,39 +10,30 @@ import { cursoService } from '@/services/curso/CursoService';
 import { materiaService } from '@/services/materia/MateriaService';
 import { Curso } from '@/types/curso';
 import { Materia } from '@/types/materia';
-
 export function CursosMateriasAdminContent() {
-  // Modal de Curso
   const [cursoModal, setCursoModal] = useState<'criar' | 'editar' | null>(null);
-
-  // Função para atualizar matérias
   async function refreshMaterias() {
     const data = await materiaService.listAll();
     setMaterias(data);
   }
   const [tab, setTab] = useState<'cursos' | 'materias'>('cursos');
-  // Cursos
   const [cursos, setCursos] = useState<Curso[]>([]);
   const [editingCurso, setEditingCurso] = useState<Curso | null>(null);
   const [cursoFilter, setCursoFilter] = useState({ descricao: '', ativo: '' });
   const [showCursoFilter, setShowCursoFilter] = useState(false);
-  // Matérias
   const [materias, setMaterias] = useState<Materia[]>([]);
   const [materiaModal, setMateriaModal] = useState<'criar' | 'editar' | null>(null);
   const [editingMateria, setEditingMateria] = useState<Materia | null>(null);
   const [materiaFilter, setMateriaFilter] = useState({ descricao: '', ativo: '' });
   const [showMateriaFilter, setShowMateriaFilter] = useState(false);
-
   async function refreshCursos() {
   const data = await cursoService.listAll();
   setCursos(data);
   }
-
   useEffect(() => {
     refreshCursos();
     refreshMaterias();
   }, []);
-
   return (
     <AdminPageContent
       actionButtons={[
@@ -50,7 +41,6 @@ export function CursosMateriasAdminContent() {
           key="novo-curso"
           className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 font-medium"
           onClick={() => { setEditingCurso(null); setCursoModal('criar'); }}
-          
         >
           Criar Curso
         </button>,
@@ -58,7 +48,6 @@ export function CursosMateriasAdminContent() {
           key="nova-materia"
           className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 font-medium"
           onClick={() => { setEditingMateria(null); setMateriaModal('criar'); }}
-          
         >
           Criar Matéria
         </button>
@@ -193,7 +182,7 @@ export function CursosMateriasAdminContent() {
         </Dialog>
       }
     >
-      {/* Sempre renderizar ambos os modais, independente da aba */}
+      {}
       <Dialog open={cursoModal !== null} onOpenChange={open => { if (!open) { setCursoModal(null); setEditingCurso(null); } }}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
@@ -218,7 +207,7 @@ export function CursosMateriasAdminContent() {
           />
         </DialogContent>
       </Dialog>
-      {/* Renderiza tabela conforme aba */}
+      {}
       {tab === 'cursos' ? (
         <CursoTable
           cursos={cursos.filter(c => {

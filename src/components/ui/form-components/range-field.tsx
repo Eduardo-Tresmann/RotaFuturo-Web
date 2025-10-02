@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import { FormLabel } from "./form-label";
 import { forwardRef } from "react";
-
 interface RangeFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   error?: string;
   label?: string;
@@ -11,7 +10,6 @@ interface RangeFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElemen
   step?: number;
   showValue?: boolean;
 }
-
 export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>(
   ({ className, error, label, required, min = 0, max = 100, step = 1, showValue = true, ...props }, ref) => {
     return (
@@ -48,5 +46,4 @@ export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>(
     );
   }
 );
-
 RangeField.displayName = "RangeField";

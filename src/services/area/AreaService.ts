@@ -1,6 +1,5 @@
 import { Area } from '@/types/area';
 import { baseApiService } from '@/services/baseApiService';
-
 export const areaService = {
   async listAll(): Promise<Area[]> {
     return baseApiService.request<Area[]>('/area');

@@ -1,0 +1,50 @@
+/* Text selection is disabled globally through the html class in layout.tsx */
+
+/* Global cursor style */
+body * {
+  cursor: default !important;
+}
+
+/* Override for clickable elements */
+button,
+a,
+[role='button'],
+.clickable {
+  cursor: pointer !important;
+}
+
+/* For range slider elements */
+input[type='range'],
+input[type='range']::-webkit-slider-thumb {
+  cursor: grab !important;
+}
+
+input[type='range']:active,
+input[type='range']:active::-webkit-slider-thumb {
+  cursor: grabbing !important;
+}
+
+/* Exception classes for areas where text selection should be allowed */
+.allow-select,
+.allow-select * {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+}
+
+/* Allow selection in form fields */
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='search'],
+input[type='number'],
+input[type='tel'],
+input[type='url'],
+textarea {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  cursor: text !important;
+}

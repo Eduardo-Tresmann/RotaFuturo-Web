@@ -2,16 +2,14 @@ import React, { forwardRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { LucideIcon } from 'lucide-react';
-
 interface PhoneFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   error?: string;
   required?: boolean;
   icon?: LucideIcon;
   iconColor?: string;
   className?: string;
-  label?: React.ReactNode; // Adicionado
+  label?: React.ReactNode; 
 }
-
 export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(
   (
     {
@@ -59,5 +57,4 @@ export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(
     );
   },
 );
-
 PhoneField.displayName = 'PhoneField';

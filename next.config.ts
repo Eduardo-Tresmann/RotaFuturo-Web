@@ -1,17 +1,13 @@
-
 import type { NextConfig } from 'next';
 import type { RuleSetRule } from 'webpack';
-
 const nextConfig: NextConfig = {
   webpack(config, { isServer }) {
     const fileLoaderRule = config.module.rules.find((rule: RuleSetRule) => {
       return rule.test instanceof RegExp && rule.test.test('.svg');
     });
-
     if (fileLoaderRule) {
       (fileLoaderRule as RuleSetRule).exclude = /\.svg$/;
     }
-
     config.module.rules.push({
       test: /\.svg$/,
       use: [
@@ -21,9 +17,7 @@ const nextConfig: NextConfig = {
         },
       ],
     });
-
     return config;
   },
 };
-
 export default nextConfig;

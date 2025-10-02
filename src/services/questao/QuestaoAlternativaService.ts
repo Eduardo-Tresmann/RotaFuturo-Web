@@ -1,12 +1,10 @@
 import { baseApiService } from '@/services/baseApiService';
-
 export interface Alternativa {
   quesaId: number;
   quesaDescricao: string;
   quesaCorreta: number;
   questao: { questaoId: number };
 }
-
 export const questaoAlternativaService = {
   async listAll(): Promise<Alternativa[]> {
     return baseApiService.request<Alternativa[]>('/questao-alternativa');

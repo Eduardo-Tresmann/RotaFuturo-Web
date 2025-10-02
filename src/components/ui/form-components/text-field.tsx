@@ -3,7 +3,6 @@ import { Input } from '@/components/ui/input';
 import { FormLabel } from './form-label';
 import { forwardRef } from 'react';
 import { LucideIcon } from 'lucide-react';
-
 interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   label?: React.ReactNode;
@@ -11,7 +10,6 @@ interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: LucideIcon;
   iconColor?: string;
 }
-
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   (
     {
@@ -56,5 +54,4 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     );
   },
 );
-
 TextField.displayName = 'TextField';

@@ -2,20 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { TextField } from '../../../../components/ui/form-components/text-field';
 import { FormNotification } from '../../../../components/ui/form-components/form-notification';
 import { questaoTipoService, TipoQuestao } from '@/services/questao/QuestaoTipoService';
-
 export default function QuestaoTipoForm({ onSuccess, data }: { onSuccess?: () => void, data?: Partial<TipoQuestao> }) {
   const [form, setForm] = useState<Partial<TipoQuestao>>(data ?? { quetDescricao: '' });
-
   useEffect(() => {
     if (data) setForm(data);
   }, [data]);
-
   const { error, success } = FormNotification;
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm((prev) => ({ ...prev, quetDescricao: e.target.value }));
   }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
@@ -32,7 +27,6 @@ export default function QuestaoTipoForm({ onSuccess, data }: { onSuccess?: () =>
       error({ message: err?.message || 'Erro ao salvar Tipo de Questão' });
     }
   }
-
   return (
     <form className="flex flex-col gap-6 bg-white dark:bg-neutral-900 p-8 rounded-2xl max-w-lg mx-auto shadow-soft" onSubmit={handleSubmit}>
       <h2 className="text-2xl font-bold text-blue-700 dark:text-blue-300 mb-2 text-center">

@@ -5,13 +5,11 @@ import { areaService } from '@/services/area/AreaService';
 import { areaSubService } from '@/services/areasub/AreaSubService';
 import { Area } from '@/types/area';
 import { AreaSub } from '@/types/areasub';
-
 interface TesteQuestaoFormProps {
   initial?: Partial<TesteQuestao>;
   onSave: (data: Partial<TesteQuestao>) => void;
   onCancel: () => void;
 }
-
 export default function TesteQuestaoForm({
   initial = {},
   onSave,
@@ -21,7 +19,6 @@ export default function TesteQuestaoForm({
   const [testeId, setTesteId] = useState(initial.testeId || '');
   const [areaId, setAreaId] = useState(initial.areaId || '');
   const [areaSubId, setAreaSubId] = useState(initial.areaSubId || '');
-
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     onSave({
@@ -32,7 +29,6 @@ export default function TesteQuestaoForm({
       areaSubId: areaSubId ? Number(areaSubId) : undefined,
     });
   }
-
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
       <AutoCompleteField

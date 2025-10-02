@@ -1,8 +1,6 @@
 'use client';
-
 import Image from 'next/image';
 import React from 'react';
-
 interface Imagem {
   src: string;
   alt: string;
@@ -13,7 +11,6 @@ interface Imagem {
   priority?: boolean;
   sizes?: string;
 }
-
 const OptimizedImage: React.FC<Imagem> = ({
   src,
   alt,
@@ -25,8 +22,6 @@ const OptimizedImage: React.FC<Imagem> = ({
   sizes,
   ...rest
 }) => {
-  // Se 'fill' for true, o componente Image não precisa de width/height diretos,
-  // mas o 'className' precisa definir width/height para o div pai.
   if (fill) {
     return (
       <div className={`relative ${className}`}>
@@ -42,14 +37,11 @@ const OptimizedImage: React.FC<Imagem> = ({
       </div>
     );
   }
-
-  // Se 'fill' for false, Image precisa de width/height diretos
   if (!width || !height) {
     console.warn(
       "OptimizedImage: 'width' and 'height' are required when 'fill' is false."
     );
   }
-
   return (
     <Image
       src={src}
@@ -63,5 +55,4 @@ const OptimizedImage: React.FC<Imagem> = ({
     />
   );
 };
-
 export default OptimizedImage;

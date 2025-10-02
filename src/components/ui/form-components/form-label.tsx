@@ -1,12 +1,10 @@
 import { cn } from '@/lib/utils';
-
 interface FormLabelProps {
   children: React.ReactNode;
   htmlFor?: string;
   required?: boolean;
   className?: string;
 }
-
 export function FormLabel({ children, htmlFor, required, className }: FormLabelProps) {
   return (
     <label

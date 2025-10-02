@@ -1,11 +1,9 @@
 import { cn } from "@/lib/utils";
 import { forwardRef } from "react";
-
 interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   error?: string;
   required?: boolean;
 }
-
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ({ className, error, required, ...props }, ref) => {
     return (
@@ -26,5 +24,4 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     );
   }
 );
-
 TextArea.displayName = "TextArea";

@@ -3,7 +3,6 @@ import { Input } from '@/components/ui/input';
 import { FormLabel } from './form-label';
 import { forwardRef } from 'react';
 import { LucideIcon } from 'lucide-react';
-
 interface MoneyFieldProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   error?: string;
@@ -13,7 +12,6 @@ interface MoneyFieldProps
   icon?: LucideIcon;
   iconColor?: string;
 }
-
 export const MoneyField = forwardRef<HTMLInputElement, MoneyFieldProps>(
   (
     {
@@ -71,5 +69,4 @@ export const MoneyField = forwardRef<HTMLInputElement, MoneyFieldProps>(
     );
   }
 );
-
 MoneyField.displayName = 'MoneyField';
