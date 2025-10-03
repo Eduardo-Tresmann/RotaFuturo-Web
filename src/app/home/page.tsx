@@ -13,6 +13,14 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { usePessoa } from '@/hooks/usePessoa';
 import { useAuthContext } from '@/components/context/AuthContext';
+import Stepper from '@/components/Stepper';
+import { ProfileFormStepper } from './components/ProfileFormStepper';
+import { VocationalTestStepper } from '@/components/VocationalTestStepper';
+import { VocationalTestResultStepper } from './components/VocationalTestResultStepper';
+import { SubareaTestStepper } from '@/components/SubareaTestStepper';
+import { SubareaTestResultStepper } from './components/SubareaTestResultStepper';
+import { ManualSelectionStepper } from './components/ManualSelectionStepper';
+import configService from '@/services/configService';
 
 import {
   Accordion,
@@ -1255,10 +1263,60 @@ const cursosDestaque = [
 ];
 
 export default function PaginaHome() {
-  const { usuario } = useAuthContext();
+  const { authResolved, usuario } = useAuthContext();
+  const router = useRouter();
   const { pessoa, loading } = usePessoa();
   const [cursoSelecionado, setCursoSelecionado] = useState<Curso | null>(null);
   const [categoriaAtiva, setCategoriaAtiva] = useState<string>('Todos');
+  const [showStepper, setShowStepper] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  // Armazena o passo mais avançado que o usuário já visitou
+  const [maxVisitedStep, setMaxVisitedStep] = useState(0);
+  const [selectedAreaId, setSelectedAreaId] = useState<number | null>(null);
+  const [config, setConfig] = useState({
+    testeVocacionalId: 2,
+    testeSubareaId: 3,
+  });
+  const [subareaTesteId, setSubareaTesteId] = useState<number | null>(null);
+  const steps = ['Teste', 'Áreas', 'Especialidade', 'Cursos', 'Confirmar', 'Perfil'];
+
+  // Exibe o stepper em fullpage se não houver pessoa vinculada
+  useEffect(() => {
+    if (!loading && !pessoa) {
+      setShowStepper(true);
+    }
+  }, [loading, pessoa]);
+
+  // Carrega as configurações da aplicação
+  useEffect(() => {
+    const loadConfig = async () => {
+      try {
+        const appConfig = await configService.getConfig();
+        setConfig(appConfig);
+        console.log('Configurações carregadas:', appConfig);
+      } catch (error) {
+        console.error('Erro ao carregar configurações:', error);
+      }
+    };
+
+    loadConfig();
+  }, []);
+
+  // Função para navegar para um passo específico
+  const navigateToStep = (step: number) => {
+    if (step <= maxVisitedStep) {
+      setCurrentStep(step);
+    }
+  };
+
+  // Função para avançar para o próximo passo
+  const goToNextStep = (step: number) => {
+    setCurrentStep(step);
+    // Atualiza o passo máximo visitado, se necessário
+    if (step > maxVisitedStep) {
+      setMaxVisitedStep(step);
+    }
+  };
 
   // Função para filtrar cursos por categoria
   const getCursosFiltrados = () => {
@@ -1268,268 +1326,418 @@ export default function PaginaHome() {
     return categoriasCursos[categoriaAtiva] || [];
   };
 
-  return (
-    <ProtectedRoute>
-      <HeaderHome
-        extra={
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbPage>Home</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        }
-      />
-
-      <main className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-800 p-4 md:p-8">
-        <div className="max-w-5xl mx-auto">
-          {/* Título principal */}
-          <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-4xl font-bold text-zinc-800 dark:text-zinc-50 mb-3">
-              Descubra seu Caminho Profissional
-            </h1>
-            <p className="text-zinc-600 dark:text-zinc-300 max-w-2xl mx-auto">
-              Explore as possibilidades de carreira e encontre a profissão que combina com você.
-            </p>
-          </div>
-
-          {/* Seção de cursos em destaque */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-semibold text-zinc-800 dark:text-zinc-100 mb-6 flex items-center">
-              <span className="mr-2">✨</span> Cursos em Destaque
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {cursosDestaque.map((curso) => (
-                <Card
-                  key={curso.id}
-                  className="overflow-hidden hover:shadow-lg transition-shadow dark:border-zinc-700"
-                >
-                  <div className="p-5 flex flex-col h-full">
-                    <div className="text-3xl mb-2">{curso.emoji}</div>
-                    <h3 className="text-xl font-semibold mb-2 dark:text-zinc-50">{curso.titulo}</h3>
-                    <p className="text-zinc-600 dark:text-zinc-300 text-sm line-clamp-3 mb-4 flex-grow">
-                      {curso.descricao.substring(0, 100)}...
-                    </p>
-
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="w-full flex justify-between items-center"
-                        >
-                          <span>Saiba mais</span>
-                          <ArrowRight size={16} />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-[600px] dark:bg-zinc-800 dark:border-zinc-700">
-                        <DialogHeader>
-                          <DialogTitle className="flex items-center gap-2 dark:text-zinc-50">
-                            <span className="text-2xl">{curso.emoji}</span> {curso.titulo}
-                          </DialogTitle>
-                        </DialogHeader>
-                        <div className="mt-4">
-                          <p className="text-zinc-700 dark:text-zinc-200 mb-4">{curso.descricao}</p>
-
-                          <h4 className="font-medium text-zinc-800 dark:text-zinc-100 mb-2">
-                            Áreas de atuação:
-                          </h4>
-                          <ul className="space-y-2">
-                            {curso.areas.map((area, index) => (
-                              <li key={index} className="flex items-start">
-                                <span className="mr-2 mt-1 text-blue-500">•</span>
-                                <span className="dark:text-zinc-300">{area}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </section>
-
-          {/* Seção de cursos filtrados pela categoria ativa */}
-          <section>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3 sm:gap-0">
-              <h2 className="text-2xl font-semibold text-zinc-800 dark:text-zinc-100">
-                {categoriaAtiva === 'Todos' ? 'Todos os Cursos' : `Cursos de ${categoriaAtiva}`}
-              </h2>
-
-              <div className="flex flex-wrap gap-2 justify-start sm:justify-end">
-                <Button
-                  variant={categoriaAtiva === 'Todos' ? 'default' : 'outline'}
-                  onClick={() => setCategoriaAtiva('Todos')}
-                  size="sm"
-                  className={`text-xs py-1 px-3 h-auto ${
-                    categoriaAtiva !== 'Todos' ? 'dark:border-zinc-700 dark:text-zinc-300' : ''
-                  }`}
-                >
-                  Todos
-                </Button>
-
-                {Object.keys(categoriasCursos).map((categoria) => (
-                  <Button
-                    key={categoria}
-                    variant={categoriaAtiva === categoria ? 'default' : 'outline'}
-                    onClick={() => setCategoriaAtiva(categoria)}
-                    size="sm"
-                    className={`text-xs py-1 px-3 h-auto ${
-                      categoriaAtiva !== categoria ? 'dark:border-zinc-700 dark:text-zinc-300' : ''
-                    }`}
-                  >
-                    {categoria}
-                  </Button>
-                ))}
+  const renderContent = () => {
+    if (showStepper) {
+      return (
+        <Stepper
+          steps={steps}
+          currentStep={currentStep}
+          maxVisitedStep={maxVisitedStep}
+          onStepClick={navigateToStep}
+          fullpage
+        >
+          {/* Passo 1 - Teste Vocacional */}
+          {currentStep === 0 && config.testeVocacionalId && (
+            <VocationalTestStepper
+              testeId={config.testeVocacionalId} // ID do teste vocacional das configurações
+              usuarioId={usuario?.usuId ?? 0} // Usar ID do usuário autenticado, não da pessoa
+              onFinish={() => goToNextStep(1)}
+            />
+          )}
+          {currentStep === 0 && !config.testeVocacionalId && (
+            <div className="w-full flex flex-col flex-1 max-w-2xl mx-auto bg-white/90 p-10 border-t border-x border-zinc-100 min-h-[400px] justify-center">
+              <div className="text-center">
+                <h2 className="text-xl font-semibold text-red-600 mb-4">Teste não disponível</h2>
+                <p className="mb-4">O teste vocacional não está configurado no sistema.</p>
+                <p>Por favor, entre em contato com o administrador.</p>
               </div>
             </div>
+          )}
+          {/* Passo 2 - Resultado do Teste Vocacional */}
+          {currentStep === 1 && config.testeVocacionalId && (
+            <VocationalTestResultStepper
+              testeId={config.testeVocacionalId}
+              usuarioId={usuario?.usuId ?? 0} // Usar ID do usuário autenticado, não da pessoa
+              onBack={() => navigateToStep(0)}
+              onNext={async (areaId) => {
+                setSelectedAreaId(areaId);
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {getCursosFiltrados().map((curso) => (
-                <Card
-                  key={curso.id}
-                  className="overflow-hidden hover:shadow-lg transition-shadow dark:border-zinc-700"
+                // Busca o teste de subárea específico para a área selecionada
+                try {
+                  const subareaConfig = await configService.getTesteSubareaByArea(areaId);
+                  setSubareaTesteId(subareaConfig.testeSubareaId);
+                  console.log(
+                    'Teste de subárea para área',
+                    areaId,
+                    ':',
+                    subareaConfig.testeSubareaId,
+                  );
+                } catch (error) {
+                  console.error('Erro ao buscar teste de subárea:', error);
+                  // Em caso de erro, usa o ID padrão da configuração geral
+                  setSubareaTesteId(config.testeSubareaId);
+                }
+
+                goToNextStep(2);
+              }}
+            />
+          )}
+          {/* Passo 3 - Teste de Especialidade/Subárea */}
+          {currentStep === 2 && selectedAreaId && subareaTesteId && (
+            <SubareaTestStepper
+              testeId={subareaTesteId}
+              usuarioId={usuario?.usuId ?? 0} // Usar ID do usuário autenticado, não da pessoa
+              areaId={selectedAreaId}
+              onFinish={() => goToNextStep(3)}
+            />
+          )}
+          {currentStep === 2 && !subareaTesteId && (
+            <div className="w-full flex flex-col flex-1 max-w-2xl mx-auto bg-white/90 p-10 border-t border-x border-zinc-100 min-h-[400px] justify-between">
+              <div className="flex-1 flex flex-col items-center justify-center">
+                <h2 className="text-xl font-semibold text-red-600 mb-4">Teste não disponível</h2>
+                <p className="mb-4">O teste de especialidade não está configurado no sistema.</p>
+                <p className="mb-8">Por favor, entre em contato com o administrador.</p>
+
+                <button
+                  onClick={() => navigateToStep(1)}
+                  className="px-4 py-2 bg-blue-600 text-white rounded"
                 >
-                  <div className="p-5 flex flex-col h-full">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="text-3xl">{curso.emoji}</span>
-                      <h3 className="text-lg font-semibold dark:text-zinc-50">{curso.titulo}</h3>
-                    </div>
+                  Voltar para resultados
+                </button>
+              </div>
+            </div>
+          )}
+          {/* Passo 4 - Resultado do Teste de Especialidade/Subárea */}
+          {currentStep === 3 && selectedAreaId && subareaTesteId && (
+            <SubareaTestResultStepper
+              testeId={subareaTesteId}
+              usuarioId={usuario?.usuId ?? 0} // Usar ID do usuário autenticado, não da pessoa
+              areaId={selectedAreaId}
+              onBack={() => navigateToStep(2)}
+              onNext={() => goToNextStep(4)}
+            />
+          )}
+          {/* Passo 5 - Seleção Manual de Área/Subárea */}
+          {currentStep === 4 && (
+            <ManualSelectionStepper
+              usuarioId={usuario?.usuId ?? 0}
+              preselectedAreaId={selectedAreaId || undefined}
+              onBack={() => navigateToStep(3)}
+              onNext={() => goToNextStep(5)}
+            />
+          )}
 
-                    <p className="text-zinc-600 dark:text-zinc-300 text-sm line-clamp-3 mb-4 flex-grow">
-                      {curso.descricao.substring(0, 100)}...
-                    </p>
+          {/* Passo 6 - Perfil */}
+          {currentStep === 5 && (
+            <ProfileFormStepper
+              onFinish={() => setShowStepper(false)}
+              onBack={() => setCurrentStep(5)}
+            />
+          )}
+        </Stepper>
+      );
+    }
 
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="outline" className="w-full dark:border-zinc-700">
-                          Explorar carreira
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent
-                        className="w-[95vw] sm:w-[90vw] md:w-[750px] max-h-[85vh] h-auto overflow-y-auto dark:bg-zinc-800 dark:border-zinc-700 p-3 px-4 sm:p-6 rounded-lg"
-                        style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'thin' }}
-                      >
-                        <DialogHeader>
-                          <DialogTitle className="flex items-center gap-2 dark:text-zinc-50">
-                            <span className="text-2xl">{curso.emoji}</span> {curso.titulo}
-                          </DialogTitle>
-                        </DialogHeader>
+    // Conteúdo da página home normal quando o usuário já tem perfil
+    return (
+      <div>
+        <HeaderHome
+          extra={
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Home</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          }
+        />
+        <main className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-800 p-4 md:p-8">
+          <div className="max-w-5xl mx-auto">
+            {/* Título principal */}
+            <div className="text-center mb-12">
+              <h1 className="text-3xl md:text-4xl font-bold text-zinc-800 dark:text-zinc-50 mb-3">
+                Descubra seu Caminho Profissional
+              </h1>
+              <p className="text-zinc-600 dark:text-zinc-300 max-w-2xl mx-auto">
+                Explore as possibilidades de carreira e encontre a profissão que combina com você.
+              </p>
+            </div>
 
-                        <div className="mt-1 sm:mt-4 grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-6">
-                          {/* Coluna da imagem */}
-                          <div className="md:col-span-4">
-                            <div className="rounded-lg overflow-hidden">
-                              <Image
-                                src={curso.imagem}
-                                alt={curso.titulo}
-                                width={400}
-                                height={200}
-                                className="w-full h-[150px] sm:h-[200px] object-cover rounded-md"
-                                priority
-                              />
-                            </div>
+            {/* Seção de cursos em destaque */}
+            <section className="mb-16">
+              <h2 className="text-2xl font-semibold text-zinc-800 dark:text-zinc-100 mb-6 flex items-center">
+                <span className="mr-2">✨</span> Cursos em Destaque
+              </h2>
 
-                            <div className="mt-1 sm:mt-3">
-                              <h4 className="font-medium text-zinc-800 dark:text-zinc-100 mb-1 sm:mb-2 text-xs sm:text-base">
-                                Áreas de atuação:
-                              </h4>
-                              <ul className="space-y-1">
-                                {curso.areas.map((area, index) => (
-                                  <li key={index} className="flex items-start">
-                                    <span className="mr-1 flex-shrink-0 text-blue-500 text-xs">
-                                      •
-                                    </span>
-                                    <span className="dark:text-zinc-300 text-[10px] sm:text-sm leading-tight">
-                                      {area}
-                                    </span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {cursosDestaque.map((curso) => (
+                  <Card
+                    key={curso.id}
+                    className="overflow-hidden hover:shadow-lg transition-shadow dark:border-zinc-700"
+                  >
+                    <div className="p-5 flex flex-col h-full">
+                      <div className="text-3xl mb-2">{curso.emoji}</div>
+                      <h3 className="text-xl font-semibold mb-2 dark:text-zinc-50">
+                        {curso.titulo}
+                      </h3>
+                      <p className="text-zinc-600 dark:text-zinc-300 text-sm line-clamp-3 mb-4 flex-grow">
+                        {curso.descricao.substring(0, 100)}...
+                      </p>
 
-                          {/* Coluna de conteúdo */}
-                          <div className="md:col-span-8">
-                            <p className="text-zinc-700 dark:text-zinc-200 mb-2 sm:mb-4 text-xs sm:text-base leading-tight">
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className="w-full flex justify-between items-center"
+                          >
+                            <span>Saiba mais</span>
+                            <ArrowRight size={16} />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[600px] dark:bg-zinc-800 dark:border-zinc-700">
+                          <DialogHeader>
+                            <DialogTitle className="flex items-center gap-2 dark:text-zinc-50">
+                              <span className="text-2xl">{curso.emoji}</span> {curso.titulo}
+                            </DialogTitle>
+                          </DialogHeader>
+                          <div className="mt-4">
+                            <p className="text-zinc-700 dark:text-zinc-200 mb-4">
                               {curso.descricao}
                             </p>
 
-                            {curso.carreiraInfo && (
-                              <>
-                                <div className="mb-3 sm:mb-4">
-                                  <h4 className="text-sm sm:text-md font-semibold text-blue-600 dark:text-blue-400 mb-0.5 sm:mb-1">
-                                    Mercado de Trabalho
-                                  </h4>
-                                  <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-tight">
-                                    {curso.carreiraInfo.mercadoTrabalho}
-                                  </p>
-                                </div>
-
-                                <div className="mb-3 sm:mb-4">
-                                  <h4 className="text-sm sm:text-md font-semibold text-blue-600 dark:text-blue-400 mb-0.5 sm:mb-1">
-                                    Faixa Salarial
-                                  </h4>
-                                  <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-tight">
-                                    {curso.carreiraInfo.salario}
-                                  </p>
-                                </div>
-
-                                <div className="mb-2 sm:mb-4">
-                                  <h4 className="text-sm sm:text-md font-semibold text-blue-600 dark:text-blue-400 mb-0.5 sm:mb-1">
-                                    Habilidades Importantes
-                                  </h4>
-                                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-2">
-                                    {curso.carreiraInfo.habilidades.map((habilidade, index) => (
-                                      <li key={index} className="flex items-center">
-                                        <span className="text-blue-500 mr-1 flex-shrink-0">✓</span>
-                                        <span className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-tight">
-                                          {habilidade}
-                                        </span>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-
-                                <div className="mt-3 sm:mt-4">
-                                  <h4 className="text-sm sm:text-lg font-semibold text-blue-600 dark:text-blue-400 mb-2 sm:mb-3">
-                                    Trajetória Profissional
-                                  </h4>
-                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-4 sm:gap-x-6 sm:gap-y-4">
-                                    {curso.carreiraInfo.trajetoria.map((etapa, index) => (
-                                      <div
-                                        key={index}
-                                        className="relative pl-5 border-l-2 border-blue-400"
-                                      >
-                                        {/* Círculo indicador na timeline */}
-                                        <div className="absolute -left-[6px] sm:-left-[7px] top-0 h-2.5 sm:h-3 w-2.5 sm:w-3 rounded-full bg-blue-500 border-1 sm:border-2 border-blue-100 dark:border-zinc-800"></div>
-
-                                        <h5 className="text-sm sm:text-base font-medium text-zinc-800 dark:text-zinc-100">
-                                          {etapa.fase}
-                                        </h5>
-                                        <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-tight">
-                                          {etapa.descricao}
-                                        </p>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              </>
-                            )}
+                            <h4 className="font-medium text-zinc-800 dark:text-zinc-100 mb-2">
+                              Áreas de atuação:
+                            </h4>
+                            <ul className="space-y-2">
+                              {curso.areas.map((area, index) => (
+                                <li key={index} className="flex items-start">
+                                  <span className="mr-2 mt-1 text-blue-500">•</span>
+                                  <span className="dark:text-zinc-300">{area}</span>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </section>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </section>
+
+            {/* Seção de cursos filtrados pela categoria ativa */}
+            <section>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3 sm:gap-0">
+                <h2 className="text-2xl font-semibold text-zinc-800 dark:text-zinc-100">
+                  {categoriaAtiva === 'Todos' ? 'Todos os Cursos' : `Cursos de ${categoriaAtiva}`}
+                </h2>
+
+                <div className="flex flex-wrap gap-2 justify-start sm:justify-end">
+                  <Button
+                    variant={categoriaAtiva === 'Todos' ? 'default' : 'outline'}
+                    onClick={() => setCategoriaAtiva('Todos')}
+                    size="sm"
+                    className={`text-xs py-1 px-3 h-auto ${
+                      categoriaAtiva !== 'Todos' ? 'dark:border-zinc-700 dark:text-zinc-300' : ''
+                    }`}
+                  >
+                    Todos
+                  </Button>
+
+                  {Object.keys(categoriasCursos).map((categoria) => (
+                    <Button
+                      key={categoria}
+                      variant={categoriaAtiva === categoria ? 'default' : 'outline'}
+                      onClick={() => setCategoriaAtiva(categoria)}
+                      size="sm"
+                      className={`text-xs py-1 px-3 h-auto ${
+                        categoriaAtiva !== categoria
+                          ? 'dark:border-zinc-700 dark:text-zinc-300'
+                          : ''
+                      }`}
+                    >
+                      {categoria}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {getCursosFiltrados().map((curso) => (
+                  <Card
+                    key={curso.id}
+                    className="overflow-hidden hover:shadow-lg transition-shadow dark:border-zinc-700"
+                  >
+                    <div className="p-5 flex flex-col h-full">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-3xl">{curso.emoji}</span>
+                        <h3 className="text-lg font-semibold dark:text-zinc-50">{curso.titulo}</h3>
+                      </div>
+
+                      <p className="text-zinc-600 dark:text-zinc-300 text-sm line-clamp-3 mb-4 flex-grow">
+                        {curso.descricao.substring(0, 100)}...
+                      </p>
+
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="outline" className="w-full dark:border-zinc-700">
+                            Explorar carreira
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent
+                          className="w-[95vw] sm:w-[90vw] md:w-[750px] max-h-[85vh] h-auto overflow-y-auto dark:bg-zinc-800 dark:border-zinc-700 p-3 px-4 sm:p-6 rounded-lg"
+                          style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'thin' }}
+                        >
+                          <DialogHeader>
+                            <DialogTitle className="flex items-center gap-2 dark:text-zinc-50">
+                              <span className="text-2xl">{curso.emoji}</span> {curso.titulo}
+                            </DialogTitle>
+                          </DialogHeader>
+
+                          <div className="mt-1 sm:mt-4 grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-6">
+                            {/* Coluna da imagem */}
+                            <div className="md:col-span-4">
+                              <div className="rounded-lg overflow-hidden">
+                                <Image
+                                  src={curso.imagem}
+                                  alt={curso.titulo}
+                                  width={400}
+                                  height={200}
+                                  className="w-full h-[150px] sm:h-[200px] object-cover rounded-md"
+                                  priority
+                                />
+                              </div>
+
+                              <div className="mt-1 sm:mt-3">
+                                <h4 className="font-medium text-zinc-800 dark:text-zinc-100 mb-1 sm:mb-2 text-xs sm:text-base">
+                                  Áreas de atuação:
+                                </h4>
+                                <ul className="space-y-1">
+                                  {curso.areas.map((area, index) => (
+                                    <li key={index} className="flex items-start">
+                                      <span className="mr-1 flex-shrink-0 text-blue-500 text-xs">
+                                        •
+                                      </span>
+                                      <span className="dark:text-zinc-300 text-[10px] sm:text-sm leading-tight">
+                                        {area}
+                                      </span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+
+                            {/* Coluna de conteúdo */}
+                            <div className="md:col-span-8">
+                              <p className="text-zinc-700 dark:text-zinc-200 mb-2 sm:mb-4 text-xs sm:text-base leading-tight">
+                                {curso.descricao}
+                              </p>
+
+                              {curso.carreiraInfo && (
+                                <>
+                                  <div className="mb-3 sm:mb-4">
+                                    <h4 className="text-sm sm:text-md font-semibold text-blue-600 dark:text-blue-400 mb-0.5 sm:mb-1">
+                                      Mercado de Trabalho
+                                    </h4>
+                                    <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-tight">
+                                      {curso.carreiraInfo.mercadoTrabalho}
+                                    </p>
+                                  </div>
+
+                                  <div className="mb-3 sm:mb-4">
+                                    <h4 className="text-sm sm:text-md font-semibold text-blue-600 dark:text-blue-400 mb-0.5 sm:mb-1">
+                                      Faixa Salarial
+                                    </h4>
+                                    <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-tight">
+                                      {curso.carreiraInfo.salario}
+                                    </p>
+                                  </div>
+
+                                  <div className="mb-2 sm:mb-4">
+                                    <h4 className="text-sm sm:text-md font-semibold text-blue-600 dark:text-blue-400 mb-0.5 sm:mb-1">
+                                      Habilidades Importantes
+                                    </h4>
+                                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-2">
+                                      {curso.carreiraInfo.habilidades.map((habilidade, index) => (
+                                        <li key={index} className="flex items-center">
+                                          <span className="text-blue-500 mr-1 flex-shrink-0">
+                                            ✓
+                                          </span>
+                                          <span className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-tight">
+                                            {habilidade}
+                                          </span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+
+                                  <div className="mt-3 sm:mt-4">
+                                    <h4 className="text-sm sm:text-lg font-semibold text-blue-600 dark:text-blue-400 mb-2 sm:mb-3">
+                                      Trajetória Profissional
+                                    </h4>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-4 sm:gap-x-6 sm:gap-y-4">
+                                      {curso.carreiraInfo.trajetoria.map((etapa, index) => (
+                                        <div
+                                          key={index}
+                                          className="relative pl-5 border-l-2 border-blue-400"
+                                        >
+                                          {/* Círculo indicador na timeline */}
+                                          <div className="absolute -left-[6px] sm:-left-[7px] top-0 h-2.5 sm:h-3 w-2.5 sm:w-3 rounded-full bg-blue-500 border-1 sm:border-2 border-blue-100 dark:border-zinc-800"></div>
+
+                                          <h5 className="text-sm sm:text-base font-medium text-zinc-800 dark:text-zinc-100">
+                                            {etapa.fase}
+                                          </h5>
+                                          <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-tight">
+                                            {etapa.descricao}
+                                          </p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </section>
+          </div>
+        </main>
+      </div>
+    );
+  };
+
+  // Exibir um indicador de progresso na barra superior se estiver no stepper
+  const renderProgressIndicator = () => {
+    if (!showStepper) return null;
+
+    const totalSteps = steps.length;
+    const progress = ((currentStep + 1) / totalSteps) * 100;
+
+    return (
+      <div className="fixed top-0 left-0 w-full z-50">
+        <div className="h-1 bg-gray-200">
+          <div
+            className="h-1 bg-blue-600 transition-all duration-500"
+            style={{ width: `${progress}%` }}
+          ></div>
         </div>
-      </main>
+      </div>
+    );
+  };
+
+  return (
+    <ProtectedRoute>
+      {/* Barra de progresso quando o stepper está ativo */}
+      {renderProgressIndicator()}
+
+      {/* Conteúdo principal (stepper ou conteúdo regular) */}
+      {renderContent()}
     </ProtectedRoute>
   );
 }
