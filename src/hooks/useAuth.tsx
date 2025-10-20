@@ -35,7 +35,8 @@ export const useAuth = (): AuthContextType => {
         if (currentUser && currentUser.usuId) {
           const grupos = await grupoAcessoUsuarioService.listarGruposDoUsuario(currentUser.usuId);
           setGruposUsuario(grupos);
-          setIsAdmin(grupos.indexOf('ADMINISTRADOR') !== -1);
+          // Comparação case-insensitive para 'Administrador' ou 'ADMINISTRADOR'
+          setIsAdmin(grupos.some((g) => g.toUpperCase() === 'ADMINISTRADOR'));
         }
       } else {
         setUser(null);
@@ -110,7 +111,8 @@ export const useAuth = (): AuthContextType => {
   }, [carregarUsuario]);
   const verificarPermissao = useCallback(
     (grupoNecessario: string): boolean => {
-      return gruposUsuario.indexOf(grupoNecessario) !== -1;
+      // Comparação case-insensitive
+      return gruposUsuario.some((g) => g.toUpperCase() === grupoNecessario.toUpperCase());
     },
     [gruposUsuario],
   );

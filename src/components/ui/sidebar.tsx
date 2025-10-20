@@ -1,41 +1,42 @@
-import * as React from "react"
-import { cn } from "@/lib/utils"
+import * as React from 'react';
+import { cn } from '@/lib/utils';
 export interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 export function Sidebar({ className, children, ...props }: SidebarProps) {
   return (
     <aside
       className={cn(
-        "flex flex-col w-64 min-h-screen border-r bg-[#f6f8fa] px-6 py-10 gap-4",
-        className
+        'flex flex-col w-64 min-h-screen border-r bg-[#f6f8fa] dark:bg-neutral-950 px-4 py-6 gap-2',
+        className,
       )}
       {...props}
     >
       {children}
     </aside>
-  )
+  );
 }
 export interface SidebarItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  active?: boolean
-  icon?: React.ReactNode
-  children: React.ReactNode
+  active?: boolean;
+  icon?: React.ReactNode;
+  children: React.ReactNode;
 }
 export function SidebarItem({ active, icon, children, className, ...props }: SidebarItemProps) {
   return (
     <button
       className={cn(
-        "flex items-center gap-4 px-6 py-4 rounded-xl text-lg font-semibold transition-colors",
+        'flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200',
         active
-          ? "bg-zinc-300 text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-100"
-          : "text-zinc-700 hover:bg-zinc-700 hover:text-zinc-300",
-        className
+          ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 shadow-sm'
+          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-800/70',
+        className,
       )}
-      style={{ minHeight: 56 }}
       {...props}
     >
-      {icon && <span className="w-7 h-7 flex items-center justify-center">{icon}</span>}
-      <span>{children}</span>
+      {icon && (
+        <span className="w-5 h-5 flex items-center justify-center flex-shrink-0">{icon}</span>
+      )}
+      <span className="text-left flex-1">{children}</span>
     </button>
-  )
+  );
 }

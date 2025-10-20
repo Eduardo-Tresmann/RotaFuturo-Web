@@ -91,7 +91,7 @@ interface PerfilDropdownProps extends DadosPerfilUsuario {
   menuItems: DropdownMenuItemType[];
 }
 function PerfilDropdown({ name, email, avatarUrl, menuItems }: PerfilDropdownProps) {
-  const defaultAvatar = 'https://via.placeholder.com/40';
+  const defaultAvatar = '/imagens/user.svg';
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -213,7 +213,7 @@ export function Header({
             <PerfilDropdown
               name={perfilUsuario.name || 'Usuário'}
               email={perfilUsuario.email || ''}
-              avatarUrl={perfilUsuario.avatarUrl || 'https://via.placeholder.com/40'}
+              avatarUrl={perfilUsuario.avatarUrl || '/imagens/user.svg'}
               menuItems={profileMenuItems}
             />
           )}

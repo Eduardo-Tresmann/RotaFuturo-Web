@@ -46,7 +46,7 @@ export function HeaderHome({
         ? `${process.env.NEXT_PUBLIC_API_URL}/api/arquivo/view/${usuario?.usuId}/${getFileName(
             pessoa.pesImagemperfil,
           )}`
-        : 'https://via.placeholder.com/40',
+        : '/imagens/user.svg',
   };
   const profileMenuItems = [
     {
@@ -72,37 +72,46 @@ export function HeaderHome({
       icon: <LogOut className="mr-2 h-4 w-4" />,
     },
   ];
-  const [headerTransparent, setHeaderTransparent] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
+
   useEffect(() => {
     const onScroll = () => {
-      setHeaderTransparent(window.scrollY < 40);
+      setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', onScroll);
+    onScroll(); // Check initial state
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
   return (
     <>
-      {}
-      <div className="hidden md:block">
+      <div
+        className={`hidden md:block sticky top-0 left-0 w-full z-50 transition-all duration-300 ${
+          isScrolled
+            ? 'bg-zinc-900/95 backdrop-blur-md shadow-xl border-b border-zinc-800/50'
+            : 'bg-zinc-900/80 backdrop-blur-sm shadow-md'
+        }`}
+      >
         <Header
-          exibirBarraPesquisa={true}
+          exibirBarraPesquisa={false}
           navItems={navItems}
           exibirNavbar={true}
           exibirPerfil={true}
           perfilUsuario={usuarioProfileData}
           profileMenuItems={profileMenuItems}
           menuItemClassName="text-zinc-200 hover:text-zinc-300"
-          className={`sticky top-0 left-0 w-full z-50 transition-colors duration-300 ${
-            headerTransparent
-              ? 'bg-zinc-900/95 backdrop-blur shadow'
-              : 'bg-zinc-900/80 backdrop-blur shadow'
-          }`}
           extra={customExtra}
           {...props}
         />
       </div>
-      {}
-      <header className="md:hidden sticky top-0 left-0 w-full z-50 bg-zinc-900/95 backdrop-blur shadow border-b border-zinc-800">
+      {/* Mobile Header */}
+      <header
+        className={`md:hidden sticky top-0 left-0 w-full z-50 transition-all duration-300 ${
+          isScrolled
+            ? 'bg-zinc-900/95 backdrop-blur-md shadow-xl border-b border-zinc-800/50'
+            : 'bg-zinc-900/80 backdrop-blur-sm shadow-md border-b border-zinc-800/30'
+        }`}
+      >
         <div className="flex items-center justify-between px-4 py-2">
           <div className="flex items-center space-x-2">
             <Link href={pessoa?.pesNome ? '/home' : '/'}>

@@ -7,6 +7,9 @@ export const areaSubService = {
   async listAll(): Promise<AreaSub[]> {
     return baseApiService.request<AreaSub[]>('/areasub');
   },
+  async listByArea(areaId: number): Promise<AreaSub[]> {
+    return baseApiService.request<AreaSub[]>(`/areasub?areaId=${areaId}`);
+  },
   async create(data: Partial<AreaSub>): Promise<AreaSub> {
     return baseApiService.request<AreaSub>('/areasub', {
       method: 'POST',

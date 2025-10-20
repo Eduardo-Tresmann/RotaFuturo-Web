@@ -33,8 +33,11 @@ import {
 } from '@/components/ui/breadcrumb';
 import Link from 'next/link';
 import { useAuthContext } from '@/components/context/AuthContext';
-import { useTheme } from '@/components/context/ThemeContext'; 
+import { useTheme } from '@/components/context/ThemeContext';
 import { GrupoAcessoAdminContent } from './components/GrupoAcessoAdminContent';
+import { ImportadorAdminContent } from './components/ImportadorAdminContent';
+import { DesafiosAdminContent } from './components/DesafiosAdminContent';
+
 const moduloComponents: Record<string, React.ComponentType> = {
   usuarios: UsuariosAdminContent,
   questionarios: QuestionariosAdminContent,
@@ -42,11 +45,13 @@ const moduloComponents: Record<string, React.ComponentType> = {
   areas: AreasAdminContent,
   areasub: AreaSubAdminContent,
   testes: TestesAdminContent,
+  desafios: DesafiosAdminContent,
   grupoacesso: GrupoAcessoAdminContent,
+  importador: ImportadorAdminContent,
 };
 export default function AdminHome() {
   const { authResolved } = useAuthContext();
-  const { theme } = useTheme(); 
+  const { theme } = useTheme();
   const [moduloSelecionado, setModuloSelecionado] = useState<keyof typeof moduloComponents | ''>(
     'questoes',
   );

@@ -8,6 +8,19 @@ declare const process: {
 };
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+// Classe de erro customizada para incluir status HTTP
+export class ApiError extends Error {
+  status: number;
+  data?: any;
+
+  constructor(message: string, status: number, data?: any) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+    this.data = data;
+  }
+}
 class BaseApiService {
   private token: string | null = null;
   constructor() {
@@ -84,12 +97,28 @@ class BaseApiService {
         this.clearToken();
       }
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData?.message || `HTTP error! status: ${response.status}`);
+      throw new ApiError(
+        errorData?.message || `HTTP error! status: ${response.status}`,
+        response.status,
+        errorData,
+      );
     }
     if (response.status === 204) {
       return {} as T;
     }
-    return response.json();
+
+    // Verifica se a resposta tem conteúdo antes de fazer parse JSON
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      return {} as T;
+    }
+
+    const text = await response.text();
+    if (!text || text.trim() === '') {
+      return {} as T;
+    }
+
+    return JSON.parse(text);
   }
   private generateCsrfToken(): string {
     const timestamp = new Date().getTime().toString();
